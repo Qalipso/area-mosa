@@ -28,7 +28,9 @@ Step-by-step guide to deploy the WhatsApp booking automation for AREA MOSA.
 2. Sign up for Starter plan ($20/month, 2,500 executions)
 3. After signup, note your n8n URL: `https://YOUR-NAME.app.n8n.cloud`
 4. Go to **Settings > Variables** (left sidebar)
-5. Add these 4 variables (leave values empty for now, we fill them in steps below):
+5. Go to **Settings > Community Nodes** > **Install** > enter `n8n-nodes-evolution-api` > **Install**
+   (This adds native Evolution API nodes for easier message sending and instance management)
+6. Add these 4 variables in **Settings > Variables** (leave values empty for now, we fill them in steps below):
 
 | Variable | Description |
 |----------|-------------|
@@ -45,12 +47,12 @@ Step-by-step guide to deploy the WhatsApp booking automation for AREA MOSA.
 
 ### Option A: Self-hosted (free, recommended)
 
-**Requirements:** VPS with Docker (min 1GB RAM, 1 CPU)
+**Requirements:** VPS with Docker (min 4GB RAM, 2 vCPU)
 
 **Cheap VPS options:**
-- Hetzner Cloud CX22: EUR 3.29/month (2 vCPU, 4GB RAM) - [hetzner.com/cloud](https://hetzner.com/cloud)
-- DigitalOcean Droplet: $6/month (1 vCPU, 1GB RAM) - [digitalocean.com](https://digitalocean.com)
-- Contabo VPS S: EUR 5.99/month (4 vCPU, 8GB RAM) - [contabo.com](https://contabo.com)
+- Hetzner Cloud CX23: EUR 3.49/month (2 vCPU, 4GB RAM, 40GB NVMe) - [hetzner.com/cloud](https://hetzner.com/cloud) **(recommended)**
+- Contabo VPS S: EUR 4.50/month (4 vCPU, 8GB RAM, 50GB NVMe) - [contabo.com](https://contabo.com)
+- DigitalOcean Droplet: $12/month (1 vCPU, 2GB RAM, 50GB SSD) - [digitalocean.com](https://digitalocean.com)
 
 **Install on VPS:**
 
@@ -68,19 +70,29 @@ cat > docker-compose.yml << 'EOF'
 version: '3.8'
 services:
   evolution-api:
-    image: atendai/evolution-api:latest
+    image: evoapicloud/evolution-api:v2.3.7
     restart: always
     ports:
       - "8080:8080"
     environment:
+      - SERVER_URL=https://evo.yourdomain.com
+      - SERVER_PORT=8080
       - AUTHENTICATION_API_KEY=your-secret-api-key-here
-      - AUTHENTICATION_EXPOSE_IN_FETCH_INSTANCES=true
       - DATABASE_ENABLED=true
       - DATABASE_PROVIDER=postgresql
       - DATABASE_CONNECTION_URI=postgresql://postgres:postgres@postgres:5432/evolution
+      - DATABASE_CONNECTION_CLIENT_NAME=evolution_v2
+      - DATABASE_SAVE_DATA_INSTANCE=true
+      - DATABASE_SAVE_DATA_NEW_MESSAGE=true
+      - DATABASE_SAVE_MESSAGE_UPDATE=true
+      - DATABASE_SAVE_DATA_CONTACTS=true
+      - DATABASE_SAVE_DATA_CHATS=true
       - CACHE_REDIS_ENABLED=true
-      - CACHE_REDIS_URI=redis://redis:6379
+      - CACHE_REDIS_URI=redis://redis:6379/1
+      - CACHE_REDIS_PREFIX_KEY=evolution_v2
       - CACHE_LOCAL_ENABLED=false
+    volumes:
+      - evolution_instances:/evolution/instances
     depends_on:
       - postgres
       - redis
@@ -102,6 +114,7 @@ services:
       - redis_data:/data
 
 volumes:
+  evolution_instances:
   postgres_data:
   redis_data:
 EOF
@@ -266,7 +279,7 @@ The Tool Code nodes in the workflow use the REST API directly. For this, you nee
 3. Go to **API keys** > **Create new secret key**
 4. Name: `area-mosa-n8n`
 5. Copy the key (starts with `sk-...`)
-6. Go to **Billing** > Add payment method > Add $10 credit
+6. Go to **Billing** > Add payment method > Purchase $5-10 prepaid credits (required, no free tier for GPT-4o-mini)
 7. In n8n, go to **Credentials** > **Add Credential** > **OpenAI API**
 8. Paste the API key
 9. Save

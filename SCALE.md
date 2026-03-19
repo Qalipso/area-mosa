@@ -7,7 +7,7 @@ How to reuse the AREA MOSA booking system for new clients from the leads list.
 ## Architecture: One VPS, Many Clients
 
 ```
-VPS (Hetzner CX22 - EUR 3.29/month)
+VPS (Hetzner CX23 - EUR 3.49/month)
   |
   +-- Evolution API (Docker)
   |     +-- Instance: area-mosa
@@ -148,11 +148,11 @@ Create a new client in under 5 minutes using this workflow:
 
 | Service | Monthly |
 |---------|---------|
-| VPS (shared Evolution API) | $3.29 |
+| VPS (shared Evolution API) | $3.49 |
 | OpenAI API (shared, 5 clients) | ~$15 |
 | n8n Cloud (if per-client) | $100 (5x$20) |
 | **OR n8n self-hosted** | **$0** (run on same VPS) |
-| **Total** | **$18-118/month** |
+| **Total** | **$18.49-118/month** |
 
 **Profit margin per client:** 80-90% (if self-hosting n8n)
 
@@ -217,7 +217,7 @@ volumes:
 
 Cost comparison (10 clients):
 - n8n Cloud: $200/month (10 x $20)
-- Self-hosted: $6.58/month (VPS upgrade to CX32 for more RAM)
+- Self-hosted: $7.49/month (VPS upgrade to CX33 for more RAM)
 
 ---
 
