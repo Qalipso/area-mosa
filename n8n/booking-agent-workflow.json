@@ -114,7 +114,7 @@
             },
             {
               "id": "cond-has-message",
-              "leftValue": "={{ $json.data.message.conversation }}",
+              "leftValue": "={{ $json.data.message.conversation || ($json.data.message.extendedTextMessage ? $json.data.message.extendedTextMessage.text : '') }}",
               "rightValue": "",
               "operator": {
                 "type": "string",
@@ -145,7 +145,7 @@
             {
               "id": "assign-message",
               "name": "message",
-              "value": "={{ $json.data.message.conversation }}",
+              "value": "={{ $json.data.message.conversation || ($json.data.message.extendedTextMessage ? $json.data.message.extendedTextMessage.text : '') }}",
               "type": "string"
             },
             {
@@ -257,7 +257,7 @@
       "onError": "continueRegularOutput",
       "parameters": {
         "method": "POST",
-        "url": "={{ $env.EVOLUTION_API_URL }}/message/sendText/{{ $('Extract Message Data').item.json.instance }}",
+        "url": "={{ $env.EVOLUTION_API_URL + '/message/sendText/' + $('Extract Message Data').item.json.instance }}",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [

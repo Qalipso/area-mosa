@@ -54,13 +54,13 @@
       "onError": "continueRegularOutput",
       "parameters": {
         "method": "GET",
-        "url": "=https://www.googleapis.com/calendar/v3/calendars/{{ $env.GOOGLE_CALENDAR_ID }}/events",
+        "url": "={{ 'https://www.googleapis.com/calendar/v3/calendars/' + $env.GOOGLE_CALENDAR_ID + '/events' }}",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
             {
               "name": "Authorization",
-              "value": "=Bearer {{ $env.GOOGLE_CALENDAR_ACCESS_TOKEN }}"
+              "value": "={{ 'Bearer ' + $env.GOOGLE_CALENDAR_ACCESS_TOKEN }}"
             }
           ]
         },
@@ -282,7 +282,7 @@
             },
             {
               "name": "text",
-              "value": "=AREA MOSA - Reminder workflow error: {{ $json.execution.error.message || 'Unknown error' }}. Check n8n logs."
+              "value": "={{ 'AREA MOSA - Reminder workflow error: ' + ($json.execution.error.message || 'Unknown error') + '. Check n8n logs.' }}"
             }
           ]
         }
