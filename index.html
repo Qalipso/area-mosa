@@ -1,15 +1,57 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AREA MOSA — Парикмахерская, Монтевидео</title>
-  <meta name="description" content="AREA MOSA — авторская парикмахерская в Кордоне, Монтевидео. Стрижка, окрашивание, атмосфера. Мастер Артём. 4.9 в Google." />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'none';">
+  <title>AREA MOSA — Peluqueria, Montevideo</title>
+  <meta name="description" content="AREA MOSA — peluqueria de autor en Cordon, Montevideo. Corte, coloracion, atmosfera. Maestro Artem. 4.9 en Google." />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'none';">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="business.business" />
+  <meta property="og:title" content="AREA MOSA — Peluqueria, Montevideo" />
+  <meta property="og:description" content="Peluqueria de autor en Cordon, Montevideo. Corte, coloracion, atmosfera." />
+  <meta property="og:url" content="https://area-mosa.vercel.app/" />
+  <meta property="og:locale" content="es_UY" />
+  <meta property="og:locale:alternate" content="ru_RU" />
+  <meta property="og:locale:alternate" content="en_US" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="AREA MOSA — Peluqueria, Montevideo" />
+  <meta name="twitter:description" content="Peluqueria de autor en Cordon, Montevideo." />
+
+  <!-- JSON-LD LocalBusiness -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HairSalon",
+    "name": "AREA MOSA",
+    "description": "Peluqueria de autor en Cordon, Montevideo",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Montevideo",
+      "addressRegion": "Cordon",
+      "addressCountry": "UY"
+    },
+    "telephone": "+59894786877",
+    "openingHoursSpecification": [
+      { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "09:00", "closes": "20:00" },
+      { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "09:00", "closes": "20:00" }
+    ],
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "bestRating": "5"
+    },
+    "sameAs": ["https://www.instagram.com/area_mosa/"]
+  }
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css?v=3" />
+  <link rel="stylesheet" href="style.css?v=4" />
 </head>
 <body>
 
@@ -33,13 +75,13 @@
         <a href="#atmosfera" data-i18n="nav.about">О нас</a>
       </div>
       <div class="lang-switcher" id="langSwitcher">
-        <button class="lang-switcher__btn" aria-label="Language">
+        <button class="lang-switcher__btn" aria-label="Language" aria-expanded="false" aria-haspopup="listbox">
           <span class="lang-switcher__current" id="langCurrent">RU</span>
           <svg width="10" height="6" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="currentColor" fill="none" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
         <div class="lang-switcher__menu" id="langMenu">
           <button data-lang="ru" class="is-active">Русский</button>
-          <button data-lang="es">Espanol</button>
+          <button data-lang="es">Espa&ntilde;ol</button>
           <button data-lang="en">English</button>
         </div>
       </div>
@@ -426,6 +468,6 @@
     <span class="fab__pulse"></span>
   </a>
 
-  <script src="app.js?v=3"></script>
+  <script src="app.js?v=4"></script>
 </body>
 </html>

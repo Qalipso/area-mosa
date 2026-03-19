@@ -301,8 +301,11 @@ function detectLang() {
   if (nav.startsWith('es')) return 'es';
   if (nav.startsWith('en')) return 'en';
 
-  /* 3. default */
-  return 'ru';
+  /* 3. detect Russian */
+  if (nav.startsWith('ru')) return 'ru';
+
+  /* 4. default — Spanish (primary market: Uruguay) */
+  return 'es';
 }
 
 /* ---- INIT LANG SWITCHER ----------------------------------- */
@@ -313,10 +316,15 @@ function detectLang() {
 
   if (!switcher || !btn || !menu) return;
 
+  function updateAria() {
+    btn.setAttribute('aria-expanded', switcher.classList.contains('is-open').toString());
+  }
+
   /* toggle dropdown */
   btn.addEventListener('click', function(e) {
     e.stopPropagation();
     switcher.classList.toggle('is-open');
+    updateAria();
   });
 
   /* language selection */
@@ -326,16 +334,21 @@ function detectLang() {
     var lang = langBtn.getAttribute('data-lang');
     setLang(lang);
     switcher.classList.remove('is-open');
+    updateAria();
   });
 
   /* close on outside click */
   document.addEventListener('click', function() {
     switcher.classList.remove('is-open');
+    updateAria();
   });
 
   /* close on Escape */
   document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') switcher.classList.remove('is-open');
+    if (e.key === 'Escape') {
+      switcher.classList.remove('is-open');
+      updateAria();
+    }
   });
 
   /* set initial language */
