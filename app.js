@@ -579,23 +579,39 @@ function renderMasters(lang) {
    LIGHTBOX — bento grid full-size view
    ============================================================ */
 (function initLightbox() {
-  var lightbox = document.getElementById('lightbox');
-  var content  = document.getElementById('lightboxContent');
-  var closeBtn = document.getElementById('lightboxClose');
+  var lightbox  = document.getElementById('lightbox');
+  var content   = document.getElementById('lightboxContent');
+  var closeBtn  = document.getElementById('lightboxClose');
+  var prevBtn   = document.getElementById('lightboxPrev');
+  var nextBtn   = document.getElementById('lightboxNext');
+  var counter   = document.getElementById('lightboxCounter');
   if (!lightbox || !content || !closeBtn) return;
 
-  function open(item) {
+  var items = [];
+  var current = 0;
+
+  function renderSlide(idx) {
+    var item = items[idx];
     var ph  = item.querySelector('.bento__ph');
     var tag = item.querySelector('.bento__tag');
     if (!ph) return;
     content.innerHTML = '';
-    content.appendChild(ph.cloneNode(true));
+    var clone = ph.cloneNode(true);
+    content.appendChild(clone);
     if (tag) {
       var label = document.createElement('div');
       label.className = 'lightbox__label';
       label.textContent = tag.textContent;
       content.appendChild(label);
     }
+    if (counter) counter.textContent = (idx + 1) + ' / ' + items.length;
+    if (prevBtn) prevBtn.hidden = (idx === 0);
+    if (nextBtn) nextBtn.hidden = (idx === items.length - 1);
+  }
+
+  function open(idx) {
+    current = idx;
+    renderSlide(current);
     lightbox.classList.add('is-open');
     document.body.classList.add('lightbox-open');
   }
@@ -605,16 +621,24 @@ function renderMasters(lang) {
     document.body.classList.remove('lightbox-open');
   }
 
-  document.querySelectorAll('.bento__item').forEach(function(item) {
+  function prev() { if (current > 0) { current--; renderSlide(current); } }
+  function next() { if (current < items.length - 1) { current++; renderSlide(current); } }
+
+  items = Array.from(document.querySelectorAll('.bento__item'));
+  items.forEach(function(item, idx) {
     item.style.cursor = 'zoom-in';
-    item.addEventListener('click', function() { open(item); });
+    item.addEventListener('click', function() { open(idx); });
   });
 
+  if (prevBtn) prevBtn.addEventListener('click', prev);
+  if (nextBtn) nextBtn.addEventListener('click', next);
   closeBtn.addEventListener('click', close);
   lightbox.addEventListener('click', function(e) {
     if (e.target === lightbox) close();
   });
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') close();
+    if (e.key === 'ArrowLeft')  prev();
+    if (e.key === 'ArrowRight') next();
   });
 })();

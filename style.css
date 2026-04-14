@@ -1051,16 +1051,43 @@ body.lightbox-open { overflow: hidden; }
   font-size: clamp(1.2rem, 3vw, 1.8rem);
 }
 .lightbox__content img {
+  position: static;
+  width: auto; height: auto;
   max-width: 100%;
-  max-height: 80vh;
+  max-height: 75vh;
   border-radius: 4px;
   object-fit: contain;
+  inset: auto;
 }
 .lightbox__label {
   font-size: .68rem;
   letter-spacing: .14em;
   text-transform: uppercase;
   color: rgba(245,240,232,.45);
+}
+.lightbox__nav {
+  position: absolute;
+  top: 50%; transform: translateY(-50%);
+  background: none;
+  border: 1px solid rgba(245,240,232,.2);
+  color: var(--cream);
+  font-size: 1.1rem;
+  width: 2.5rem; height: 2.5rem;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .2s, border-color .2s, opacity .2s;
+}
+.lightbox__nav--prev { left: 1.5rem; }
+.lightbox__nav--next { right: 1.5rem; }
+.lightbox__nav:hover  { background: rgba(245,240,232,.1); border-color: rgba(245,240,232,.45); }
+.lightbox__nav[hidden] { display: none; }
+.lightbox__counter {
+  position: absolute;
+  bottom: 1.5rem; left: 50%; transform: translateX(-50%);
+  font-size: .65rem;
+  letter-spacing: .12em;
+  color: rgba(245,240,232,.35);
 }
 
 /* -- TOUCH DEVICE CURSOR FIX -------------------------------- */
