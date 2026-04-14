@@ -1,15 +1,57 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AREA MOSA — Парикмахерская, Монтевидео</title>
-  <meta name="description" content="AREA MOSA — авторская парикмахерская в Кордоне, Монтевидео. Стрижка, окрашивание, атмосфера. Мастер Санэк. 4.9 в Google." />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'none';">
+  <title>AREA MOSA — Peluqueria, Montevideo</title>
+  <meta name="description" content="AREA MOSA — peluqueria de autor en Cordon, Montevideo. Corte, coloracion, atmosfera. Maestro Artem. 4.9 en Google." />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'none';">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="business.business" />
+  <meta property="og:title" content="AREA MOSA — Peluqueria, Montevideo" />
+  <meta property="og:description" content="Peluqueria de autor en Cordon, Montevideo. Corte, coloracion, atmosfera." />
+  <meta property="og:url" content="https://area-mosa.vercel.app/" />
+  <meta property="og:locale" content="es_UY" />
+  <meta property="og:locale:alternate" content="ru_RU" />
+  <meta property="og:locale:alternate" content="en_US" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="AREA MOSA — Peluqueria, Montevideo" />
+  <meta name="twitter:description" content="Peluqueria de autor en Cordon, Montevideo." />
+
+  <!-- JSON-LD LocalBusiness -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HairSalon",
+    "name": "AREA MOSA",
+    "description": "Peluqueria de autor en Cordon, Montevideo",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Montevideo",
+      "addressRegion": "Cordon",
+      "addressCountry": "UY"
+    },
+    "telephone": "+59894786877",
+    "openingHoursSpecification": [
+      { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "09:00", "closes": "20:00" },
+      { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "09:00", "closes": "20:00" }
+    ],
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "bestRating": "5"
+    },
+    "sameAs": ["https://www.instagram.com/area_mosa/"]
+  }
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css?v=3" />
+  <link rel="stylesheet" href="style.css?v=4" />
 </head>
 <body>
 
@@ -33,13 +75,13 @@
         <a href="#atmosfera" data-i18n="nav.about">О нас</a>
       </div>
       <div class="lang-switcher" id="langSwitcher">
-        <button class="lang-switcher__btn" aria-label="Language">
+        <button class="lang-switcher__btn" aria-label="Language" aria-expanded="false" aria-haspopup="listbox">
           <span class="lang-switcher__current" id="langCurrent">RU</span>
           <svg width="10" height="6" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="currentColor" fill="none" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
         <div class="lang-switcher__menu" id="langMenu">
           <button data-lang="ru" class="is-active">Русский</button>
-          <button data-lang="es">Espanol</button>
+          <button data-lang="es">Espa&ntilde;ol</button>
           <button data-lang="en">English</button>
         </div>
       </div>
@@ -90,7 +132,7 @@
       <svg viewBox="0 0 100 100" class="hero__badge-ring">
         <defs><path id="circle" d="M 50,50 m -37,0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0"/></defs>
         <text font-family="DM Sans" font-size="11.5" letter-spacing="3" fill="currentColor">
-          <textPath href="#circle" data-i18n="hero.badge">МАСТЕР САНЭК · МОНТЕВИДЕО ·</textPath>
+          <textPath href="#circle" data-i18n="hero.badge">Авторская парихмахерская Артема· МОНТЕВИДЕО ·</textPath>
         </text>
       </svg>
       <div class="hero__badge-star">★</div>
@@ -102,12 +144,12 @@
     <div class="marquee__track" id="marqueeTrack">
       <span>Hair &nbsp;·&nbsp; Color &nbsp;·&nbsp; Atmosphere &emsp;</span>
       <span data-i18n="marquee.salon">Авторская парикмахерская &emsp;</span>
-      <span data-i18n="marquee.master">Мастер Санэк &emsp;</span>
+      <span data-i18n="marquee.master">Авторская парихмахерская Артема&emsp;</span>
       <span data-i18n="marquee.location">Монтевидео, Кордон &emsp;</span>
       <span>4.9 ★ Google &emsp;</span>
       <span>Hair &nbsp;·&nbsp; Color &nbsp;·&nbsp; Atmosphere &emsp;</span>
       <span data-i18n="marquee.salon">Авторская парикмахерская &emsp;</span>
-      <span data-i18n="marquee.master">Мастер Санэк &emsp;</span>
+      <span data-i18n="marquee.master">Авторская парихмахерская Артема&emsp;</span>
       <span data-i18n="marquee.location">Монтевидео, Кордон &emsp;</span>
       <span>4.9 ★ Google &emsp;</span>
     </div>
@@ -119,21 +161,18 @@
       <div class="about__left">
         <div class="about__photos">
           <div class="about__photo about__photo--main reveal">
-            <div class="photo-ph ph--dark"><span data-i18n="about.phInterior">Интерьер</span></div>
+            <img src="Images/mainview.jpeg" alt="AREA MOSA salon interior" loading="lazy" />
             <div class="about__photo-label" data-i18n="about.photoLabel">Кордон, Монтевидео</div>
           </div>
           <div class="about__photo about__photo--accent reveal reveal-delay-1">
-            <div class="photo-ph ph--terracotta"><span data-i18n="about.phMural">Мурал</span></div>
-          </div>
-          <div class="about__photo about__photo--small reveal reveal-delay-2">
-            <div class="photo-ph ph--sand"><span data-i18n="about.phDetails">Детали</span></div>
+            <img src="Images/masteratwork.jpeg" alt="Master Artem at work" loading="lazy" />
           </div>
         </div>
       </div>
       <div class="about__right reveal">
         <span class="label" data-i18n="about.label">О нас</span>
         <h2 class="about__title" data-i18n-html="about.title">Мастерство<br/><em>в каждом&nbsp;штрихе</em></h2>
-        <p data-i18n="about.desc">Авторская парикмахерская в сердце Монтевидео, где каждая стрижка — это работа художника. Мастер Санэк создаёт пространство, в котором хочется возвращаться снова.</p>
+        <p data-i18n="about.desc">Авторская парикмахерская в сердце Монтевидео, где каждая стрижка — это работа художника. Авторская парихмахерская Артема создаёт пространство, в котором хочется возвращаться снова.</p>
         <div class="about__stats">
           <div class="stat-block">
             <span class="stat-block__num" data-count="4.9" data-suffix="★">0</span>
@@ -260,44 +299,44 @@
 
     <div class="bento">
       <div class="bento__item bento__item--large reveal">
-        <div class="photo-ph ph--terracotta bento__ph"><span data-i18n="works.phColor">Окрашивание</span></div>
-        <div class="bento__info">
-          <span class="bento__tag" data-i18n="works.tagColor">Цвет</span>
-          <span class="bento__zoom">↗</span>
-        </div>
-      </div>
-      <div class="bento__item bento__item--tall reveal reveal-delay-1">
-        <div class="photo-ph ph--dark bento__ph"><span data-i18n="works.phCut">Стрижка</span></div>
+        <img src="Images/masteratwork2.jpeg" alt="Master Artem cutting hair" loading="lazy" class="bento__img" />
         <div class="bento__info">
           <span class="bento__tag" data-i18n="works.tagCut">Стрижка</span>
           <span class="bento__zoom">↗</span>
         </div>
       </div>
-      <div class="bento__item reveal reveal-delay-2">
-        <div class="photo-ph ph--sand bento__ph"><span data-i18n="works.phCare">Уход</span></div>
+      <div class="bento__item bento__item--tall reveal reveal-delay-1">
+        <img src="Images/womancut2.jpeg" alt="Bob haircut result" loading="lazy" class="bento__img" />
         <div class="bento__info">
-          <span class="bento__tag" data-i18n="works.tagCare">Уход</span>
+          <span class="bento__tag" data-i18n="works.tagResult">Результат</span>
+          <span class="bento__zoom">↗</span>
+        </div>
+      </div>
+      <div class="bento__item reveal reveal-delay-2">
+        <img src="Images/womanCut1.jpeg" alt="Curly haircut result" loading="lazy" class="bento__img" />
+        <div class="bento__info">
+          <span class="bento__tag" data-i18n="works.tagColor">Цвет</span>
           <span class="bento__zoom">↗</span>
         </div>
       </div>
       <div class="bento__item reveal reveal-delay-3">
-        <div class="photo-ph ph--warm bento__ph"><span data-i18n="works.phDetails">Детали</span></div>
+        <img src="Images/masteratwork.jpeg" alt="Master Artem coloring hair" loading="lazy" class="bento__img" />
         <div class="bento__info">
-          <span class="bento__tag" data-i18n="works.tagDetails">Детали</span>
+          <span class="bento__tag" data-i18n="works.tagProcess">Процесс</span>
           <span class="bento__zoom">↗</span>
         </div>
       </div>
       <div class="bento__item bento__item--wide reveal reveal-delay-1">
-        <div class="photo-ph ph--mural bento__ph"><span data-i18n="works.phMural">Мурал</span></div>
+        <img src="Images/MuralFront.jpeg" alt="AREA MOSA signature mural" loading="lazy" class="bento__img" />
         <div class="bento__info">
           <span class="bento__tag" data-i18n="works.tagSpace">Пространство</span>
           <span class="bento__zoom">↗</span>
         </div>
       </div>
       <div class="bento__item reveal reveal-delay-2">
-        <div class="photo-ph ph--terracotta bento__ph"><span data-i18n="works.phResult">Результат</span></div>
+        <img src="Images/results.jpeg" alt="Client at AREA MOSA" loading="lazy" class="bento__img" />
         <div class="bento__info">
-          <span class="bento__tag" data-i18n="works.tagBA">До/после</span>
+          <span class="bento__tag" data-i18n="works.tagStyle">Стиль</span>
           <span class="bento__zoom">↗</span>
         </div>
       </div>
@@ -308,7 +347,7 @@
   <section class="atmosfera" id="atmosfera">
     <div class="atmosfera__visual reveal">
       <div class="atmosfera__photo-stack">
-        <div class="photo-ph ph--mural-big"><span data-i18n="atmos.phMural">Мурал — визитная карточка AREA MOSA</span></div>
+        <img src="Images/MuralFront.jpeg" alt="AREA MOSA mural - signature artwork" loading="lazy" />
       </div>
     </div>
     <div class="atmosfera__content">
@@ -319,7 +358,7 @@
         <p data-i18n="atmos.p2">Здесь пьют кофе, слушают музыку и уходят другим человеком. Каждая деталь продумана — от выбора красителей до освещения кресла.</p>
         <blockquote class="atmosfera__quote">
           <span data-i18n="atmos.quote">«Мы не просто стрижём волосы — мы создаём образ»</span>
-          <cite data-i18n="atmos.cite">— Мастер Санэк</cite>
+          <cite data-i18n="atmos.cite">— Мастер Артём</cite>
         </blockquote>
       </div>
       <div class="atmosfera__pillars reveal reveal-delay-1">
@@ -372,7 +411,7 @@
         </p>
       </div>
       <div class="reservar__actions reveal reveal-delay-1">
-        <a href="https://wa.me/59892122029" target="_blank" rel="noopener" class="reservar__btn reservar__btn--wa">
+        <a href="https://wa.me/59894786877" target="_blank" rel="noopener" class="reservar__btn reservar__btn--wa">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
           <div>
             <strong data-i18n="booking.waLabel">WhatsApp</strong>
@@ -409,7 +448,7 @@
         <a href="https://www.instagram.com/area_mosa/" target="_blank" rel="noopener" aria-label="Instagram">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
         </a>
-        <a href="https://wa.me/59892122029" target="_blank" rel="noopener" aria-label="WhatsApp">
+        <a href="https://wa.me/59894786877" target="_blank" rel="noopener" aria-label="WhatsApp">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
         </a>
       </div>
@@ -421,11 +460,11 @@
   </footer>
 
   <!-- FLOATING WHATSAPP -->
-  <a href="https://wa.me/59892122029" class="fab" target="_blank" rel="noopener" aria-label="WhatsApp">
+  <a href="https://wa.me/59894786877" class="fab" target="_blank" rel="noopener" aria-label="WhatsApp">
     <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
     <span class="fab__pulse"></span>
   </a>
 
-  <script src="app.js?v=3"></script>
+  <script src="app.js?v=5"></script>
 </body>
 </html>

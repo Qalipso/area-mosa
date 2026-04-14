@@ -14,10 +14,10 @@ var T = {
     "hero.location": "\u041c\u043e\u043d\u0442\u0435\u0432\u0438\u0434\u0435\u043e, \u041a\u043e\u0440\u0434\u043e\u043d",
     "hero.cta": "\u0417\u0430\u043f\u0438\u0441\u0430\u0442\u044c\u0441\u044f",
     "hero.scroll": "\u041f\u0440\u043e\u043a\u0440\u0443\u0442\u0438\u0442\u0435",
-    "hero.badge": "\u041c\u0410\u0421\u0422\u0415\u0420 \u0421\u0410\u041d\u042d\u041a \u00b7 \u041c\u041e\u041d\u0422\u0415\u0412\u0418\u0414\u0415\u041e \u00b7",
+    "hero.badge": "\u041c\u0410\u0421\u0422\u0415\u0420 \u0410\u0420\u0422\u0401\u041c \u00b7 \u041c\u041e\u041d\u0422\u0415\u0412\u0418\u0414\u0415\u041e \u00b7",
     "about.label": "\u041e \u043d\u0430\u0441",
     "about.title": "\u041c\u0430\u0441\u0442\u0435\u0440\u0441\u0442\u0432\u043e<br/><em>\u0432 \u043a\u0430\u0436\u0434\u043e\u043c\u00a0\u0448\u0442\u0440\u0438\u0445\u0435</em>",
-    "about.desc": "\u0410\u0432\u0442\u043e\u0440\u0441\u043a\u0430\u044f \u043f\u0430\u0440\u0438\u043a\u043c\u0430\u0445\u0435\u0440\u0441\u043a\u0430\u044f \u0432 \u0441\u0435\u0440\u0434\u0446\u0435 \u041c\u043e\u043d\u0442\u0435\u0432\u0438\u0434\u0435\u043e, \u0433\u0434\u0435 \u043a\u0430\u0436\u0434\u0430\u044f \u0441\u0442\u0440\u0438\u0436\u043a\u0430 \u2014 \u044d\u0442\u043e \u0440\u0430\u0431\u043e\u0442\u0430 \u0445\u0443\u0434\u043e\u0436\u043d\u0438\u043a\u0430. \u041c\u0430\u0441\u0442\u0435\u0440 \u0421\u0430\u043d\u044d\u043a \u0441\u043e\u0437\u0434\u0430\u0451\u0442 \u043f\u0440\u043e\u0441\u0442\u0440\u0430\u043d\u0441\u0442\u0432\u043e, \u0432 \u043a\u043e\u0442\u043e\u0440\u043e\u043c \u0445\u043e\u0447\u0435\u0442\u0441\u044f \u0432\u043e\u0437\u0432\u0440\u0430\u0449\u0430\u0442\u044c\u0441\u044f \u0441\u043d\u043e\u0432\u0430.",
+    "about.desc": "\u0410\u0432\u0442\u043e\u0440\u0441\u043a\u0430\u044f \u043f\u0430\u0440\u0438\u043a\u043c\u0430\u0445\u0435\u0440\u0441\u043a\u0430\u044f \u0432 \u0441\u0435\u0440\u0434\u0446\u0435 \u041c\u043e\u043d\u0442\u0435\u0432\u0438\u0434\u0435\u043e, \u0433\u0434\u0435 \u043a\u0430\u0436\u0434\u0430\u044f \u0441\u0442\u0440\u0438\u0436\u043a\u0430 \u2014 \u044d\u0442\u043e \u0440\u0430\u0431\u043e\u0442\u0430 \u0445\u0443\u0434\u043e\u0436\u043d\u0438\u043a\u0430. \u041c\u0430\u0441\u0442\u0435\u0440 \u0410\u0440\u0442\u0451\u043c \u0441\u043e\u0437\u0434\u0430\u0451\u0442 \u043f\u0440\u043e\u0441\u0442\u0440\u0430\u043d\u0441\u0442\u0432\u043e, \u0432 \u043a\u043e\u0442\u043e\u0440\u043e\u043c \u0445\u043e\u0447\u0435\u0442\u0441\u044f \u0432\u043e\u0437\u0432\u0440\u0430\u0449\u0430\u0442\u044c\u0441\u044f \u0441\u043d\u043e\u0432\u0430.",
     "about.photoLabel": "\u041a\u043e\u0440\u0434\u043e\u043d, \u041c\u043e\u043d\u0442\u0435\u0432\u0438\u0434\u0435\u043e",
     "about.stat1": "\u0432 Google",
     "about.stat2": "\u043a\u043b\u0438\u0435\u043d\u0442\u043e\u0432",
@@ -52,13 +52,17 @@ var T = {
     "works.tagDetails": "\u0414\u0435\u0442\u0430\u043b\u0438",
     "works.tagSpace": "\u041f\u0440\u043e\u0441\u0442\u0440\u0430\u043d\u0441\u0442\u0432\u043e",
     "works.tagBA": "\u0414\u043e/\u043f\u043e\u0441\u043b\u0435",
+    "works.tagResult": "\u0420\u0435\u0437\u0443\u043b\u044c\u0442\u0430\u0442",
+    "works.tagProcess": "\u041f\u0440\u043e\u0446\u0435\u0441\u0441",
+    "works.tagArt": "\u0410\u0440\u0442",
+    "works.tagStyle": "\u0421\u0442\u0438\u043b\u044c",
     "atmos.label": "\u0410\u0442\u043c\u043e\u0441\u0444\u0435\u0440\u0430",
     "atmos.phMural": "\u041c\u0443\u0440\u0430\u043b \u2014 \u0432\u0438\u0437\u0438\u0442\u043d\u0430\u044f \u043a\u0430\u0440\u0442\u043e\u0447\u043a\u0430 AREA MOSA",
     "atmos.title": "\u0411\u043e\u043b\u044c\u0448\u0435, \u0447\u0435\u043c<br/><em>\u043f\u0430\u0440\u0438\u043a\u043c\u0430\u0445\u0435\u0440\u0441\u043a\u0430\u044f</em>",
     "atmos.p1": "\u041c\u044b \u0441\u043e\u0437\u0434\u0430\u043b\u0438 \u043f\u0440\u043e\u0441\u0442\u0440\u0430\u043d\u0441\u0442\u0432\u043e, \u0433\u0434\u0435 \u0438\u0441\u043a\u0443\u0441\u0441\u0442\u0432\u043e \u0432\u0441\u0442\u0440\u0435\u0447\u0430\u0435\u0442\u0441\u044f \u0441 \u043c\u0430\u0441\u0442\u0435\u0440\u0441\u0442\u0432\u043e\u043c. \u042f\u0440\u043a\u0438\u0439 \u043c\u0443\u0440\u0430\u043b \u043d\u0430 \u0441\u0442\u0435\u043d\u0435 \u2014 \u043d\u0435 \u043f\u0440\u043e\u0441\u0442\u043e \u0434\u0435\u043a\u043e\u0440, \u0430 \u0445\u0430\u0440\u0430\u043a\u0442\u0435\u0440 \u043c\u0435\u0441\u0442\u0430.",
     "atmos.p2": "\u0417\u0434\u0435\u0441\u044c \u043f\u044c\u044e\u0442 \u043a\u043e\u0444\u0435, \u0441\u043b\u0443\u0448\u0430\u044e\u0442 \u043c\u0443\u0437\u044b\u043a\u0443 \u0438 \u0443\u0445\u043e\u0434\u044f\u0442 \u0434\u0440\u0443\u0433\u0438\u043c \u0447\u0435\u043b\u043e\u0432\u0435\u043a\u043e\u043c. \u041a\u0430\u0436\u0434\u0430\u044f \u0434\u0435\u0442\u0430\u043b\u044c \u043f\u0440\u043e\u0434\u0443\u043c\u0430\u043d\u0430 \u2014 \u043e\u0442 \u0432\u044b\u0431\u043e\u0440\u0430 \u043a\u0440\u0430\u0441\u0438\u0442\u0435\u043b\u0435\u0439 \u0434\u043e \u043e\u0441\u0432\u0435\u0449\u0435\u043d\u0438\u044f \u043a\u0440\u0435\u0441\u043b\u0430.",
     "atmos.quote": "\u00ab\u041c\u044b \u043d\u0435 \u043f\u0440\u043e\u0441\u0442\u043e \u0441\u0442\u0440\u0438\u0436\u0451\u043c \u0432\u043e\u043b\u043e\u0441\u044b \u2014 \u043c\u044b \u0441\u043e\u0437\u0434\u0430\u0451\u043c \u043e\u0431\u0440\u0430\u0437\u00bb",
-    "atmos.cite": "\u2014 \u041c\u0430\u0441\u0442\u0435\u0440 \u0421\u0430\u043d\u044d\u043a",
+    "atmos.cite": "\u2014 \u041c\u0430\u0441\u0442\u0435\u0440 \u0410\u0440\u0442\u0451\u043c",
     "atmos.h.desc": "\u0410\u0432\u0442\u043e\u0440\u0441\u043a\u0438\u0435 \u0441\u0442\u0440\u0438\u0436\u043a\u0438 \u0441 \u0432\u043d\u0438\u043c\u0430\u043d\u0438\u0435\u043c \u043a \u043a\u0430\u0436\u0434\u043e\u0439 \u0434\u0435\u0442\u0430\u043b\u0438",
     "atmos.c.desc": "\u041f\u0440\u043e\u0444\u0435\u0441\u0441\u0438\u043e\u043d\u0430\u043b\u044c\u043d\u043e\u0435 \u043e\u043a\u0440\u0430\u0448\u0438\u0432\u0430\u043d\u0438\u0435 \u043b\u044e\u0431\u043e\u0439 \u0441\u043b\u043e\u0436\u043d\u043e\u0441\u0442\u0438",
     "atmos.a.desc": "\u041f\u0440\u043e\u0441\u0442\u0440\u0430\u043d\u0441\u0442\u0432\u043e, \u0441\u043e\u0437\u0434\u0430\u043d\u043d\u043e\u0435 \u0434\u043b\u044f \u043a\u043e\u043c\u0444\u043e\u0440\u0442\u0430 \u0438 \u0432\u0434\u043e\u0445\u043d\u043e\u0432\u0435\u043d\u0438\u044f",
@@ -77,7 +81,7 @@ var T = {
     "footer.booking": "\u0417\u0430\u043f\u0438\u0441\u044c",
     "footer.location": "\u041c\u043e\u043d\u0442\u0435\u0432\u0438\u0434\u0435\u043e, \u0423\u0440\u0443\u0433\u0432\u0430\u0439",
     "marquee.salon": "\u0410\u0432\u0442\u043e\u0440\u0441\u043a\u0430\u044f \u043f\u0430\u0440\u0438\u043a\u043c\u0430\u0445\u0435\u0440\u0441\u043a\u0430\u044f \u2003",
-    "marquee.master": "\u041c\u0430\u0441\u0442\u0435\u0440 \u0421\u0430\u043d\u044d\u043a \u2003",
+    "marquee.master": "\u041c\u0430\u0441\u0442\u0435\u0440 \u0410\u0440\u0442\u0451\u043c \u2003",
     "marquee.location": "\u041c\u043e\u043d\u0442\u0435\u0432\u0438\u0434\u0435\u043e, \u041a\u043e\u0440\u0434\u043e\u043d \u2003",
     "divider.cut": "\u0421\u0442\u0440\u0438\u0436\u043a\u0430 \u2003\u2726\u2003",
     "divider.color": "\u041e\u043a\u0440\u0430\u0448\u0438\u0432\u0430\u043d\u0438\u0435 \u2003\u2726\u2003",
@@ -94,10 +98,10 @@ var T = {
     "hero.location": "Montevideo, Cord\u00f3n",
     "hero.cta": "Reservar",
     "hero.scroll": "Desplazar",
-    "hero.badge": "MAESTRO SANEK \u00b7 MONTEVIDEO \u00b7",
+    "hero.badge": "MAESTRO ARTEM \u00b7 MONTEVIDEO \u00b7",
     "about.label": "Nosotros",
     "about.title": "Maestr\u00eda<br/><em>en cada\u00a0trazo</em>",
-    "about.desc": "Peluquer\u00eda de autor en el coraz\u00f3n de Montevideo, donde cada corte es obra de un artista. Maestro Sanek crea un espacio al que quieres volver.",
+    "about.desc": "Peluquer\u00eda de autor en el coraz\u00f3n de Montevideo, donde cada corte es obra de un artista. Maestro Artem crea un espacio al que quieres volver.",
     "about.photoLabel": "Cord\u00f3n, Montevideo",
     "about.stat1": "en Google",
     "about.stat2": "clientes",
@@ -132,13 +136,17 @@ var T = {
     "works.tagDetails": "Detalles",
     "works.tagSpace": "Espacio",
     "works.tagBA": "Antes/despu\u00e9s",
+    "works.tagResult": "Resultado",
+    "works.tagProcess": "Proceso",
+    "works.tagArt": "Arte",
+    "works.tagStyle": "Estilo",
     "atmos.label": "Ambiente",
     "atmos.phMural": "Mural \u2014 sello distintivo de AREA MOSA",
     "atmos.title": "M\u00e1s que<br/><em>una peluquer\u00eda</em>",
     "atmos.p1": "Creamos un espacio donde el arte se encuentra con la maestr\u00eda. El vibrante mural en la pared no es solo decoraci\u00f3n, es el car\u00e1cter del lugar.",
     "atmos.p2": "Aqu\u00ed se toma caf\u00e9, se escucha m\u00fasica y sales siendo otra persona. Cada detalle est\u00e1 pensado \u2014 desde la elecci\u00f3n de tintes hasta la iluminaci\u00f3n del sill\u00f3n.",
     "atmos.quote": "\u00abNo solo cortamos cabello \u2014 creamos imagen\u00bb",
-    "atmos.cite": "\u2014 Maestro Sanek",
+    "atmos.cite": "\u2014 Maestro Artem",
     "atmos.h.desc": "Cortes de autor con atenci\u00f3n a cada detalle",
     "atmos.c.desc": "Coloraci\u00f3n profesional de cualquier complejidad",
     "atmos.a.desc": "Un espacio creado para el confort y la inspiraci\u00f3n",
@@ -157,7 +165,7 @@ var T = {
     "footer.booking": "Reserva",
     "footer.location": "Montevideo, Uruguay",
     "marquee.salon": "Peluquer\u00eda de autor \u2003",
-    "marquee.master": "Maestro Sanek \u2003",
+    "marquee.master": "Maestro Artem \u2003",
     "marquee.location": "Montevideo, Cord\u00f3n \u2003",
     "divider.cut": "Corte \u2003\u2726\u2003",
     "divider.color": "Coloraci\u00f3n \u2003\u2726\u2003",
@@ -174,10 +182,10 @@ var T = {
     "hero.location": "Montevideo, Cord\u00f3n",
     "hero.cta": "Book Now",
     "hero.scroll": "Scroll",
-    "hero.badge": "MASTER SANEK \u00b7 MONTEVIDEO \u00b7",
+    "hero.badge": "MASTER ARTEM \u00b7 MONTEVIDEO \u00b7",
     "about.label": "About Us",
     "about.title": "Mastery<br/><em>in every\u00a0stroke</em>",
-    "about.desc": "A boutique hair salon in the heart of Montevideo, where every haircut is a work of art. Master Sanek creates a space you will want to come back to.",
+    "about.desc": "A boutique hair salon in the heart of Montevideo, where every haircut is a work of art. Master Artem creates a space you will want to come back to.",
     "about.photoLabel": "Cord\u00f3n, Montevideo",
     "about.stat1": "on Google",
     "about.stat2": "clients",
@@ -212,13 +220,17 @@ var T = {
     "works.tagDetails": "Details",
     "works.tagSpace": "Space",
     "works.tagBA": "Before/After",
+    "works.tagResult": "Result",
+    "works.tagProcess": "Process",
+    "works.tagArt": "Art",
+    "works.tagStyle": "Style",
     "atmos.label": "Atmosphere",
     "atmos.phMural": "Mural \u2014 the signature of AREA MOSA",
     "atmos.title": "More than<br/><em>a hair salon</em>",
     "atmos.p1": "We created a space where art meets mastery. The vibrant mural on the wall is not just decor \u2014 it is the character of the place.",
     "atmos.p2": "Here you drink coffee, listen to music, and leave a different person. Every detail is thought through \u2014 from the choice of dyes to the lighting of the chair.",
     "atmos.quote": "\"We don't just cut hair \u2014 we create an image\"",
-    "atmos.cite": "\u2014 Master Sanek",
+    "atmos.cite": "\u2014 Master Artem",
     "atmos.h.desc": "Signature haircuts with attention to every detail",
     "atmos.c.desc": "Professional coloring of any complexity",
     "atmos.a.desc": "A space created for comfort and inspiration",
@@ -237,7 +249,7 @@ var T = {
     "footer.booking": "Booking",
     "footer.location": "Montevideo, Uruguay",
     "marquee.salon": "Boutique Hair Salon \u2003",
-    "marquee.master": "Master Sanek \u2003",
+    "marquee.master": "Master Artem \u2003",
     "marquee.location": "Montevideo, Cord\u00f3n \u2003",
     "divider.cut": "Haircut \u2003\u2726\u2003",
     "divider.color": "Coloring \u2003\u2726\u2003",
@@ -301,8 +313,11 @@ function detectLang() {
   if (nav.startsWith('es')) return 'es';
   if (nav.startsWith('en')) return 'en';
 
-  /* 3. default */
-  return 'ru';
+  /* 3. detect Russian */
+  if (nav.startsWith('ru')) return 'ru';
+
+  /* 4. default — Spanish (primary market: Uruguay) */
+  return 'es';
 }
 
 /* ---- INIT LANG SWITCHER ----------------------------------- */
@@ -313,10 +328,15 @@ function detectLang() {
 
   if (!switcher || !btn || !menu) return;
 
+  function updateAria() {
+    btn.setAttribute('aria-expanded', switcher.classList.contains('is-open').toString());
+  }
+
   /* toggle dropdown */
   btn.addEventListener('click', function(e) {
     e.stopPropagation();
     switcher.classList.toggle('is-open');
+    updateAria();
   });
 
   /* language selection */
@@ -326,16 +346,21 @@ function detectLang() {
     var lang = langBtn.getAttribute('data-lang');
     setLang(lang);
     switcher.classList.remove('is-open');
+    updateAria();
   });
 
   /* close on outside click */
   document.addEventListener('click', function() {
     switcher.classList.remove('is-open');
+    updateAria();
   });
 
   /* close on Escape */
   document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') switcher.classList.remove('is-open');
+    if (e.key === 'Escape') {
+      switcher.classList.remove('is-open');
+      updateAria();
+    }
   });
 
   /* set initial language */
