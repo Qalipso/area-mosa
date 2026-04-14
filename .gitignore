@@ -1,1 +1,3 @@
 .vercel
+docker/service-account.json
+docker/.env
