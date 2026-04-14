@@ -1,0 +1,418 @@
+{
+  "name": "AREA MOSA - Appointment Reminders",
+  "nodes": [
+    {
+      "id": "node-sticky-setup",
+      "name": "README - Setup Instructions",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [180, 40],
+      "parameters": {
+        "content": "## AREA MOSA - Appointment Reminders\n\n### Required Environment Variables\nSet in n8n instance Settings > Variables:\n\n| Variable | Example |\n|---|---|\n| EVOLUTION_API_URL | https://your-evolution.domain.com |\n| EVOLUTION_API_KEY | your-api-key-here |\n| GOOGLE_CALENDAR_ID | primary OR your@email.com |\n| GOOGLE_CALENDAR_ACCESS_TOKEN | ya29.xxx... |\n\n### Trigger Schedule\n- Runs every day at **9:00 AM** Uruguay time (UTC-3)\n- Fetches ALL events for today from Google Calendar\n- Sends a WhatsApp reminder per appointment\n\n### Languages Supported\n- **ru** - Russian (Cyrillic)\n- **es** - Spanish (default)\n- **en** - English\n\n### Google Calendar Access Token\nFor production use, implement OAuth2 token refresh.\nFor testing, use a long-lived service account token.",
+        "height": 300,
+        "width": 500,
+        "color": 5
+      }
+    },
+    {
+      "id": "node-sticky-flow",
+      "name": "README - Workflow Flow",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [700, 40],
+      "parameters": {
+        "content": "## Reminder Workflow Logic\n\n**Flow:** Schedule → Fetch Calendar → Check Events Exist → Split Events → Generate Message → Send WhatsApp → Wait 2s → Loop\n\n**Event format expected:**\n- Summary: `[Service] - [Client Name]`\n- Description contains:\n  - `Phone: [number]`\n  - `Language: [ru/es/en]`\n\n**Rate limiting:** 2-second wait between messages to avoid Evolution API throttling.\n\n**Error handling:** `onError: continueRegularOutput` on WhatsApp send node — one failed send does NOT stop the loop.",
+        "height": 260,
+        "width": 420,
+        "color": 7
+      }
+    },
+    {
+      "id": "node-schedule-trigger",
+      "name": "Daily 9AM Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [200, 380],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 9 * * *"
+            }
+          ]
+        },
+        "timezone": "America/Montevideo"
+      }
+    },
+    {
+      "id": "node-get-appointments",
+      "name": "Get Today's Appointments",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [440, 380],
+      "onError": "continueRegularOutput",
+      "parameters": {
+        "method": "GET",
+        "url": "={{ 'https://www.googleapis.com/calendar/v3/calendars/' + $env.GOOGLE_CALENDAR_ID + '/events' }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ 'Bearer ' + $env.GOOGLE_CALENDAR_ACCESS_TOKEN }}"
+            }
+          ]
+        },
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "timeMin",
+              "value": "={{ (() => { const now = new Date(); const y = now.toLocaleString('en-CA', { timeZone: 'America/Montevideo', year: 'numeric' }); const mo = now.toLocaleString('en-CA', { timeZone: 'America/Montevideo', month: '2-digit' }); const d = now.toLocaleString('en-CA', { timeZone: 'America/Montevideo', day: '2-digit' }); return `${y}-${mo}-${d}T00:00:00-03:00`; })() }}"
+            },
+            {
+              "name": "timeMax",
+              "value": "={{ (() => { const now = new Date(); const y = now.toLocaleString('en-CA', { timeZone: 'America/Montevideo', year: 'numeric' }); const mo = now.toLocaleString('en-CA', { timeZone: 'America/Montevideo', month: '2-digit' }); const d = now.toLocaleString('en-CA', { timeZone: 'America/Montevideo', day: '2-digit' }); return `${y}-${mo}-${d}T23:59:59-03:00`; })() }}"
+            },
+            {
+              "name": "singleEvents",
+              "value": "true"
+            },
+            {
+              "name": "orderBy",
+              "value": "startTime"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 15000,
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "node-check-appointments-exist",
+      "name": "Any Appointments Today?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [680, 380],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "cond-has-items",
+              "leftValue": "={{ $json.items ? $json.items.length : 0 }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "node-split-appointments",
+      "name": "Split Into Individual Appointments",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [920, 280],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Split Google Calendar events array into individual n8n items\n// and extract all fields needed for the reminder\n\nconst rawItems = items[0].json.items || [];\n\n// Filter out cancelled events\nconst events = rawItems.filter(e => e.status !== 'cancelled');\n\nif (events.length === 0) {\n  return [];\n}\n\nreturn events.map(event => {\n  const summary = event.summary || '';\n\n  // Parse \"[Service] - [Client Name]\" format\n  const dashIdx = summary.indexOf(' - ');\n  const service = dashIdx !== -1 ? summary.substring(0, dashIdx).trim() : summary.trim();\n  const clientName = dashIdx !== -1 ? summary.substring(dashIdx + 3).trim() : 'Client';\n\n  // Parse description fields: Phone: xxx, Language: xx\n  const description = event.description || '';\n\n  const phoneMatch = description.match(/Phone:\\s*([\\d\\+\\-\\s]+)/i);\n  const phone = phoneMatch ? phoneMatch[1].replace(/[\\s\\-]/g, '').trim() : '';\n\n  const langMatch = description.match(/Language:\\s*([a-z]{2})/i);\n  const language = langMatch ? langMatch[1].toLowerCase() : 'es';\n\n  // Format start time as HH:MM\n  let startTime = '';\n  if (event.start && event.start.dateTime) {\n    // dateTime is ISO string with offset, e.g. 2025-03-20T14:30:00-03:00\n    const dt = new Date(event.start.dateTime);\n    // Format in Montevideo timezone\n    const timeStr = dt.toLocaleString('es-UY', {\n      timeZone: 'America/Montevideo',\n      hour: '2-digit',\n      minute: '2-digit',\n      hour12: false\n    });\n    startTime = timeStr;\n  } else if (event.start && event.start.date) {\n    startTime = 'all day';\n  }\n\n  return {\n    json: {\n      eventId: event.id || '',\n      clientName,\n      service,\n      startTime,\n      phone,\n      language,\n      rawSummary: summary\n    }\n  };\n});"
+      }
+    },
+    {
+      "id": "node-generate-message",
+      "name": "Generate Reminder Message",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1160, 280],
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// Generate trilingual reminder message based on client language\n\nconst { clientName, service, startTime, phone, language } = $input.item.json;\n\nif (!phone) {\n  // No phone — skip this item by returning empty output signal\n  return {\n    json: {\n      ...$input.item.json,\n      reminderMessage: null,\n      skip: true,\n      skipReason: 'No phone number found in calendar event description'\n    }\n  };\n}\n\nlet reminderMessage = '';\n\nswitch (language) {\n  case 'ru':\n    reminderMessage = `Добрый день, ${clientName}! Напоминаем, что сегодня у вас запись в AREA MOSA на ${service} в ${startTime}. Адрес: Кордон, Монтевидео. До встречи!`;\n    break;\n\n  case 'en':\n    reminderMessage = `Hi ${clientName}! This is a reminder that you have an appointment at AREA MOSA for ${service} today at ${startTime}. Address: Cordon, Montevideo. See you there!`;\n    break;\n\n  case 'es':\n  default:\n    reminderMessage = `Hola ${clientName}! Te recordamos que hoy tienes cita en AREA MOSA para ${service} a las ${startTime}. Direccion: Cordon, Montevideo. Te esperamos!`;\n    break;\n}\n\nreturn {\n  json: {\n    ...$input.item.json,\n    reminderMessage,\n    skip: false\n  }\n};"
+      }
+    },
+    {
+      "id": "node-filter-skip",
+      "name": "Skip If No Phone",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [1400, 280],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "cond-has-phone",
+              "leftValue": "={{ $json.skip }}",
+              "rightValue": false,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "node-send-reminder",
+      "name": "Send WhatsApp Reminder",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [1640, 180],
+      "onError": "continueRegularOutput",
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.EVOLUTION_API_URL }}/message/sendText/area-mosa",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $env.EVOLUTION_API_KEY }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $json.phone }}"
+            },
+            {
+              "name": "text",
+              "value": "={{ $json.reminderMessage }}"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 15000,
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "node-wait",
+      "name": "Wait 2 Seconds",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [1880, 180],
+      "parameters": {
+        "amount": 2,
+        "unit": "seconds",
+        "resume": "timeInterval"
+      },
+      "webhookId": "area-mosa-reminder-wait"
+    },
+    {
+      "id": "node-no-appointments",
+      "name": "No Appointments - Stop",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [920, 480],
+      "parameters": {}
+    },
+    {
+      "id": "node-error-trigger",
+      "name": "Workflow Error Trigger",
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [200, 680],
+      "parameters": {}
+    },
+    {
+      "id": "node-error-notify",
+      "name": "Notify Error via WhatsApp",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [440, 680],
+      "onError": "continueRegularOutput",
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.EVOLUTION_API_URL }}/message/sendText/area-mosa",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $env.EVOLUTION_API_KEY }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "59894786877"
+            },
+            {
+              "name": "text",
+              "value": "={{ 'AREA MOSA - Reminder workflow error: ' + ($json.execution.error.message || 'Unknown error') + '. Check n8n logs.' }}"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Daily 9AM Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get Today's Appointments",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Today's Appointments": {
+      "main": [
+        [
+          {
+            "node": "Any Appointments Today?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Any Appointments Today?": {
+      "main": [
+        [
+          {
+            "node": "Split Into Individual Appointments",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Appointments - Stop",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Into Individual Appointments": {
+      "main": [
+        [
+          {
+            "node": "Generate Reminder Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Reminder Message": {
+      "main": [
+        [
+          {
+            "node": "Skip If No Phone",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Skip If No Phone": {
+      "main": [
+        [
+          {
+            "node": "Send WhatsApp Reminder",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Send WhatsApp Reminder": {
+      "main": [
+        [
+          {
+            "node": "Wait 2 Seconds",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Workflow Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Notify Error via WhatsApp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "timezone": "America/Montevideo"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "id": "tag-area-mosa",
+      "name": "area-mosa"
+    },
+    {
+      "id": "tag-whatsapp",
+      "name": "whatsapp"
+    },
+    {
+      "id": "tag-reminders",
+      "name": "reminders"
+    }
+  ],
+  "meta": {
+    "templateCredsSetupCompleted": false,
+    "instanceId": ""
+  },
+  "id": "area-mosa-appointment-reminders",
+  "versionId": "1.0.0"
+}
