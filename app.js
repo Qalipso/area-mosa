@@ -14,14 +14,14 @@ var T = {
     "hero.location": "\u041c\u043e\u043d\u0442\u0435\u0432\u0438\u0434\u0435\u043e, \u041a\u043e\u0440\u0434\u043e\u043d",
     "hero.cta": "\u0417\u0430\u043f\u0438\u0441\u0430\u0442\u044c\u0441\u044f",
     "hero.scroll": "\u041f\u0440\u043e\u043a\u0440\u0443\u0442\u0438\u0442\u0435",
-    "hero.badge": "\u041c\u0410\u0421\u0422\u0415\u0420 \u0410\u0420\u0422\u0401\u041c \u00b7 \u041c\u041e\u041d\u0422\u0415\u0412\u0418\u0414\u0415\u041e \u00b7",
+    "hero.badge": "\u0411\u042b\u0422\u042c, \u0410 \u041d\u0415 \u041a\u0410\u0417\u0410\u0422\u042c\u0421\u042f \u00b7 AREA M\u00d8SA \u00b7",
     "about.label": "\u041e \u043d\u0430\u0441",
     "about.title": "\u041c\u0430\u0441\u0442\u0435\u0440\u0441\u0442\u0432\u043e<br/><em>\u0432 \u043a\u0430\u0436\u0434\u043e\u043c\u00a0\u0448\u0442\u0440\u0438\u0445\u0435</em>",
     "about.desc": "\u0410\u0432\u0442\u043e\u0440\u0441\u043a\u0430\u044f \u043f\u0430\u0440\u0438\u043a\u043c\u0430\u0445\u0435\u0440\u0441\u043a\u0430\u044f \u0432 \u0441\u0435\u0440\u0434\u0446\u0435 \u041c\u043e\u043d\u0442\u0435\u0432\u0438\u0434\u0435\u043e, \u0433\u0434\u0435 \u043a\u0430\u0436\u0434\u0430\u044f \u0441\u0442\u0440\u0438\u0436\u043a\u0430 \u2014 \u044d\u0442\u043e \u0440\u0430\u0431\u043e\u0442\u0430 \u0445\u0443\u0434\u043e\u0436\u043d\u0438\u043a\u0430. \u041c\u0430\u0441\u0442\u0435\u0440 \u0410\u0440\u0442\u0451\u043c \u0441\u043e\u0437\u0434\u0430\u0451\u0442 \u043f\u0440\u043e\u0441\u0442\u0440\u0430\u043d\u0441\u0442\u0432\u043e, \u0432 \u043a\u043e\u0442\u043e\u0440\u043e\u043c \u0445\u043e\u0447\u0435\u0442\u0441\u044f \u0432\u043e\u0437\u0432\u0440\u0430\u0449\u0430\u0442\u044c\u0441\u044f \u0441\u043d\u043e\u0432\u0430.",
     "about.photoLabel": "\u041a\u043e\u0440\u0434\u043e\u043d, \u041c\u043e\u043d\u0442\u0435\u0432\u0438\u0434\u0435\u043e",
     "about.stat1": "\u0432 Google",
     "about.stat2": "\u043a\u043b\u0438\u0435\u043d\u0442\u043e\u0432",
-    "about.stat3": "\u0431\u0440\u0435\u043d\u0434\u0430 \u0443\u0445\u043e\u0434\u0430",
+    "about.stat3": "\u0431\u0440\u0435\u043d\u0434\u0430 \u043f\u0430\u0440\u0442\u043d\u0451\u0440\u0430",
     "about.link": "\u041f\u043e\u0441\u043c\u043e\u0442\u0440\u0435\u0442\u044c \u0443\u0441\u043b\u0443\u0433\u0438",
     "about.phInterior": "\u0418\u043d\u0442\u0435\u0440\u044c\u0435\u0440",
     "about.phMural": "\u041c\u0443\u0440\u0430\u043b",
@@ -76,13 +76,23 @@ var T = {
     "booking.igLabel": "Instagram",
     "footer.booking": "\u0417\u0430\u043f\u0438\u0441\u044c",
     "footer.location": "\u041c\u043e\u043d\u0442\u0435\u0432\u0438\u0434\u0435\u043e, \u0423\u0440\u0443\u0433\u0432\u0430\u0439",
-    "marquee.salon": "\u0410\u0432\u0442\u043e\u0440\u0441\u043a\u0430\u044f \u043f\u0430\u0440\u0438\u043a\u043c\u0430\u0445\u0435\u0440\u0441\u043a\u0430\u044f \u2003",
-    "marquee.master": "\u041c\u0430\u0441\u0442\u0435\u0440 \u0410\u0440\u0442\u0451\u043c \u2003",
+    "marquee.salon": "\u0410\u0432\u0442\u043e\u0440\u0441\u043a\u0430\u044f \u043f\u0430\u0440\u0438\u043a\u043c\u0430\u0445\u0435\u0440\u0441\u043a\u0430\u044f \u0410\u0440\u0442\u0451\u043c\u0430 \u2003",
+    "marquee.master": "\u0411\u044b\u0442\u044c, \u0430 \u043d\u0435 \u043a\u0430\u0437\u0430\u0442\u044c\u0441\u044f \u2003",
     "marquee.location": "\u041c\u043e\u043d\u0442\u0435\u0432\u0438\u0434\u0435\u043e, \u041a\u043e\u0440\u0434\u043e\u043d \u2003",
     "divider.cut": "\u0421\u0442\u0440\u0438\u0436\u043a\u0430 \u2003\u2726\u2003",
     "divider.color": "\u041e\u043a\u0440\u0430\u0448\u0438\u0432\u0430\u043d\u0438\u0435 \u2003\u2726\u2003",
     "divider.care": "\u0423\u0445\u043e\u0434 \u2003\u2726\u2003",
-    "divider.combo": "\u041a\u043e\u043c\u0431\u043e \u2003\u2726\u2003"
+    "divider.combo": "\u041a\u043e\u043c\u0431\u043e \u2003\u2726\u2003",
+    "masters.label": "\u041c\u0430\u0441\u0442\u0435\u0440\u0430",
+    "masters.title": "\u041a\u043e\u043c\u0430\u043d\u0434\u0430",
+    "masters.name1": "\u0410\u0440\u0442\u0451\u043c",
+    "masters.role1": "\u041c\u0430\u0441\u0442\u0435\u0440-\u0441\u0442\u0438\u043b\u0438\u0441\u0442",
+    "masters.desc1": "\u0410\u0432\u0442\u043e\u0440\u0441\u043a\u0438\u0435 \u0441\u0442\u0440\u0438\u0436\u043a\u0438 \u0438 \u043e\u043a\u0440\u0430\u0448\u0438\u0432\u0430\u043d\u0438\u0435 \u043b\u044e\u0431\u043e\u0439 \u0441\u043b\u043e\u0436\u043d\u043e\u0441\u0442\u0438. \u0421\u043e\u0437\u0434\u0430\u0451\u0442 \u0443\u043d\u0438\u043a\u0430\u043b\u044c\u043d\u044b\u0439 \u043e\u0431\u0440\u0430\u0437 \u0434\u043b\u044f \u043a\u0430\u0436\u0434\u043e\u0433\u043e \u043a\u043b\u0438\u0435\u043d\u0442\u0430.",
+    "masters.tag1a": "\u0421\u0442\u0440\u0438\u0436\u043a\u0438",
+    "masters.tag1b": "\u041e\u043a\u0440\u0430\u0448\u0438\u0432\u0430\u043d\u0438\u0435",
+    "masters.tag1c": "\u0423\u0445\u043e\u0434",
+    "masters.ph1": "\u0424\u043e\u0442\u043e \u043c\u0430\u0441\u0442\u0435\u0440\u0430",
+    "masters.works": "\u041f\u0440\u0438\u043c\u0435\u0440\u044b \u0440\u0430\u0431\u043e\u0442"
   },
   es: {
     "meta.title": "AREA MOSA \u2014 Peluquer\u00eda, Montevideo",
@@ -94,14 +104,14 @@ var T = {
     "hero.location": "Montevideo, Cord\u00f3n",
     "hero.cta": "Reservar",
     "hero.scroll": "Desplazar",
-    "hero.badge": "MAESTRO ARTEM \u00b7 MONTEVIDEO \u00b7",
+    "hero.badge": "SER, NO PARECER \u00b7 AREA M\u00d8SA \u00b7",
     "about.label": "Nosotros",
     "about.title": "Maestr\u00eda<br/><em>en cada\u00a0trazo</em>",
     "about.desc": "Peluquer\u00eda de autor en el coraz\u00f3n de Montevideo, donde cada corte es obra de un artista. Maestro Artem crea un espacio al que quieres volver.",
     "about.photoLabel": "Cord\u00f3n, Montevideo",
     "about.stat1": "en Google",
     "about.stat2": "clientes",
-    "about.stat3": "marcas de cuidado",
+    "about.stat3": "marcas asociadas",
     "about.link": "Ver servicios",
     "about.phInterior": "Interior",
     "about.phMural": "Mural",
@@ -156,13 +166,23 @@ var T = {
     "booking.igLabel": "Instagram",
     "footer.booking": "Reserva",
     "footer.location": "Montevideo, Uruguay",
-    "marquee.salon": "Peluquer\u00eda de autor \u2003",
-    "marquee.master": "Maestro Artem \u2003",
+    "marquee.salon": "Peluquer\u00eda de autor de Artem \u2003",
+    "marquee.master": "Ser, no parecer \u2003",
     "marquee.location": "Montevideo, Cord\u00f3n \u2003",
     "divider.cut": "Corte \u2003\u2726\u2003",
     "divider.color": "Coloraci\u00f3n \u2003\u2726\u2003",
     "divider.care": "Cuidado \u2003\u2726\u2003",
-    "divider.combo": "Combo \u2003\u2726\u2003"
+    "divider.combo": "Combo \u2003\u2726\u2003",
+    "masters.label": "Maestros",
+    "masters.title": "Nuestro equipo",
+    "masters.name1": "Artem",
+    "masters.role1": "Maestro estilista",
+    "masters.desc1": "Cortes de autor y coloraci\u00f3n de cualquier complejidad. Crea una imagen \u00fanica para cada cliente.",
+    "masters.tag1a": "Cortes",
+    "masters.tag1b": "Coloraci\u00f3n",
+    "masters.tag1c": "Cuidado",
+    "masters.ph1": "Foto del maestro",
+    "masters.works": "Ejemplos de trabajo"
   },
   en: {
     "meta.title": "AREA MOSA \u2014 Hair Salon, Montevideo",
@@ -174,14 +194,14 @@ var T = {
     "hero.location": "Montevideo, Cord\u00f3n",
     "hero.cta": "Book Now",
     "hero.scroll": "Scroll",
-    "hero.badge": "MASTER ARTEM \u00b7 MONTEVIDEO \u00b7",
+    "hero.badge": "TO BE, NOT TO SEEM \u00b7 AREA M\u00d8SA \u00b7",
     "about.label": "About Us",
     "about.title": "Mastery<br/><em>in every\u00a0stroke</em>",
     "about.desc": "A boutique hair salon in the heart of Montevideo, where every haircut is a work of art. Master Artem creates a space you will want to come back to.",
     "about.photoLabel": "Cord\u00f3n, Montevideo",
     "about.stat1": "on Google",
     "about.stat2": "clients",
-    "about.stat3": "care brands",
+    "about.stat3": "brand partners",
     "about.link": "View services",
     "about.phInterior": "Interior",
     "about.phMural": "Mural",
@@ -236,13 +256,23 @@ var T = {
     "booking.igLabel": "Instagram",
     "footer.booking": "Booking",
     "footer.location": "Montevideo, Uruguay",
-    "marquee.salon": "Boutique Hair Salon \u2003",
-    "marquee.master": "Master Artem \u2003",
+    "marquee.salon": "Boutique Hair Salon by Artem \u2003",
+    "marquee.master": "To be, not to seem \u2003",
     "marquee.location": "Montevideo, Cord\u00f3n \u2003",
     "divider.cut": "Haircut \u2003\u2726\u2003",
     "divider.color": "Coloring \u2003\u2726\u2003",
     "divider.care": "Care \u2003\u2726\u2003",
-    "divider.combo": "Combo \u2003\u2726\u2003"
+    "divider.combo": "Combo \u2003\u2726\u2003",
+    "masters.label": "Masters",
+    "masters.title": "Our team",
+    "masters.name1": "Artem",
+    "masters.role1": "Master Stylist",
+    "masters.desc1": "Signature haircuts and coloring of any complexity. Creates a unique look for every client.",
+    "masters.tag1a": "Haircuts",
+    "masters.tag1b": "Coloring",
+    "masters.tag1c": "Care",
+    "masters.ph1": "Master photo",
+    "masters.works": "Work examples"
   }
 };
 
@@ -286,6 +316,9 @@ function setLang(lang) {
 
   /* persist */
   try { localStorage.setItem('area-mosa-lang', lang); } catch(e) {}
+
+  /* render dynamic sections */
+  renderMasters(lang);
 }
 
 /* ---- DETECT INITIAL LANGUAGE ------------------------------ */
@@ -301,11 +334,8 @@ function detectLang() {
   if (nav.startsWith('es')) return 'es';
   if (nav.startsWith('en')) return 'en';
 
-  /* 3. detect Russian */
-  if (nav.startsWith('ru')) return 'ru';
-
-  /* 4. default — Spanish (primary market: Uruguay) */
-  return 'es';
+  /* 3. default */
+  return 'ru';
 }
 
 /* ---- INIT LANG SWITCHER ----------------------------------- */
@@ -316,15 +346,10 @@ function detectLang() {
 
   if (!switcher || !btn || !menu) return;
 
-  function updateAria() {
-    btn.setAttribute('aria-expanded', switcher.classList.contains('is-open').toString());
-  }
-
   /* toggle dropdown */
   btn.addEventListener('click', function(e) {
     e.stopPropagation();
     switcher.classList.toggle('is-open');
-    updateAria();
   });
 
   /* language selection */
@@ -334,21 +359,16 @@ function detectLang() {
     var lang = langBtn.getAttribute('data-lang');
     setLang(lang);
     switcher.classList.remove('is-open');
-    updateAria();
   });
 
   /* close on outside click */
   document.addEventListener('click', function() {
     switcher.classList.remove('is-open');
-    updateAria();
   });
 
   /* close on Escape */
   document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') {
-      switcher.classList.remove('is-open');
-      updateAria();
-    }
+    if (e.key === 'Escape') switcher.classList.remove('is-open');
   });
 
   /* set initial language */
