@@ -14,14 +14,14 @@ var T = {
     "hero.location": "\u041c\u043e\u043d\u0442\u0435\u0432\u0438\u0434\u0435\u043e, \u041a\u043e\u0440\u0434\u043e\u043d",
     "hero.cta": "\u0417\u0430\u043f\u0438\u0441\u0430\u0442\u044c\u0441\u044f",
     "hero.scroll": "\u041f\u0440\u043e\u043a\u0440\u0443\u0442\u0438\u0442\u0435",
-    "hero.badge": "\u041c\u0410\u0421\u0422\u0415\u0420 \u0421\u0410\u041d\u042d\u041a \u00b7 \u041c\u041e\u041d\u0422\u0415\u0412\u0418\u0414\u0415\u041e \u00b7",
+    "hero.badge": "\u0411\u042b\u0422\u042c, \u0410 \u041d\u0415 \u041a\u0410\u0417\u0410\u0422\u042c\u0421\u042f \u00b7 AREA M\u00d8SA \u00b7",
     "about.label": "\u041e \u043d\u0430\u0441",
     "about.title": "\u041c\u0430\u0441\u0442\u0435\u0440\u0441\u0442\u0432\u043e<br/><em>\u0432 \u043a\u0430\u0436\u0434\u043e\u043c\u00a0\u0448\u0442\u0440\u0438\u0445\u0435</em>",
-    "about.desc": "\u0410\u0432\u0442\u043e\u0440\u0441\u043a\u0430\u044f \u043f\u0430\u0440\u0438\u043a\u043c\u0430\u0445\u0435\u0440\u0441\u043a\u0430\u044f \u0432 \u0441\u0435\u0440\u0434\u0446\u0435 \u041c\u043e\u043d\u0442\u0435\u0432\u0438\u0434\u0435\u043e, \u0433\u0434\u0435 \u043a\u0430\u0436\u0434\u0430\u044f \u0441\u0442\u0440\u0438\u0436\u043a\u0430 \u2014 \u044d\u0442\u043e \u0440\u0430\u0431\u043e\u0442\u0430 \u0445\u0443\u0434\u043e\u0436\u043d\u0438\u043a\u0430. \u041c\u0430\u0441\u0442\u0435\u0440 \u0421\u0430\u043d\u044d\u043a \u0441\u043e\u0437\u0434\u0430\u0451\u0442 \u043f\u0440\u043e\u0441\u0442\u0440\u0430\u043d\u0441\u0442\u0432\u043e, \u0432 \u043a\u043e\u0442\u043e\u0440\u043e\u043c \u0445\u043e\u0447\u0435\u0442\u0441\u044f \u0432\u043e\u0437\u0432\u0440\u0430\u0449\u0430\u0442\u044c\u0441\u044f \u0441\u043d\u043e\u0432\u0430.",
+    "about.desc": "\u0410\u0432\u0442\u043e\u0440\u0441\u043a\u0430\u044f \u043f\u0430\u0440\u0438\u043a\u043c\u0430\u0445\u0435\u0440\u0441\u043a\u0430\u044f \u0432 \u0441\u0435\u0440\u0434\u0446\u0435 \u041c\u043e\u043d\u0442\u0435\u0432\u0438\u0434\u0435\u043e, \u0433\u0434\u0435 \u043a\u0430\u0436\u0434\u0430\u044f \u0441\u0442\u0440\u0438\u0436\u043a\u0430 \u2014 \u044d\u0442\u043e \u0440\u0430\u0431\u043e\u0442\u0430 \u0445\u0443\u0434\u043e\u0436\u043d\u0438\u043a\u0430. \u041c\u0430\u0441\u0442\u0435\u0440 \u0410\u0440\u0442\u0451\u043c \u0441\u043e\u0437\u0434\u0430\u0451\u0442 \u043f\u0440\u043e\u0441\u0442\u0440\u0430\u043d\u0441\u0442\u0432\u043e, \u0432 \u043a\u043e\u0442\u043e\u0440\u043e\u043c \u0445\u043e\u0447\u0435\u0442\u0441\u044f \u0432\u043e\u0437\u0432\u0440\u0430\u0449\u0430\u0442\u044c\u0441\u044f \u0441\u043d\u043e\u0432\u0430.",
     "about.photoLabel": "\u041a\u043e\u0440\u0434\u043e\u043d, \u041c\u043e\u043d\u0442\u0435\u0432\u0438\u0434\u0435\u043e",
     "about.stat1": "\u0432 Google",
     "about.stat2": "\u043a\u043b\u0438\u0435\u043d\u0442\u043e\u0432",
-    "about.stat3": "\u0431\u0440\u0435\u043d\u0434\u0430 \u0443\u0445\u043e\u0434\u0430",
+    "about.stat3": "\u0431\u0440\u0435\u043d\u0434\u0430 \u043f\u0430\u0440\u0442\u043d\u0451\u0440\u0430",
     "about.link": "\u041f\u043e\u0441\u043c\u043e\u0442\u0440\u0435\u0442\u044c \u0443\u0441\u043b\u0443\u0433\u0438",
     "about.phInterior": "\u0418\u043d\u0442\u0435\u0440\u044c\u0435\u0440",
     "about.phMural": "\u041c\u0443\u0440\u0430\u043b",
@@ -58,7 +58,7 @@ var T = {
     "atmos.p1": "\u041c\u044b \u0441\u043e\u0437\u0434\u0430\u043b\u0438 \u043f\u0440\u043e\u0441\u0442\u0440\u0430\u043d\u0441\u0442\u0432\u043e, \u0433\u0434\u0435 \u0438\u0441\u043a\u0443\u0441\u0441\u0442\u0432\u043e \u0432\u0441\u0442\u0440\u0435\u0447\u0430\u0435\u0442\u0441\u044f \u0441 \u043c\u0430\u0441\u0442\u0435\u0440\u0441\u0442\u0432\u043e\u043c. \u042f\u0440\u043a\u0438\u0439 \u043c\u0443\u0440\u0430\u043b \u043d\u0430 \u0441\u0442\u0435\u043d\u0435 \u2014 \u043d\u0435 \u043f\u0440\u043e\u0441\u0442\u043e \u0434\u0435\u043a\u043e\u0440, \u0430 \u0445\u0430\u0440\u0430\u043a\u0442\u0435\u0440 \u043c\u0435\u0441\u0442\u0430.",
     "atmos.p2": "\u0417\u0434\u0435\u0441\u044c \u043f\u044c\u044e\u0442 \u043a\u043e\u0444\u0435, \u0441\u043b\u0443\u0448\u0430\u044e\u0442 \u043c\u0443\u0437\u044b\u043a\u0443 \u0438 \u0443\u0445\u043e\u0434\u044f\u0442 \u0434\u0440\u0443\u0433\u0438\u043c \u0447\u0435\u043b\u043e\u0432\u0435\u043a\u043e\u043c. \u041a\u0430\u0436\u0434\u0430\u044f \u0434\u0435\u0442\u0430\u043b\u044c \u043f\u0440\u043e\u0434\u0443\u043c\u0430\u043d\u0430 \u2014 \u043e\u0442 \u0432\u044b\u0431\u043e\u0440\u0430 \u043a\u0440\u0430\u0441\u0438\u0442\u0435\u043b\u0435\u0439 \u0434\u043e \u043e\u0441\u0432\u0435\u0449\u0435\u043d\u0438\u044f \u043a\u0440\u0435\u0441\u043b\u0430.",
     "atmos.quote": "\u00ab\u041c\u044b \u043d\u0435 \u043f\u0440\u043e\u0441\u0442\u043e \u0441\u0442\u0440\u0438\u0436\u0451\u043c \u0432\u043e\u043b\u043e\u0441\u044b \u2014 \u043c\u044b \u0441\u043e\u0437\u0434\u0430\u0451\u043c \u043e\u0431\u0440\u0430\u0437\u00bb",
-    "atmos.cite": "\u2014 \u041c\u0430\u0441\u0442\u0435\u0440 \u0421\u0430\u043d\u044d\u043a",
+    "atmos.cite": "\u2014 \u041c\u0430\u0441\u0442\u0435\u0440 \u0410\u0440\u0442\u0451\u043c",
     "atmos.h.desc": "\u0410\u0432\u0442\u043e\u0440\u0441\u043a\u0438\u0435 \u0441\u0442\u0440\u0438\u0436\u043a\u0438 \u0441 \u0432\u043d\u0438\u043c\u0430\u043d\u0438\u0435\u043c \u043a \u043a\u0430\u0436\u0434\u043e\u0439 \u0434\u0435\u0442\u0430\u043b\u0438",
     "atmos.c.desc": "\u041f\u0440\u043e\u0444\u0435\u0441\u0441\u0438\u043e\u043d\u0430\u043b\u044c\u043d\u043e\u0435 \u043e\u043a\u0440\u0430\u0448\u0438\u0432\u0430\u043d\u0438\u0435 \u043b\u044e\u0431\u043e\u0439 \u0441\u043b\u043e\u0436\u043d\u043e\u0441\u0442\u0438",
     "atmos.a.desc": "\u041f\u0440\u043e\u0441\u0442\u0440\u0430\u043d\u0441\u0442\u0432\u043e, \u0441\u043e\u0437\u0434\u0430\u043d\u043d\u043e\u0435 \u0434\u043b\u044f \u043a\u043e\u043c\u0444\u043e\u0440\u0442\u0430 \u0438 \u0432\u0434\u043e\u0445\u043d\u043e\u0432\u0435\u043d\u0438\u044f",
@@ -76,13 +76,23 @@ var T = {
     "booking.igLabel": "Instagram",
     "footer.booking": "\u0417\u0430\u043f\u0438\u0441\u044c",
     "footer.location": "\u041c\u043e\u043d\u0442\u0435\u0432\u0438\u0434\u0435\u043e, \u0423\u0440\u0443\u0433\u0432\u0430\u0439",
-    "marquee.salon": "\u0410\u0432\u0442\u043e\u0440\u0441\u043a\u0430\u044f \u043f\u0430\u0440\u0438\u043a\u043c\u0430\u0445\u0435\u0440\u0441\u043a\u0430\u044f \u2003",
-    "marquee.master": "\u041c\u0430\u0441\u0442\u0435\u0440 \u0421\u0430\u043d\u044d\u043a \u2003",
+    "marquee.salon": "\u0410\u0432\u0442\u043e\u0440\u0441\u043a\u0430\u044f \u043f\u0430\u0440\u0438\u043a\u043c\u0430\u0445\u0435\u0440\u0441\u043a\u0430\u044f \u0410\u0440\u0442\u0451\u043c\u0430 \u2003",
+    "marquee.master": "\u0411\u044b\u0442\u044c, \u0430 \u043d\u0435 \u043a\u0430\u0437\u0430\u0442\u044c\u0441\u044f \u2003",
     "marquee.location": "\u041c\u043e\u043d\u0442\u0435\u0432\u0438\u0434\u0435\u043e, \u041a\u043e\u0440\u0434\u043e\u043d \u2003",
     "divider.cut": "\u0421\u0442\u0440\u0438\u0436\u043a\u0430 \u2003\u2726\u2003",
     "divider.color": "\u041e\u043a\u0440\u0430\u0448\u0438\u0432\u0430\u043d\u0438\u0435 \u2003\u2726\u2003",
     "divider.care": "\u0423\u0445\u043e\u0434 \u2003\u2726\u2003",
-    "divider.combo": "\u041a\u043e\u043c\u0431\u043e \u2003\u2726\u2003"
+    "divider.combo": "\u041a\u043e\u043c\u0431\u043e \u2003\u2726\u2003",
+    "masters.label": "\u041c\u0430\u0441\u0442\u0435\u0440\u0430",
+    "masters.title": "\u041a\u043e\u043c\u0430\u043d\u0434\u0430",
+    "masters.name1": "\u0410\u0440\u0442\u0451\u043c",
+    "masters.role1": "\u041c\u0430\u0441\u0442\u0435\u0440-\u0441\u0442\u0438\u043b\u0438\u0441\u0442",
+    "masters.desc1": "\u0410\u0432\u0442\u043e\u0440\u0441\u043a\u0438\u0435 \u0441\u0442\u0440\u0438\u0436\u043a\u0438 \u0438 \u043e\u043a\u0440\u0430\u0448\u0438\u0432\u0430\u043d\u0438\u0435 \u043b\u044e\u0431\u043e\u0439 \u0441\u043b\u043e\u0436\u043d\u043e\u0441\u0442\u0438. \u0421\u043e\u0437\u0434\u0430\u0451\u0442 \u0443\u043d\u0438\u043a\u0430\u043b\u044c\u043d\u044b\u0439 \u043e\u0431\u0440\u0430\u0437 \u0434\u043b\u044f \u043a\u0430\u0436\u0434\u043e\u0433\u043e \u043a\u043b\u0438\u0435\u043d\u0442\u0430.",
+    "masters.tag1a": "\u0421\u0442\u0440\u0438\u0436\u043a\u0438",
+    "masters.tag1b": "\u041e\u043a\u0440\u0430\u0448\u0438\u0432\u0430\u043d\u0438\u0435",
+    "masters.tag1c": "\u0423\u0445\u043e\u0434",
+    "masters.ph1": "\u0424\u043e\u0442\u043e \u043c\u0430\u0441\u0442\u0435\u0440\u0430",
+    "masters.works": "\u041f\u0440\u0438\u043c\u0435\u0440\u044b \u0440\u0430\u0431\u043e\u0442"
   },
   es: {
     "meta.title": "AREA MOSA \u2014 Peluquer\u00eda, Montevideo",
@@ -94,14 +104,14 @@ var T = {
     "hero.location": "Montevideo, Cord\u00f3n",
     "hero.cta": "Reservar",
     "hero.scroll": "Desplazar",
-    "hero.badge": "MAESTRO SANEK \u00b7 MONTEVIDEO \u00b7",
+    "hero.badge": "SER, NO PARECER \u00b7 AREA M\u00d8SA \u00b7",
     "about.label": "Nosotros",
     "about.title": "Maestr\u00eda<br/><em>en cada\u00a0trazo</em>",
-    "about.desc": "Peluquer\u00eda de autor en el coraz\u00f3n de Montevideo, donde cada corte es obra de un artista. Maestro Sanek crea un espacio al que quieres volver.",
+    "about.desc": "Peluquer\u00eda de autor en el coraz\u00f3n de Montevideo, donde cada corte es obra de un artista. Maestro Artem crea un espacio al que quieres volver.",
     "about.photoLabel": "Cord\u00f3n, Montevideo",
     "about.stat1": "en Google",
     "about.stat2": "clientes",
-    "about.stat3": "marcas de cuidado",
+    "about.stat3": "marcas asociadas",
     "about.link": "Ver servicios",
     "about.phInterior": "Interior",
     "about.phMural": "Mural",
@@ -138,7 +148,7 @@ var T = {
     "atmos.p1": "Creamos un espacio donde el arte se encuentra con la maestr\u00eda. El vibrante mural en la pared no es solo decoraci\u00f3n, es el car\u00e1cter del lugar.",
     "atmos.p2": "Aqu\u00ed se toma caf\u00e9, se escucha m\u00fasica y sales siendo otra persona. Cada detalle est\u00e1 pensado \u2014 desde la elecci\u00f3n de tintes hasta la iluminaci\u00f3n del sill\u00f3n.",
     "atmos.quote": "\u00abNo solo cortamos cabello \u2014 creamos imagen\u00bb",
-    "atmos.cite": "\u2014 Maestro Sanek",
+    "atmos.cite": "\u2014 Maestro Artem",
     "atmos.h.desc": "Cortes de autor con atenci\u00f3n a cada detalle",
     "atmos.c.desc": "Coloraci\u00f3n profesional de cualquier complejidad",
     "atmos.a.desc": "Un espacio creado para el confort y la inspiraci\u00f3n",
@@ -156,13 +166,23 @@ var T = {
     "booking.igLabel": "Instagram",
     "footer.booking": "Reserva",
     "footer.location": "Montevideo, Uruguay",
-    "marquee.salon": "Peluquer\u00eda de autor \u2003",
-    "marquee.master": "Maestro Sanek \u2003",
+    "marquee.salon": "Peluquer\u00eda de autor de Artem \u2003",
+    "marquee.master": "Ser, no parecer \u2003",
     "marquee.location": "Montevideo, Cord\u00f3n \u2003",
     "divider.cut": "Corte \u2003\u2726\u2003",
     "divider.color": "Coloraci\u00f3n \u2003\u2726\u2003",
     "divider.care": "Cuidado \u2003\u2726\u2003",
-    "divider.combo": "Combo \u2003\u2726\u2003"
+    "divider.combo": "Combo \u2003\u2726\u2003",
+    "masters.label": "Maestros",
+    "masters.title": "Nuestro equipo",
+    "masters.name1": "Artem",
+    "masters.role1": "Maestro estilista",
+    "masters.desc1": "Cortes de autor y coloraci\u00f3n de cualquier complejidad. Crea una imagen \u00fanica para cada cliente.",
+    "masters.tag1a": "Cortes",
+    "masters.tag1b": "Coloraci\u00f3n",
+    "masters.tag1c": "Cuidado",
+    "masters.ph1": "Foto del maestro",
+    "masters.works": "Ejemplos de trabajo"
   },
   en: {
     "meta.title": "AREA MOSA \u2014 Hair Salon, Montevideo",
@@ -174,14 +194,14 @@ var T = {
     "hero.location": "Montevideo, Cord\u00f3n",
     "hero.cta": "Book Now",
     "hero.scroll": "Scroll",
-    "hero.badge": "MASTER SANEK \u00b7 MONTEVIDEO \u00b7",
+    "hero.badge": "TO BE, NOT TO SEEM \u00b7 AREA M\u00d8SA \u00b7",
     "about.label": "About Us",
     "about.title": "Mastery<br/><em>in every\u00a0stroke</em>",
-    "about.desc": "A boutique hair salon in the heart of Montevideo, where every haircut is a work of art. Master Sanek creates a space you will want to come back to.",
+    "about.desc": "A boutique hair salon in the heart of Montevideo, where every haircut is a work of art. Master Artem creates a space you will want to come back to.",
     "about.photoLabel": "Cord\u00f3n, Montevideo",
     "about.stat1": "on Google",
     "about.stat2": "clients",
-    "about.stat3": "care brands",
+    "about.stat3": "brand partners",
     "about.link": "View services",
     "about.phInterior": "Interior",
     "about.phMural": "Mural",
@@ -218,7 +238,7 @@ var T = {
     "atmos.p1": "We created a space where art meets mastery. The vibrant mural on the wall is not just decor \u2014 it is the character of the place.",
     "atmos.p2": "Here you drink coffee, listen to music, and leave a different person. Every detail is thought through \u2014 from the choice of dyes to the lighting of the chair.",
     "atmos.quote": "\"We don't just cut hair \u2014 we create an image\"",
-    "atmos.cite": "\u2014 Master Sanek",
+    "atmos.cite": "\u2014 Master Artem",
     "atmos.h.desc": "Signature haircuts with attention to every detail",
     "atmos.c.desc": "Professional coloring of any complexity",
     "atmos.a.desc": "A space created for comfort and inspiration",
@@ -236,13 +256,23 @@ var T = {
     "booking.igLabel": "Instagram",
     "footer.booking": "Booking",
     "footer.location": "Montevideo, Uruguay",
-    "marquee.salon": "Boutique Hair Salon \u2003",
-    "marquee.master": "Master Sanek \u2003",
+    "marquee.salon": "Boutique Hair Salon by Artem \u2003",
+    "marquee.master": "To be, not to seem \u2003",
     "marquee.location": "Montevideo, Cord\u00f3n \u2003",
     "divider.cut": "Haircut \u2003\u2726\u2003",
     "divider.color": "Coloring \u2003\u2726\u2003",
     "divider.care": "Care \u2003\u2726\u2003",
-    "divider.combo": "Combo \u2003\u2726\u2003"
+    "divider.combo": "Combo \u2003\u2726\u2003",
+    "masters.label": "Masters",
+    "masters.title": "Our team",
+    "masters.name1": "Artem",
+    "masters.role1": "Master Stylist",
+    "masters.desc1": "Signature haircuts and coloring of any complexity. Creates a unique look for every client.",
+    "masters.tag1a": "Haircuts",
+    "masters.tag1b": "Coloring",
+    "masters.tag1c": "Care",
+    "masters.ph1": "Master photo",
+    "masters.works": "Work examples"
   }
 };
 
@@ -286,6 +316,9 @@ function setLang(lang) {
 
   /* persist */
   try { localStorage.setItem('area-mosa-lang', lang); } catch(e) {}
+
+  /* render dynamic sections */
+  renderMasters(lang);
 }
 
 /* ---- DETECT INITIAL LANGUAGE ------------------------------ */
@@ -460,3 +493,128 @@ document.querySelectorAll('a[href^="#"]').forEach(function(a) {
     window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - offset, behavior: 'smooth' });
   });
 });
+
+/* ============================================================
+   MASTERS — DYNAMIC RENDER (data from data/masters.js)
+   ============================================================ */
+function renderMasters(lang) {
+  var grid = document.getElementById('mastersGrid');
+  if (!grid || typeof MASTERS_DATA === 'undefined') return;
+
+  var dict       = T[lang] || T.ru;
+  var worksLabel = dict['masters.works'] || 'Work examples';
+  var bookLabel  = dict['nav.cta']       || 'Book';
+
+  var html = '';
+  MASTERS_DATA.forEach(function(m) {
+    var name = m.name[lang] || m.name.ru;
+    var role = m.role[lang] || m.role.ru;
+    var desc = m.desc[lang] || m.desc.ru;
+    var tags = m.tags[lang] || m.tags.ru || [];
+
+    /* front photo */
+    var photoHtml = m.photo
+      ? '<img src="' + m.photo + '" alt="' + name + '" loading="lazy" />'
+      : '<div class="photo-ph ' + (m.photoClass || 'ph--dark') + '"><span>' + name + '</span></div>';
+
+    /* back work thumbnails */
+    var worksHtml = '';
+    for (var i = 0; i < 3; i++) {
+      var src = m.works && m.works[i];
+      var cls = (m.workClasses && m.workClasses[i]) || 'ph--dark';
+      worksHtml += src
+        ? '<div class="master-card__work-slot"><img src="' + src + '" alt="" loading="lazy" /></div>'
+        : '<div class="master-card__work-slot photo-ph ' + cls + '"></div>';
+    }
+
+    /* tags */
+    var tagsHtml = tags.map(function(t) { return '<span>' + t + '</span>'; }).join('');
+
+    html +=
+      '<article class="master-card reveal" data-id="' + m.id + '">' +
+        '<div class="master-card__inner">' +
+          '<div class="master-card__front">' +
+            '<div class="master-card__photo">' + photoHtml + '</div>' +
+            '<div class="master-card__front-info">' +
+              '<h3>' + name + '</h3>' +
+              '<span class="master-card__role">' + role + '</span>' +
+            '</div>' +
+          '</div>' +
+          '<div class="master-card__back">' +
+            '<h3>' + name + '</h3>' +
+            '<span class="master-card__role">' + role + '</span>' +
+            '<p>' + desc + '</p>' +
+            '<div class="master-card__tags">' + tagsHtml + '</div>' +
+            '<div class="master-card__works-title">' + worksLabel + '</div>' +
+            '<div class="master-card__works-grid">' + worksHtml + '</div>' +
+            '<a href="#reservar" class="master-card__book">' + bookLabel + '</a>' +
+          '</div>' +
+        '</div>' +
+      '</article>';
+  });
+
+  grid.innerHTML = html;
+
+  /* re-observe reveal elements injected into the DOM.
+     revealObs may not exist yet on initial page load (defined later in script),
+     so fall back to adding .visible directly. */
+  grid.querySelectorAll('.reveal').forEach(function(el) {
+    if (typeof revealObs !== 'undefined' && revealObs) {
+      revealObs.observe(el);
+    } else {
+      el.classList.add('visible');
+    }
+  });
+
+  /* flip on click (works on all devices; hover handled via CSS) */
+  grid.querySelectorAll('.master-card').forEach(function(card) {
+    card.addEventListener('click', function(e) {
+      if (e.target.closest('a')) return;
+      card.classList.toggle('is-flipped');
+    });
+  });
+}
+
+/* ============================================================
+   LIGHTBOX — bento grid full-size view
+   ============================================================ */
+(function initLightbox() {
+  var lightbox = document.getElementById('lightbox');
+  var content  = document.getElementById('lightboxContent');
+  var closeBtn = document.getElementById('lightboxClose');
+  if (!lightbox || !content || !closeBtn) return;
+
+  function open(item) {
+    var ph  = item.querySelector('.bento__ph');
+    var tag = item.querySelector('.bento__tag');
+    if (!ph) return;
+    content.innerHTML = '';
+    content.appendChild(ph.cloneNode(true));
+    if (tag) {
+      var label = document.createElement('div');
+      label.className = 'lightbox__label';
+      label.textContent = tag.textContent;
+      content.appendChild(label);
+    }
+    lightbox.classList.add('is-open');
+    document.body.classList.add('lightbox-open');
+  }
+
+  function close() {
+    lightbox.classList.remove('is-open');
+    document.body.classList.remove('lightbox-open');
+  }
+
+  document.querySelectorAll('.bento__item').forEach(function(item) {
+    item.style.cursor = 'zoom-in';
+    item.addEventListener('click', function() { open(item); });
+  });
+
+  closeBtn.addEventListener('click', close);
+  lightbox.addEventListener('click', function(e) {
+    if (e.target === lightbox) close();
+  });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') close();
+  });
+})();

@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css?v=3" />
+  <link rel="stylesheet" href="style.css?v=4" />
 </head>
 <body>
 
@@ -25,7 +25,7 @@
     <div class="nav__inner">
       <a href="#hero" class="nav__logo">
         <span class="nav__logo-area">AREA</span>
-        <span class="nav__logo-mosa">MOSA</span>
+        <span class="nav__logo-mosa">M&Oslash;SA</span>
       </a>
       <div class="nav__links">
         <a href="#servicios" data-i18n="nav.services">Услуги</a>
@@ -102,12 +102,12 @@
     <div class="marquee__track" id="marqueeTrack">
       <span>Hair &nbsp;·&nbsp; Color &nbsp;·&nbsp; Atmosphere &emsp;</span>
       <span data-i18n="marquee.salon">Авторская парикмахерская &emsp;</span>
-      <span data-i18n="marquee.master">Мастер Санэк &emsp;</span>
+      <span data-i18n="marquee.master">Быть, а не казаться &emsp;</span>
       <span data-i18n="marquee.location">Монтевидео, Кордон &emsp;</span>
       <span>4.9 ★ Google &emsp;</span>
       <span>Hair &nbsp;·&nbsp; Color &nbsp;·&nbsp; Atmosphere &emsp;</span>
-      <span data-i18n="marquee.salon">Авторская парикмахерская &emsp;</span>
-      <span data-i18n="marquee.master">Мастер Санэк &emsp;</span>
+      <span data-i18n="marquee.salon">Авторская парикмахерская Артёма &emsp;</span>
+      <span data-i18n="marquee.master">Быть, а не казаться &emsp;</span>
       <span data-i18n="marquee.location">Монтевидео, Кордон &emsp;</span>
       <span>4.9 ★ Google &emsp;</span>
     </div>
@@ -146,11 +146,11 @@
           </div>
           <div class="stat-block__divider"></div>
           <div class="stat-block">
-            <span class="stat-block__num" data-count="3" data-suffix="">0</span>
-            <span class="stat-block__label" data-i18n="about.stat3">бренда ухода</span>
+            <span class="stat-block__num" data-count="4" data-suffix="">0</span>
+            <span class="stat-block__label" data-i18n="about.stat3">бренда партнёра</span>
           </div>
         </div>
-        <p class="about__brands">L'Oreal Professionnel &nbsp;·&nbsp; Davines &nbsp;·&nbsp; FRAMESI</p>
+        <p class="about__brands">Provana &nbsp;·&nbsp; Davines &nbsp;·&nbsp; L&rsquo;Or&eacute;al &nbsp;·&nbsp; Cadiveu</p>
         <a href="#servicios" class="link-arrow" data-i18n="about.link">Посмотреть услуги</a>
       </div>
     </div>
@@ -304,6 +304,17 @@
     </div>
   </section>
 
+  <!-- МАСТЕРА -->
+  <section class="masters" id="masters">
+    <div class="container">
+      <div class="masters__header reveal">
+        <span class="label" data-i18n="masters.label">Мастера</span>
+        <h2 data-i18n="masters.title">Команда</h2>
+      </div>
+      <div class="masters__grid" id="mastersGrid"></div>
+    </div>
+  </section>
+
   <!-- АТМОСФЕРА -->
   <section class="atmosfera" id="atmosfera">
     <div class="atmosfera__visual reveal">
@@ -396,7 +407,7 @@
   <footer class="footer">
     <div class="footer__top">
       <div class="footer__brand">
-        <div class="footer__logo">AREA MOSA</div>
+        <div class="footer__logo">AREA M&Oslash;SA</div>
         <div class="footer__tagline">Hair · Color · Atmosphere</div>
       </div>
       <nav class="footer__nav">
@@ -415,7 +426,7 @@
       </div>
     </div>
     <div class="footer__bottom">
-      <span>&copy; 2026 AREA MOSA</span>
+      <span>&copy; 2025 AREA M&Oslash;SA</span>
       <span data-i18n="footer.location">Монтевидео, Уругвай</span>
     </div>
   </footer>
@@ -426,6 +437,13 @@
     <span class="fab__pulse"></span>
   </a>
 
-  <script src="app.js?v=3"></script>
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
+    <button class="lightbox__close" id="lightboxClose" aria-label="Close">&#x2715;</button>
+    <div class="lightbox__content" id="lightboxContent"></div>
+  </div>
+
+  <script src="data/masters.js?v=1"></script>
+  <script src="app.js?v=4"></script>
 </body>
 </html>
