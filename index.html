@@ -1,53 +1,11 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="ru">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AREA MOSA — Peluqueria, Montevideo</title>
-  <meta name="description" content="AREA MOSA — peluqueria de autor en Cordon, Montevideo. Corte, coloracion, atmosfera. Maestro Artem. 4.9 en Google." />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'none';">
-
-  <!-- Open Graph -->
-  <meta property="og:type" content="business.business" />
-  <meta property="og:title" content="AREA MOSA — Peluqueria, Montevideo" />
-  <meta property="og:description" content="Peluqueria de autor en Cordon, Montevideo. Corte, coloracion, atmosfera." />
-  <meta property="og:url" content="https://area-mosa.vercel.app/" />
-  <meta property="og:locale" content="es_UY" />
-  <meta property="og:locale:alternate" content="ru_RU" />
-  <meta property="og:locale:alternate" content="en_US" />
-
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="AREA MOSA — Peluqueria, Montevideo" />
-  <meta name="twitter:description" content="Peluqueria de autor en Cordon, Montevideo." />
-
-  <!-- JSON-LD LocalBusiness -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "HairSalon",
-    "name": "AREA MOSA",
-    "description": "Peluqueria de autor en Cordon, Montevideo",
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": "Montevideo",
-      "addressRegion": "Cordon",
-      "addressCountry": "UY"
-    },
-    "telephone": "+59894786877",
-    "openingHoursSpecification": [
-      { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "09:00", "closes": "20:00" },
-      { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "09:00", "closes": "20:00" }
-    ],
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.9",
-      "bestRating": "5"
-    },
-    "sameAs": ["https://www.instagram.com/area_mosa/"]
-  }
-  </script>
-
+  <title>AREA MOSA — Парикмахерская, Монтевидео</title>
+  <meta name="description" content="AREA MOSA — авторская парикмахерская в Кордоне, Монтевидео. Стрижка, окрашивание, атмосфера. Мастер Санэк. 4.9 в Google." />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'none';">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
@@ -67,7 +25,7 @@
     <div class="nav__inner">
       <a href="#hero" class="nav__logo">
         <span class="nav__logo-area">AREA</span>
-        <span class="nav__logo-mosa">MOSA</span>
+        <span class="nav__logo-mosa">M&Oslash;SA</span>
       </a>
       <div class="nav__links">
         <a href="#servicios" data-i18n="nav.services">Услуги</a>
@@ -75,13 +33,13 @@
         <a href="#atmosfera" data-i18n="nav.about">О нас</a>
       </div>
       <div class="lang-switcher" id="langSwitcher">
-        <button class="lang-switcher__btn" aria-label="Language" aria-expanded="false" aria-haspopup="listbox">
+        <button class="lang-switcher__btn" aria-label="Language">
           <span class="lang-switcher__current" id="langCurrent">RU</span>
           <svg width="10" height="6" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="currentColor" fill="none" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
         <div class="lang-switcher__menu" id="langMenu">
           <button data-lang="ru" class="is-active">Русский</button>
-          <button data-lang="es">Espa&ntilde;ol</button>
+          <button data-lang="es">Espanol</button>
           <button data-lang="en">English</button>
         </div>
       </div>
@@ -132,7 +90,7 @@
       <svg viewBox="0 0 100 100" class="hero__badge-ring">
         <defs><path id="circle" d="M 50,50 m -37,0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0"/></defs>
         <text font-family="DM Sans" font-size="11.5" letter-spacing="3" fill="currentColor">
-          <textPath href="#circle" data-i18n="hero.badge">Авторская парихмахерская Артема· МОНТЕВИДЕО ·</textPath>
+          <textPath href="#circle" data-i18n="hero.badge">МАСТЕР САНЭК · МОНТЕВИДЕО ·</textPath>
         </text>
       </svg>
       <div class="hero__badge-star">★</div>
@@ -144,12 +102,12 @@
     <div class="marquee__track" id="marqueeTrack">
       <span>Hair &nbsp;·&nbsp; Color &nbsp;·&nbsp; Atmosphere &emsp;</span>
       <span data-i18n="marquee.salon">Авторская парикмахерская &emsp;</span>
-      <span data-i18n="marquee.master">Авторская парихмахерская Артема&emsp;</span>
+      <span data-i18n="marquee.master">Быть, а не казаться &emsp;</span>
       <span data-i18n="marquee.location">Монтевидео, Кордон &emsp;</span>
       <span>4.9 ★ Google &emsp;</span>
       <span>Hair &nbsp;·&nbsp; Color &nbsp;·&nbsp; Atmosphere &emsp;</span>
-      <span data-i18n="marquee.salon">Авторская парикмахерская &emsp;</span>
-      <span data-i18n="marquee.master">Авторская парихмахерская Артема&emsp;</span>
+      <span data-i18n="marquee.salon">Авторская парикмахерская Артёма &emsp;</span>
+      <span data-i18n="marquee.master">Быть, а не казаться &emsp;</span>
       <span data-i18n="marquee.location">Монтевидео, Кордон &emsp;</span>
       <span>4.9 ★ Google &emsp;</span>
     </div>
@@ -161,18 +119,21 @@
       <div class="about__left">
         <div class="about__photos">
           <div class="about__photo about__photo--main reveal">
-            <img src="Images/mainview.jpeg" alt="AREA MOSA salon interior" loading="lazy" />
+            <div class="photo-ph ph--dark"><span data-i18n="about.phInterior">Интерьер</span></div>
             <div class="about__photo-label" data-i18n="about.photoLabel">Кордон, Монтевидео</div>
           </div>
           <div class="about__photo about__photo--accent reveal reveal-delay-1">
-            <img src="Images/masteratwork.jpeg" alt="Master Artem at work" loading="lazy" />
+            <div class="photo-ph ph--terracotta"><span data-i18n="about.phMural">Мурал</span></div>
+          </div>
+          <div class="about__photo about__photo--small reveal reveal-delay-2">
+            <div class="photo-ph ph--sand"><span data-i18n="about.phDetails">Детали</span></div>
           </div>
         </div>
       </div>
       <div class="about__right reveal">
         <span class="label" data-i18n="about.label">О нас</span>
         <h2 class="about__title" data-i18n-html="about.title">Мастерство<br/><em>в каждом&nbsp;штрихе</em></h2>
-        <p data-i18n="about.desc">Авторская парикмахерская в сердце Монтевидео, где каждая стрижка — это работа художника. Авторская парихмахерская Артема создаёт пространство, в котором хочется возвращаться снова.</p>
+        <p data-i18n="about.desc">Авторская парикмахерская в сердце Монтевидео, где каждая стрижка — это работа художника. Мастер Санэк создаёт пространство, в котором хочется возвращаться снова.</p>
         <div class="about__stats">
           <div class="stat-block">
             <span class="stat-block__num" data-count="4.9" data-suffix="★">0</span>
@@ -185,11 +146,11 @@
           </div>
           <div class="stat-block__divider"></div>
           <div class="stat-block">
-            <span class="stat-block__num" data-count="3" data-suffix="">0</span>
-            <span class="stat-block__label" data-i18n="about.stat3">бренда ухода</span>
+            <span class="stat-block__num" data-count="4" data-suffix="">0</span>
+            <span class="stat-block__label" data-i18n="about.stat3">бренда партнёра</span>
           </div>
         </div>
-        <p class="about__brands">L'Oreal Professionnel &nbsp;·&nbsp; Davines &nbsp;·&nbsp; FRAMESI</p>
+        <p class="about__brands">Provana &nbsp;·&nbsp; Davines &nbsp;·&nbsp; L&rsquo;Or&eacute;al &nbsp;·&nbsp; Cadiveu</p>
         <a href="#servicios" class="link-arrow" data-i18n="about.link">Посмотреть услуги</a>
       </div>
     </div>
@@ -299,47 +260,58 @@
 
     <div class="bento">
       <div class="bento__item bento__item--large reveal">
-        <img src="Images/masteratwork2.jpeg" alt="Master Artem cutting hair" loading="lazy" class="bento__img" />
-        <div class="bento__info">
-          <span class="bento__tag" data-i18n="works.tagCut">Стрижка</span>
-          <span class="bento__zoom">↗</span>
-        </div>
-      </div>
-      <div class="bento__item bento__item--tall reveal reveal-delay-1">
-        <img src="Images/womancut2.jpeg" alt="Bob haircut result" loading="lazy" class="bento__img" />
-        <div class="bento__info">
-          <span class="bento__tag" data-i18n="works.tagResult">Результат</span>
-          <span class="bento__zoom">↗</span>
-        </div>
-      </div>
-      <div class="bento__item reveal reveal-delay-2">
-        <img src="Images/womanCut1.jpeg" alt="Curly haircut result" loading="lazy" class="bento__img" />
+        <div class="photo-ph ph--terracotta bento__ph"><span data-i18n="works.phColor">Окрашивание</span></div>
         <div class="bento__info">
           <span class="bento__tag" data-i18n="works.tagColor">Цвет</span>
           <span class="bento__zoom">↗</span>
         </div>
       </div>
-      <div class="bento__item reveal reveal-delay-3">
-        <img src="Images/masteratwork.jpeg" alt="Master Artem coloring hair" loading="lazy" class="bento__img" />
+      <div class="bento__item bento__item--tall reveal reveal-delay-1">
+        <div class="photo-ph ph--dark bento__ph"><span data-i18n="works.phCut">Стрижка</span></div>
         <div class="bento__info">
-          <span class="bento__tag" data-i18n="works.tagProcess">Процесс</span>
+          <span class="bento__tag" data-i18n="works.tagCut">Стрижка</span>
+          <span class="bento__zoom">↗</span>
+        </div>
+      </div>
+      <div class="bento__item reveal reveal-delay-2">
+        <div class="photo-ph ph--sand bento__ph"><span data-i18n="works.phCare">Уход</span></div>
+        <div class="bento__info">
+          <span class="bento__tag" data-i18n="works.tagCare">Уход</span>
+          <span class="bento__zoom">↗</span>
+        </div>
+      </div>
+      <div class="bento__item reveal reveal-delay-3">
+        <div class="photo-ph ph--warm bento__ph"><span data-i18n="works.phDetails">Детали</span></div>
+        <div class="bento__info">
+          <span class="bento__tag" data-i18n="works.tagDetails">Детали</span>
           <span class="bento__zoom">↗</span>
         </div>
       </div>
       <div class="bento__item bento__item--wide reveal reveal-delay-1">
-        <img src="Images/MuralFront.jpeg" alt="AREA MOSA signature mural" loading="lazy" class="bento__img" />
+        <div class="photo-ph ph--mural bento__ph"><span data-i18n="works.phMural">Мурал</span></div>
         <div class="bento__info">
           <span class="bento__tag" data-i18n="works.tagSpace">Пространство</span>
           <span class="bento__zoom">↗</span>
         </div>
       </div>
       <div class="bento__item reveal reveal-delay-2">
-        <img src="Images/results.jpeg" alt="Client at AREA MOSA" loading="lazy" class="bento__img" />
+        <div class="photo-ph ph--terracotta bento__ph"><span data-i18n="works.phResult">Результат</span></div>
         <div class="bento__info">
-          <span class="bento__tag" data-i18n="works.tagStyle">Стиль</span>
+          <span class="bento__tag" data-i18n="works.tagBA">До/после</span>
           <span class="bento__zoom">↗</span>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- МАСТЕРА -->
+  <section class="masters" id="masters">
+    <div class="container">
+      <div class="masters__header reveal">
+        <span class="label" data-i18n="masters.label">Мастера</span>
+        <h2 data-i18n="masters.title">Команда</h2>
+      </div>
+      <div class="masters__grid" id="mastersGrid"></div>
     </div>
   </section>
 
@@ -347,7 +319,7 @@
   <section class="atmosfera" id="atmosfera">
     <div class="atmosfera__visual reveal">
       <div class="atmosfera__photo-stack">
-        <img src="Images/MuralFront.jpeg" alt="AREA MOSA mural - signature artwork" loading="lazy" />
+        <div class="photo-ph ph--mural-big"><span data-i18n="atmos.phMural">Мурал — визитная карточка AREA MOSA</span></div>
       </div>
     </div>
     <div class="atmosfera__content">
@@ -358,7 +330,7 @@
         <p data-i18n="atmos.p2">Здесь пьют кофе, слушают музыку и уходят другим человеком. Каждая деталь продумана — от выбора красителей до освещения кресла.</p>
         <blockquote class="atmosfera__quote">
           <span data-i18n="atmos.quote">«Мы не просто стрижём волосы — мы создаём образ»</span>
-          <cite data-i18n="atmos.cite">— Мастер Артём</cite>
+          <cite data-i18n="atmos.cite">— Мастер Санэк</cite>
         </blockquote>
       </div>
       <div class="atmosfera__pillars reveal reveal-delay-1">
@@ -435,7 +407,7 @@
   <footer class="footer">
     <div class="footer__top">
       <div class="footer__brand">
-        <div class="footer__logo">AREA MOSA</div>
+        <div class="footer__logo">AREA M&Oslash;SA</div>
         <div class="footer__tagline">Hair · Color · Atmosphere</div>
       </div>
       <nav class="footer__nav">
@@ -454,7 +426,7 @@
       </div>
     </div>
     <div class="footer__bottom">
-      <span>&copy; 2026 AREA MOSA</span>
+      <span>&copy; 2025 AREA M&Oslash;SA</span>
       <span data-i18n="footer.location">Монтевидео, Уругвай</span>
     </div>
   </footer>
@@ -465,6 +437,13 @@
     <span class="fab__pulse"></span>
   </a>
 
-  <script src="app.js?v=5"></script>
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
+    <button class="lightbox__close" id="lightboxClose" aria-label="Close">&#x2715;</button>
+    <div class="lightbox__content" id="lightboxContent"></div>
+  </div>
+
+  <script src="data/masters.js?v=1"></script>
+  <script src="app.js?v=4"></script>
 </body>
 </html>
