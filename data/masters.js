@@ -19,8 +19,8 @@ var MASTERS_DATA = [
     photo: 'images/masters/artem.jpg',
     works: [
       'images/works/artem-1.jpg',
-      'images/works/artem-2.jpg',
-      'images/works/artem-3.jpg'
+      'images/works/artem-2.jpg?v=2',
+      'images/works/artem-3.jpg?v=2'
     ],
     name: {
       ru: 'Артём',
@@ -45,38 +45,8 @@ var MASTERS_DATA = [
   },
 
   {
-    id:    'nacho',
-    photo: 'images/masters/nacho.jpg',
-    works: [
-      'images/works/nacho-1.jpg',
-      'images/works/nacho-2.jpg',
-      'images/works/nacho-3.jpg'
-    ],
-    name: {
-      ru: 'Начо',
-      es: 'Nacho',
-      en: 'Nacho'
-    },
-    role: {
-      ru: 'Мастер-стилист',
-      es: 'Maestro estilista',
-      en: 'Master Stylist'
-    },
-    desc: {
-      ru: 'Специалист по технике цвета и современным стрижкам. Работает с каждым клиентом индивидуально, создавая образ под его стиль жизни.',
-      es: 'Especialista en técnicas de color y cortes modernos. Trabaja con cada cliente de forma individual, creando un look acorde a su estilo de vida.',
-      en: 'Specialist in color techniques and modern cuts. Works with each client individually, creating a look that fits their lifestyle.'
-    },
-    tags: {
-      ru: ['Стрижки', 'Окрашивание', 'Колор'],
-      es: ['Cortes', 'Coloración', 'Color'],
-      en: ['Haircuts', 'Coloring', 'Color']
-    }
-  },
-
-  {
     id:    'murat',
-    photo: 'images/masters/Murat.jpg',
+    photo: 'images/masters/Murat.jpg?v=2',
     works: [
       'images/works/Murat-1.jpg',
       'images/works/Murat-2.jpg',
