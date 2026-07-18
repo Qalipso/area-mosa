@@ -17,6 +17,7 @@ var MASTERS_DATA = [
   {
     id:    'artem',
     photo: 'images/masters/artem.jpg?v=2',
+    photoFit: 'contain',
     works: [
       'images/works/artem-1.jpg',
       'images/works/artem-2.jpg?v=2',

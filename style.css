@@ -824,6 +824,15 @@ em { font-style: italic; color: var(--terracotta); }
   object-position: center 20%;
 }
 .master-card__photo .photo-ph { height: 100%; }
+.master-card__photo--contain {
+  display: flex; align-items: center; justify-content: center;
+  background: var(--cream-dim);
+  padding: 8%;
+  box-sizing: border-box;
+}
+.master-card__photo--contain img {
+  width: 100%; height: 100%; object-fit: contain; object-position: center;
+}
 .master-card__front-info {
   padding: 1.4rem 1.75rem;
 }

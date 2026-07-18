@@ -536,6 +536,7 @@ function renderMasters(lang) {
     var tags = m.tags[lang] || m.tags.ru || [];
 
     /* front photo */
+    var photoFitClass = m.photoFit ? ' master-card__photo--' + m.photoFit : '';
     var photoHtml = m.photo
       ? '<img src="' + m.photo + '" alt="' + name + '" loading="lazy" />'
       : '<div class="photo-ph ' + (m.photoClass || 'ph--dark') + '"><span>' + name + '</span></div>';
@@ -557,7 +558,7 @@ function renderMasters(lang) {
       '<article class="master-card reveal" data-id="' + m.id + '">' +
         '<div class="master-card__inner">' +
           '<div class="master-card__front">' +
-            '<div class="master-card__photo">' + photoHtml + '</div>' +
+            '<div class="master-card__photo' + photoFitClass + '">' + photoHtml + '</div>' +
             '<div class="master-card__front-info">' +
               '<h3>' + name + '</h3>' +
               '<span class="master-card__role">' + role + '</span>' +
