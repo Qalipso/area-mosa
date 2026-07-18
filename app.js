@@ -65,11 +65,7 @@ var T = {
     "booking.label": "\u0417\u0430\u043f\u0438\u0441\u044c",
     "booking.title": "\u0413\u043e\u0442\u043e\u0432\u044b \u043a<br/><em>\u043f\u0435\u0440\u0435\u043c\u0435\u043d\u0430\u043c?</em>",
     "booking.desc": "\u0417\u0430\u043f\u0438\u0448\u0438\u0442\u0435\u0441\u044c \u043b\u044e\u0431\u044b\u043c \u0443\u0434\u043e\u0431\u043d\u044b\u043c \u0441\u043f\u043e\u0441\u043e\u0431\u043e\u043c \u2014 \u043e\u0442\u0432\u0435\u0442\u0438\u043c \u0431\u044b\u0441\u0442\u0440\u043e. \u0414\u043b\u044f \u043d\u0430\u0441 \u0432\u0430\u0436\u0435\u043d \u043a\u0430\u0436\u0434\u044b\u0439 \u043a\u043b\u0438\u0435\u043d\u0442.",
-    "booking.monFri": "\u041f\u043d \u2014 \u041f\u0442",
-    "booking.sat": "\u0421\u0443\u0431\u0431\u043e\u0442\u0430",
-    "booking.sun": "\u0412\u043e\u0441\u043a\u0440\u0435\u0441\u0435\u043d\u044c\u0435",
-    "booking.byAppt": "\u043f\u043e \u0437\u0430\u043f\u0438\u0441\u0438",
-    "booking.closed": "\u0432\u044b\u0445\u043e\u0434\u043d\u043e\u0439",
+    "booking.monFri": "\u041f\u043d \u2014 \u0412\u0441",
     "booking.address": "\u041a\u043e\u0440\u0434\u043e\u043d, \u041c\u043e\u043d\u0442\u0435\u0432\u0438\u0434\u0435\u043e, \u0423\u0440\u0443\u0433\u0432\u0430\u0439",
     "booking.waLabel": "WhatsApp",
     "booking.waSub": "\u041e\u0441\u043d\u043e\u0432\u043d\u043e\u0439 \u043a\u0430\u043d\u0430\u043b \u0437\u0430\u043f\u0438\u0441\u0438",
@@ -155,11 +151,7 @@ var T = {
     "booking.label": "Reserva",
     "booking.title": "\u00bfListo para<br/><em>un cambio?</em>",
     "booking.desc": "Reserva de la forma que prefieras \u2014 respondemos r\u00e1pido. Cada cliente es importante para nosotros.",
-    "booking.monFri": "Lun \u2014 Vie",
-    "booking.sat": "S\u00e1bado",
-    "booking.sun": "Domingo",
-    "booking.byAppt": "con cita",
-    "booking.closed": "cerrado",
+    "booking.monFri": "Lun \u2014 Dom",
     "booking.address": "Cord\u00f3n, Montevideo, Uruguay",
     "booking.waLabel": "WhatsApp",
     "booking.waSub": "Canal principal de reservas",
@@ -245,11 +237,7 @@ var T = {
     "booking.label": "Booking",
     "booking.title": "Ready for<br/><em>a change?</em>",
     "booking.desc": "Book in any way you prefer \u2014 we respond quickly. Every client matters to us.",
-    "booking.monFri": "Mon \u2014 Fri",
-    "booking.sat": "Saturday",
-    "booking.sun": "Sunday",
-    "booking.byAppt": "by appointment",
-    "booking.closed": "closed",
+    "booking.monFri": "Mon \u2014 Sun",
     "booking.address": "Cord\u00f3n, Montevideo, Uruguay",
     "booking.waLabel": "WhatsApp",
     "booking.waSub": "Main booking channel",
@@ -525,9 +513,52 @@ document.querySelectorAll('a[href^="#"]').forEach(function(a) {
     if (!target) return;
     e.preventDefault();
     var offset = (navEl ? navEl.offsetHeight : 70) + 12;
-    window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - offset, behavior: 'smooth' });
+    var y = target.getBoundingClientRect().top + window.scrollY - offset;
+    window.scrollTo({ top: y, behavior: 'smooth' });
+    smoothTarget = y;
   });
 });
+
+/* ---- eased wheel scroll (skips inner-scrollable areas & reduced motion) ---- */
+var smoothTarget = window.scrollY;
+var smoothCurrent = window.scrollY;
+var smoothTicking = false;
+var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function smoothClamp() {
+  var max = document.documentElement.scrollHeight - window.innerHeight;
+  smoothTarget = Math.max(0, Math.min(smoothTarget, max));
+}
+
+function smoothRender() {
+  smoothCurrent += (smoothTarget - smoothCurrent) * 0.14;
+  if (Math.abs(smoothTarget - smoothCurrent) < 0.5) smoothCurrent = smoothTarget;
+  window.scrollTo(0, smoothCurrent);
+  if (smoothCurrent !== smoothTarget) {
+    requestAnimationFrame(smoothRender);
+  } else {
+    smoothTicking = false;
+  }
+}
+
+if (!prefersReducedMotion) {
+  window.addEventListener('wheel', function(e) {
+    if (e.target.closest('.master-card__back, .lightbox, .nav__links')) return;
+    if (document.body.classList.contains('lightbox-open')) return;
+    e.preventDefault();
+    smoothTarget += e.deltaY;
+    smoothClamp();
+    if (!smoothTicking) { smoothTicking = true; requestAnimationFrame(smoothRender); }
+  }, { passive: false });
+
+  window.addEventListener('resize', smoothClamp);
+
+  document.addEventListener('keydown', function(e) {
+    if (['ArrowDown','ArrowUp','PageDown','PageUp','Home','End',' '].indexOf(e.key) === -1) return;
+    if (e.target.closest('input, textarea, [contenteditable]')) return;
+    requestAnimationFrame(function() { smoothTarget = window.scrollY; smoothCurrent = window.scrollY; });
+  });
+}
 
 /* ============================================================
    MASTERS — DYNAMIC RENDER (data from data/masters.js)

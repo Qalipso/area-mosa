@@ -37,7 +37,7 @@ echo "1. Generating booking-agent-workflow.json..."
 sed \
   -e "s/AREA MOSA/$BUSINESS_NAME/g" \
   -e "s/area-mosa/$INSTANCE_NAME/g" \
-  -e "s/59894786877/$PHONE/g" \
+  -e "s/59892122029/$PHONE/g" \
   -e "s/Artem/$MASTER_NAME/g" \
   -e "s/Cordon, Montevideo, Uruguay/$ADDRESS/g" \
   -e "s/Cord.n, Montevideo, Uruguay/$ADDRESS/g" \
@@ -49,7 +49,7 @@ echo "2. Generating reminder-workflow.json..."
 sed \
   -e "s/AREA MOSA/$BUSINESS_NAME/g" \
   -e "s/area-mosa/$INSTANCE_NAME/g" \
-  -e "s/59894786877/$PHONE/g" \
+  -e "s/59892122029/$PHONE/g" \
   -e "s/Artem/$MASTER_NAME/g" \
   -e "s/Cordon, Montevideo, Uruguay/$ADDRESS/g" \
   -e "s/Cord.n, Montevideo, Uruguay/$ADDRESS/g" \

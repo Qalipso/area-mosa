@@ -43,7 +43,7 @@
         "contentType": "json",
         "bodyParameters": {
           "parameters": [
-            { "name": "number", "value": "59894786877" },
+            { "name": "number", "value": "59892122029" },
             { "name": "text", "value": "Technical issue. Please contact +598 94 786877" }
           ]
         }
