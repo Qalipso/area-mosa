@@ -484,11 +484,6 @@ em { font-style: italic; color: var(--terracotta); }
   outline: 5px solid var(--cream); outline-offset: -5px;
   z-index: 2;
 }
-.about__photo--small  {
-  top: 46%; left: 62%; width: 32%; height: 28%;
-  z-index: 3;
-  box-shadow: 0 8px 32px rgba(26,23,20,.25);
-}
 .about__photo-label {
   position: absolute; bottom: .7rem; left: .7rem;
   font-size: .65rem; letter-spacing: .1em; text-transform: uppercase;
@@ -529,7 +524,6 @@ em { font-style: italic; color: var(--terracotta); }
 @media (max-width: 780px) {
   .about__container { grid-template-columns: 1fr; }
   .about__photos { height: 320px; }
-  .about__photo--small { display: none; }
 }
 
 /* ============================================================
