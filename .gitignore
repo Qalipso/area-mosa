@@ -1,3 +1,4 @@
 .vercel
 docker/service-account.json
 docker/.env
+.DS_Store

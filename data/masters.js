@@ -75,17 +75,17 @@ var MASTERS_DATA = [
   },
 
   {
-    id:    'edu',
-    photo: 'images/masters/edu.jpg',
+    id:    'murat',
+    photo: 'images/masters/Murat.jpg',
     works: [
-      'images/works/edu-1.jpg',
-      'images/works/edu-2.jpg',
-      'images/works/edu-3.jpg'
+      'images/works/Murat-1.jpg',
+      'images/works/Murat-2.jpg',
+      'images/works/Murat-3.jpg'
     ],
     name: {
-      ru: 'Эду',
-      es: 'Edu',
-      en: 'Edu'
+      ru: 'Мурат',
+      es: 'Murat',
+      en: 'Murat'
     },
     role: {
       ru: 'Мастер-стилист',

@@ -25,12 +25,11 @@
     <div class="nav__inner">
       <a href="#hero" class="nav__logo">
         <span class="nav__logo-area">AREA</span>
-        <span class="nav__logo-mosa">M&Oslash;SA</span>
+        <span class="nav__logo-mosa">M<span class="o-mark">O</span>SA</span>
       </a>
-      <div class="nav__links">
+      <div class="nav__links" id="navLinks">
         <a href="#servicios" data-i18n="nav.services">Услуги</a>
-        <a href="#trabajos" data-i18n="nav.works">Работы</a>
-        <a href="#atmosfera" data-i18n="nav.about">О нас</a>
+        <a href="#about" data-i18n="nav.about">О нас</a>
       </div>
       <div class="lang-switcher" id="langSwitcher">
         <button class="lang-switcher__btn" aria-label="Language">
@@ -44,6 +43,9 @@
         </div>
       </div>
       <a href="#reservar" class="nav__cta" data-i18n="nav.cta">Записаться</a>
+      <button class="nav__burger" id="navBurger" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </nav>
 
@@ -63,7 +65,7 @@
       </div>
       <h1 class="hero__title">
         <span class="hero__title-line" data-text="AREA">AREA</span>
-        <span class="hero__title-line hero__title-line--offset" data-text="MØSA">M&Oslash;SA</span>
+        <span class="hero__title-line hero__title-line--offset" data-text="MOSA">M<span class="o-mark">O</span>SA</span>
       </h1>
       <div class="hero__sub">
         <div class="hero__tagline-wrap">
@@ -119,14 +121,11 @@
       <div class="about__left">
         <div class="about__photos">
           <div class="about__photo about__photo--main reveal">
-            <img src="images/about/interior.jpg" alt="" loading="lazy" />
+            <img src="images/about/interior.jpg?v=2" alt="" loading="lazy" />
             <div class="about__photo-label" data-i18n="about.photoLabel">Кордон, Монтевидео</div>
           </div>
           <div class="about__photo about__photo--accent reveal reveal-delay-1">
-            <img src="images/about/mural.jpg" alt="" loading="lazy" />
-          </div>
-          <div class="about__photo about__photo--small reveal reveal-delay-2">
-            <img src="images/about/details.jpg" alt="" loading="lazy" />
+            <img src="images/about/details.jpg?v=2" alt="" loading="lazy" />
           </div>
         </div>
       </div>
@@ -153,6 +152,17 @@
         <p class="about__brands">Provana &nbsp;·&nbsp; Davines &nbsp;·&nbsp; L&rsquo;Or&eacute;al &nbsp;·&nbsp; Cadiveu</p>
         <a href="#servicios" class="link-arrow" data-i18n="about.link">Посмотреть услуги</a>
       </div>
+    </div>
+  </section>
+
+  <!-- МАСТЕРА -->
+  <section class="masters" id="masters">
+    <div class="container">
+      <div class="masters__header reveal">
+        <span class="label" data-i18n="masters.label">Мастера</span>
+        <h2 data-i18n="masters.title">Команда</h2>
+      </div>
+      <div class="masters__grid" id="mastersGrid"></div>
     </div>
   </section>
 
@@ -246,113 +256,6 @@
     </div>
   </div>
 
-  <!-- РАБОТЫ — BENTO -->
-  <section class="trabajos" id="trabajos">
-    <div class="container">
-      <div class="trabajos__header reveal">
-        <span class="label" data-i18n="works.label">Работы</span>
-        <div class="trabajos__header-row">
-          <h2 data-i18n="works.title">Результаты говорят сами</h2>
-          <a href="https://www.instagram.com/area_mosa/" target="_blank" rel="noopener" class="link-arrow">Instagram @area_mosa</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="bento">
-      <div class="bento__item bento__item--large reveal">
-        <img src="images/works/color.jpg" alt="" class="bento__ph" loading="lazy" />
-        <div class="bento__info">
-          <span class="bento__tag" data-i18n="works.tagColor">Цвет</span>
-          <span class="bento__zoom">↗</span>
-        </div>
-      </div>
-      <div class="bento__item bento__item--tall reveal reveal-delay-1">
-        <img src="images/works/cut.jpg" alt="" class="bento__ph" loading="lazy" />
-        <div class="bento__info">
-          <span class="bento__tag" data-i18n="works.tagCut">Стрижка</span>
-          <span class="bento__zoom">↗</span>
-        </div>
-      </div>
-      <div class="bento__item reveal reveal-delay-2">
-        <img src="images/works/care.jpg" alt="" class="bento__ph" loading="lazy" />
-        <div class="bento__info">
-          <span class="bento__tag" data-i18n="works.tagCare">Уход</span>
-          <span class="bento__zoom">↗</span>
-        </div>
-      </div>
-      <div class="bento__item reveal reveal-delay-3">
-        <img src="images/works/details.jpg" alt="" class="bento__ph" loading="lazy" />
-        <div class="bento__info">
-          <span class="bento__tag" data-i18n="works.tagDetails">Детали</span>
-          <span class="bento__zoom">↗</span>
-        </div>
-      </div>
-      <div class="bento__item bento__item--wide reveal reveal-delay-1">
-        <img src="images/works/space.jpg" alt="" class="bento__ph" loading="lazy" />
-        <div class="bento__info">
-          <span class="bento__tag" data-i18n="works.tagSpace">Пространство</span>
-          <span class="bento__zoom">↗</span>
-        </div>
-      </div>
-      <div class="bento__item reveal reveal-delay-2">
-        <img src="images/works/result.jpg" alt="" class="bento__ph" loading="lazy" />
-        <div class="bento__info">
-          <span class="bento__tag" data-i18n="works.tagBA">До/после</span>
-          <span class="bento__zoom">↗</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- МАСТЕРА -->
-  <section class="masters" id="masters">
-    <div class="container">
-      <div class="masters__header reveal">
-        <span class="label" data-i18n="masters.label">Мастера</span>
-        <h2 data-i18n="masters.title">Команда</h2>
-      </div>
-      <div class="masters__grid" id="mastersGrid"></div>
-    </div>
-  </section>
-
-  <!-- АТМОСФЕРА -->
-  <section class="atmosfera" id="atmosfera">
-    <div class="atmosfera__visual reveal">
-      <div class="atmosfera__photo-stack">
-        <img src="images/atmosphere/mural.jpg" alt="" class="atmosfera__img" loading="lazy" />
-      </div>
-    </div>
-    <div class="atmosfera__content">
-      <div class="atmosfera__text reveal">
-        <span class="label label--light" data-i18n="atmos.label">Атмосфера</span>
-        <h2 data-i18n-html="atmos.title">Больше, чем<br/><em>парикмахерская</em></h2>
-        <p data-i18n="atmos.p1">Мы создали пространство, где искусство встречается с мастерством. Яркий мурал на стене — не просто декор, а характер места.</p>
-        <p data-i18n="atmos.p2">Здесь пьют кофе, слушают музыку и уходят другим человеком. Каждая деталь продумана — от выбора красителей до освещения кресла.</p>
-        <blockquote class="atmosfera__quote">
-          <span data-i18n="atmos.quote">«Мы не просто стрижём волосы — мы создаём образ»</span>
-          <cite data-i18n="atmos.cite">— Мастер Санэк</cite>
-        </blockquote>
-      </div>
-      <div class="atmosfera__pillars reveal reveal-delay-1">
-        <div class="pillar">
-          <span class="pillar__letter">H</span>
-          <span class="pillar__word">Hair</span>
-          <p data-i18n="atmos.h.desc">Авторские стрижки с вниманием к каждой детали</p>
-        </div>
-        <div class="pillar">
-          <span class="pillar__letter">C</span>
-          <span class="pillar__word">Color</span>
-          <p data-i18n="atmos.c.desc">Профессиональное окрашивание любой сложности</p>
-        </div>
-        <div class="pillar">
-          <span class="pillar__letter">A</span>
-          <span class="pillar__word">Atmosphere</span>
-          <p data-i18n="atmos.a.desc">Пространство, созданное для комфорта и вдохновения</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- ЗАПИСЬ -->
   <section class="reservar" id="reservar">
     <div class="reservar__inner">
@@ -407,13 +310,12 @@
   <footer class="footer">
     <div class="footer__top">
       <div class="footer__brand">
-        <div class="footer__logo">AREA M&Oslash;SA</div>
+        <div class="footer__logo">AREA M<span class="o-mark">O</span>SA</div>
         <div class="footer__tagline">Hair · Color · Atmosphere</div>
       </div>
       <nav class="footer__nav">
         <a href="#servicios" data-i18n="nav.services">Услуги</a>
-        <a href="#trabajos" data-i18n="nav.works">Работы</a>
-        <a href="#atmosfera" data-i18n="nav.about">О нас</a>
+        <a href="#about" data-i18n="nav.about">О нас</a>
         <a href="#reservar" data-i18n="footer.booking">Запись</a>
       </nav>
       <div class="footer__social">
@@ -426,7 +328,7 @@
       </div>
     </div>
     <div class="footer__bottom">
-      <span>&copy; 2025 AREA M&Oslash;SA</span>
+      <span>&copy; 2025 AREA M<span class="o-mark">O</span>SA</span>
       <span data-i18n="footer.location">Монтевидео, Уругвай</span>
     </div>
   </footer>
@@ -446,7 +348,7 @@
     <div class="lightbox__counter" id="lightboxCounter"></div>
   </div>
 
-  <script src="data/masters.js?v=1"></script>
+  <script src="data/masters.js?v=2"></script>
   <script src="app.js?v=5"></script>
 </body>
 </html>

@@ -14,7 +14,7 @@ var T = {
     "hero.location": "\u041c\u043e\u043d\u0442\u0435\u0432\u0438\u0434\u0435\u043e, \u041a\u043e\u0440\u0434\u043e\u043d",
     "hero.cta": "\u0417\u0430\u043f\u0438\u0441\u0430\u0442\u044c\u0441\u044f",
     "hero.scroll": "\u041f\u0440\u043e\u043a\u0440\u0443\u0442\u0438\u0442\u0435",
-    "hero.badge": "\u0411\u042b\u0422\u042c, \u0410 \u041d\u0415 \u041a\u0410\u0417\u0410\u0422\u042c\u0421\u042f \u00b7 AREA M\u00d8SA \u00b7",
+    "hero.badge": "\u0411\u042b\u0422\u042c, \u0410 \u041d\u0415 \u041a\u0410\u0417\u0410\u0422\u042c\u0421\u042f \u00b7 AREA MOSA \u00b7",
     "about.label": "\u041e \u043d\u0430\u0441",
     "about.title": "\u041c\u0430\u0441\u0442\u0435\u0440\u0441\u0442\u0432\u043e<br/><em>\u0432 \u043a\u0430\u0436\u0434\u043e\u043c\u00a0\u0448\u0442\u0440\u0438\u0445\u0435</em>",
     "about.desc": "\u0410\u0432\u0442\u043e\u0440\u0441\u043a\u0430\u044f \u043f\u0430\u0440\u0438\u043a\u043c\u0430\u0445\u0435\u0440\u0441\u043a\u0430\u044f \u0432 \u0441\u0435\u0440\u0434\u0446\u0435 \u041c\u043e\u043d\u0442\u0435\u0432\u0438\u0434\u0435\u043e, \u0433\u0434\u0435 \u043a\u0430\u0436\u0434\u0430\u044f \u0441\u0442\u0440\u0438\u0436\u043a\u0430 \u2014 \u044d\u0442\u043e \u0440\u0430\u0431\u043e\u0442\u0430 \u0445\u0443\u0434\u043e\u0436\u043d\u0438\u043a\u0430. \u041c\u0430\u0441\u0442\u0435\u0440 \u0410\u0440\u0442\u0451\u043c \u0441\u043e\u0437\u0434\u0430\u0451\u0442 \u043f\u0440\u043e\u0441\u0442\u0440\u0430\u043d\u0441\u0442\u0432\u043e, \u0432 \u043a\u043e\u0442\u043e\u0440\u043e\u043c \u0445\u043e\u0447\u0435\u0442\u0441\u044f \u0432\u043e\u0437\u0432\u0440\u0430\u0449\u0430\u0442\u044c\u0441\u044f \u0441\u043d\u043e\u0432\u0430.",
@@ -104,7 +104,7 @@ var T = {
     "hero.location": "Montevideo, Cord\u00f3n",
     "hero.cta": "Reservar",
     "hero.scroll": "Desplazar",
-    "hero.badge": "SER, NO PARECER \u00b7 AREA M\u00d8SA \u00b7",
+    "hero.badge": "SER, NO PARECER \u00b7 AREA MOSA \u00b7",
     "about.label": "Nosotros",
     "about.title": "Maestr\u00eda<br/><em>en cada\u00a0trazo</em>",
     "about.desc": "Peluquer\u00eda de autor en el coraz\u00f3n de Montevideo, donde cada corte es obra de un artista. Maestro Artem crea un espacio al que quieres volver.",
@@ -194,7 +194,7 @@ var T = {
     "hero.location": "Montevideo, Cord\u00f3n",
     "hero.cta": "Book Now",
     "hero.scroll": "Scroll",
-    "hero.badge": "TO BE, NOT TO SEEM \u00b7 AREA M\u00d8SA \u00b7",
+    "hero.badge": "TO BE, NOT TO SEEM \u00b7 AREA MOSA \u00b7",
     "about.label": "About Us",
     "about.title": "Mastery<br/><em>in every\u00a0stroke</em>",
     "about.desc": "A boutique hair salon in the heart of Montevideo, where every haircut is a work of art. Master Artem creates a space you will want to come back to.",
@@ -374,6 +374,41 @@ function detectLang() {
   /* set initial language */
   var initialLang = detectLang();
   setLang(initialLang);
+})();
+
+/* ---- INIT MOBILE NAV BURGER -------------------------------- */
+(function initNavBurger() {
+  var burger = document.getElementById('navBurger');
+  var links  = document.getElementById('navLinks');
+  if (!burger || !links) return;
+
+  function close() {
+    burger.classList.remove('is-open');
+    links.classList.remove('is-open');
+    burger.setAttribute('aria-expanded', 'false');
+  }
+
+  burger.addEventListener('click', function(e) {
+    e.stopPropagation();
+    var open = links.classList.toggle('is-open');
+    burger.classList.toggle('is-open', open);
+    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+
+  /* close after choosing a section */
+  links.addEventListener('click', function(e) {
+    if (e.target.closest('a')) close();
+  });
+
+  document.addEventListener('click', function(e) {
+    if (!links.classList.contains('is-open')) return;
+    if (e.target.closest('#navLinks') || e.target.closest('#navBurger')) return;
+    close();
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') close();
+  });
 })();
 
 /* ============================================================
@@ -587,29 +622,29 @@ function renderMasters(lang) {
   var counter   = document.getElementById('lightboxCounter');
   if (!lightbox || !content || !closeBtn) return;
 
-  var items = [];
+  var slides  = [];
   var current = 0;
 
   function renderSlide(idx) {
-    var item = items[idx];
-    var ph  = item.querySelector('.bento__ph');
-    var tag = item.querySelector('.bento__tag');
-    if (!ph) return;
+    var slide = slides[idx];
     content.innerHTML = '';
-    var clone = ph.cloneNode(true);
-    content.appendChild(clone);
-    if (tag) {
+    var img = document.createElement('img');
+    img.src = slide.src;
+    img.alt = slide.label || '';
+    content.appendChild(img);
+    if (slide.label) {
       var label = document.createElement('div');
       label.className = 'lightbox__label';
-      label.textContent = tag.textContent;
+      label.textContent = slide.label;
       content.appendChild(label);
     }
-    if (counter) counter.textContent = (idx + 1) + ' / ' + items.length;
+    if (counter) counter.textContent = (idx + 1) + ' / ' + slides.length;
     if (prevBtn) prevBtn.hidden = (idx === 0);
-    if (nextBtn) nextBtn.hidden = (idx === items.length - 1);
+    if (nextBtn) nextBtn.hidden = (idx === slides.length - 1);
   }
 
-  function open(idx) {
+  function open(gallery, idx) {
+    slides  = gallery;
     current = idx;
     renderSlide(current);
     lightbox.classList.add('is-open');
@@ -622,12 +657,32 @@ function renderMasters(lang) {
   }
 
   function prev() { if (current > 0) { current--; renderSlide(current); } }
-  function next() { if (current < items.length - 1) { current++; renderSlide(current); } }
+  function next() { if (current < slides.length - 1) { current++; renderSlide(current); } }
 
-  items = Array.from(document.querySelectorAll('.bento__item'));
-  items.forEach(function(item, idx) {
+  /* gallery 1 — top "Работы" bento grid */
+  var bentoItems = Array.from(document.querySelectorAll('.bento__item'));
+  var bentoGallery = bentoItems.map(function(item) {
+    var ph  = item.querySelector('.bento__ph');
+    var tag = item.querySelector('.bento__tag');
+    return { src: ph ? ph.src : '', label: tag ? tag.textContent : '' };
+  });
+  bentoItems.forEach(function(item, idx) {
     item.style.cursor = 'zoom-in';
-    item.addEventListener('click', function() { open(idx); });
+    item.addEventListener('click', function() { open(bentoGallery, idx); });
+  });
+
+  /* gallery 2 — each master's own work-example thumbnails */
+  document.querySelectorAll('.master-card').forEach(function(card) {
+    var nameEl = card.querySelector('.master-card__back h3');
+    var name   = nameEl ? nameEl.textContent : '';
+    var slots  = Array.from(card.querySelectorAll('.master-card__work-slot img'));
+    var masterGallery = slots.map(function(img) { return { src: img.src, label: name }; });
+    slots.forEach(function(img, idx) {
+      img.addEventListener('click', function(e) {
+        e.stopPropagation(); /* don't also flip the card */
+        open(masterGallery, idx);
+      });
+    });
   });
 
   if (prevBtn) prevBtn.addEventListener('click', prev);
