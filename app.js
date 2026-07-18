@@ -513,52 +513,9 @@ document.querySelectorAll('a[href^="#"]').forEach(function(a) {
     if (!target) return;
     e.preventDefault();
     var offset = (navEl ? navEl.offsetHeight : 70) + 12;
-    var y = target.getBoundingClientRect().top + window.scrollY - offset;
-    window.scrollTo({ top: y, behavior: 'smooth' });
-    smoothTarget = y;
+    window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - offset, behavior: 'smooth' });
   });
 });
-
-/* ---- eased wheel scroll (skips inner-scrollable areas & reduced motion) ---- */
-var smoothTarget = window.scrollY;
-var smoothCurrent = window.scrollY;
-var smoothTicking = false;
-var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-function smoothClamp() {
-  var max = document.documentElement.scrollHeight - window.innerHeight;
-  smoothTarget = Math.max(0, Math.min(smoothTarget, max));
-}
-
-function smoothRender() {
-  smoothCurrent += (smoothTarget - smoothCurrent) * 0.14;
-  if (Math.abs(smoothTarget - smoothCurrent) < 0.5) smoothCurrent = smoothTarget;
-  window.scrollTo(0, smoothCurrent);
-  if (smoothCurrent !== smoothTarget) {
-    requestAnimationFrame(smoothRender);
-  } else {
-    smoothTicking = false;
-  }
-}
-
-if (!prefersReducedMotion) {
-  window.addEventListener('wheel', function(e) {
-    if (e.target.closest('.master-card__back, .lightbox, .nav__links')) return;
-    if (document.body.classList.contains('lightbox-open')) return;
-    e.preventDefault();
-    smoothTarget += e.deltaY;
-    smoothClamp();
-    if (!smoothTicking) { smoothTicking = true; requestAnimationFrame(smoothRender); }
-  }, { passive: false });
-
-  window.addEventListener('resize', smoothClamp);
-
-  document.addEventListener('keydown', function(e) {
-    if (['ArrowDown','ArrowUp','PageDown','PageUp','Home','End',' '].indexOf(e.key) === -1) return;
-    if (e.target.closest('input, textarea, [contenteditable]')) return;
-    requestAnimationFrame(function() { smoothTarget = window.scrollY; smoothCurrent = window.scrollY; });
-  });
-}
 
 /* ============================================================
    MASTERS — DYNAMIC RENDER (data from data/masters.js)
