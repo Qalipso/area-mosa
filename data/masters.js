@@ -53,9 +53,9 @@ var MASTERS_DATA = [
       'images/works/Murat-3.jpg'
     ],
     name: {
-      ru: 'Мурат',
-      es: 'Murat',
-      en: 'Murat'
+      ru: 'Марат',
+      es: 'Marat',
+      en: 'Marat'
     },
     role: {
       ru: 'Мастер-стилист',
