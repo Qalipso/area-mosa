@@ -139,11 +139,26 @@ em { font-style: italic; color: var(--terracotta); }
   transition: padding .4s var(--ease), background .4s var(--ease), backdrop-filter .4s;
 }
 .nav.scrolled {
-  padding: 1rem var(--px);
+  top: .9rem;
+  left: var(--px); right: var(--px);
+  max-width: var(--max); margin: 0 auto;
+  padding: .85rem 1.5rem;
   background: rgba(26,23,20,.85);
   backdrop-filter: blur(16px) saturate(180%);
   -webkit-backdrop-filter: blur(16px) saturate(180%);
-  border-bottom: 1px solid rgba(212,196,160,.1);
+  border: 1px solid rgba(212,196,160,.12);
+  border-radius: 14px;
+  box-shadow: 0 12px 32px rgba(0,0,0,.28);
+}
+@media (max-width: 680px) {
+  .nav.scrolled {
+    top: .4rem;
+    left: .35rem; right: .35rem;
+    padding: .6rem .75rem;
+    border-radius: 12px;
+  }
+  .nav.scrolled .lang-switcher { margin-right: .6rem; }
+  .nav.scrolled .nav__burger { margin-left: .5rem; }
 }
 /* backdrop-filter on a fixed header is a heavy repaint on touch devices —
    swap it for a solid, slightly more opaque background there instead */
@@ -533,10 +548,12 @@ em { font-style: italic; color: var(--terracotta); }
   border-top: 1px solid rgba(26,23,20,.12);
   border-bottom: 1px solid rgba(26,23,20,.12);
 }
+.stat-block { min-width: 4.5rem; }
 .stat-block__num {
   display: block;
   font-family: var(--serif); font-size: 2.6rem; line-height: 1;
   color: var(--warm-black);
+  font-variant-numeric: tabular-nums;
 }
 .stat-block__label {
   font-size: .7rem; letter-spacing: .06em; color: var(--sand-dim);
