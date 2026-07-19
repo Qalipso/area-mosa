@@ -806,7 +806,6 @@ em { font-style: italic; color: var(--terracotta); }
   padding: clamp(4rem, 8vw, 7rem) 0;
 }
 .masters__header { margin-bottom: 3rem; }
-.masters__header h2 { margin-top: .3rem; }
 
 .masters__grid {
   display: grid;
