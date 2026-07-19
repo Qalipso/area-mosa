@@ -371,6 +371,12 @@ function detectLang() {
   var video  = document.getElementById('heroFigureVideo');
   if (!figure || !video) return;
 
+  /* she only shows as video while genuinely playing — anything else (never
+     started, stalled, paused by the OS under low power) falls back to the
+     plain <img>, which can never grow a native "tap to play" glyph */
+  video.addEventListener('playing', function() { video.classList.add('is-active'); });
+  video.addEventListener('pause',   function() { video.classList.remove('is-active'); });
+
   var reduced  = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var touch    = window.matchMedia('(hover: none)').matches;
   var conn     = navigator.connection || {};
@@ -591,7 +597,7 @@ var revealObs = new IntersectionObserver(function(entries) {
       revealObs.unobserve(e.target);
     }
   });
-}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+}, { threshold: 0.1, rootMargin: '0px 0px 200px 0px' });
 
 revealEls.forEach(function(el) { revealObs.observe(el); });
 

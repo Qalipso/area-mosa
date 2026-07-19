@@ -358,7 +358,7 @@ em { font-style: italic; color: var(--terracotta); }
   animation: figureIn 1s cubic-bezier(.22,1,.36,1) .55s forwards;
 }
 .hero__figure-media {
-  display: block; width: 100%; height: 100%;
+  display: block; position: absolute; inset: 0; width: 100%; height: 100%;
   object-fit: cover; object-position: center top;
   pointer-events: none;
   mix-blend-mode: screen;
@@ -378,6 +378,10 @@ em { font-style: italic; color: var(--terracotta); }
   display: none !important;
   -webkit-appearance: none;
 }
+/* the <img> paints by default; the <video> only takes over once app.js
+   confirms it is actually playing (see the 'playing'/'pause' listeners) */
+.hero__figure-video { display: none; }
+.hero__figure-video.is-active { display: block; }
 @keyframes figureIn { to { opacity: 1; transform: translate3d(0,0,0); } }
 
 /* scroll hand-off into the light About section (set by app.js) */
