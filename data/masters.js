@@ -48,6 +48,7 @@ var MASTERS_DATA = [
   {
     id:    'murat',
     photo: 'images/masters/Murat.jpg?v=2',
+    photoFit: 'contain',
     works: [
       'images/works/Murat-1.jpg',
       'images/works/Murat-2.jpg',
