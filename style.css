@@ -490,7 +490,7 @@ em { font-style: italic; color: var(--terracotta); }
 .about__photo--main  { top: 0; left: 0; width: 72%; height: 73%; }
 .about__photo--accent {
   bottom: 0; right: 0; width: 56%; height: 58%;
-  outline: 5px solid var(--cream); outline-offset: -5px;
+  outline: 5px solid var(--sand); outline-offset: -5px;
   z-index: 2;
 }
 .about__photo-label {
@@ -801,11 +801,10 @@ em { font-style: italic; color: var(--terracotta); }
   transform-style: preserve-3d;
   transition: transform .6s cubic-bezier(.4, 0, .2, 1);
 }
-/* flip on hover (pointer devices) */
-@media (hover: hover) {
-  .master-card:hover .master-card__inner { transform: rotateY(180deg); }
-}
-/* flip on click (all devices via JS toggle) */
+/* flip on click/tap (all devices via JS toggle) — hover-triggered flip
+   was dropped: at the midpoint of the 3D rotation the card's rendered
+   footprint shifts under the cursor, causing hover to flicker on/off
+   and the flip to get stuck re-triggering right around the center */
 .master-card.is-flipped .master-card__inner { transform: rotateY(180deg); }
 
 /* Both faces */
