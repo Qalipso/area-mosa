@@ -436,26 +436,36 @@ if (cursor && window.matchMedia('(hover: hover)').matches) {
 var progressBar = document.getElementById('scrollProgress');
 var navEl       = document.getElementById('nav');
 
+var isTouchDevice = window.matchMedia('(hover: none)').matches;
+var heroBg        = document.getElementById('heroBg');
+
 function onScroll() {
   var max = document.body.scrollHeight - window.innerHeight;
   var pct = max > 0 ? (window.scrollY / max) * 100 : 0;
   progressBar.style.width = pct + '%';
   navEl.classList.toggle('scrolled', window.scrollY > 60);
+
+  /* hero parallax — skipped on touch devices, where it's mostly what causes jank */
+  if (heroBg && !isTouchDevice && window.scrollY < window.innerHeight) {
+    heroBg.style.transform = 'translateY(' + (window.scrollY * 0.35) + 'px)';
+  }
 }
-window.addEventListener('scroll', onScroll, { passive: true });
+
+var scrollTicking = false;
+window.addEventListener('scroll', function() {
+  if (scrollTicking) return;
+  scrollTicking = true;
+  requestAnimationFrame(function() {
+    onScroll();
+    scrollTicking = false;
+  });
+}, { passive: true });
 onScroll();
 
 /* ============================================================
    HERO PARALLAX
    ============================================================ */
-var heroBg = document.getElementById('heroBg');
-if (heroBg) {
-  window.addEventListener('scroll', function() {
-    if (window.scrollY < window.innerHeight) {
-      heroBg.style.transform = 'translateY(' + (window.scrollY * 0.35) + 'px)';
-    }
-  }, { passive: true });
-}
+/* (folded into onScroll() above, rAF-throttled together with the nav/progress-bar updates) */
 
 /* ============================================================
    SCROLL REVEAL
