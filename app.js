@@ -382,8 +382,8 @@ function detectLang() {
     var attach = function() {
       if (video.dataset.ready) return;
       video.dataset.ready = '1';
-      [['images/hero/hero-woman.webm?v=1', 'video/webm'],
-       ['images/hero/hero-woman.mp4?v=1',  'video/mp4']].forEach(function(s) {
+      [['images/hero/hero-woman.webm?v=2', 'video/webm'],
+       ['images/hero/hero-woman.mp4?v=2',  'video/mp4']].forEach(function(s) {
         var el = document.createElement('source');
         el.src = s[0]; el.type = s[1];
         video.appendChild(el);
