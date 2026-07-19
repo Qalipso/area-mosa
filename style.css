@@ -39,6 +39,7 @@ body {
   background: var(--cream);
   color: var(--warm-black);
   overflow-x: hidden;
+  overscroll-behavior-y: none; /* no rubber-band bounce past the ends */
   cursor: none;
 }
 @media (hover: none) { body { cursor: auto; } }
@@ -293,8 +294,13 @@ em { font-style: italic; color: var(--terracotta); }
 /* ============================================================
    HERO
    ============================================================ */
+/* --hero-h is locked to a pixel value by app.js and only re-measured when
+   the width/orientation actually changes. Without it the hero is sized in
+   viewport units, so every time a mobile browser hides or reveals its URL
+   bar mid-scroll the section resizes and the page appears to stretch. */
 .hero {
-  position: relative; height: 100svh; min-height: 640px;
+  position: relative;
+  height: var(--hero-h, 100svh); min-height: 640px;
   display: flex; align-items: center; overflow: hidden;
 }
 .hero__bg {
@@ -441,7 +447,12 @@ em { font-style: italic; color: var(--terracotta); }
 }
 
 @media (max-width: 680px) {
-  .hero { height: 88svh; min-height: 560px; }
+  .hero { height: var(--hero-h, 88svh); min-height: 560px; }
+}
+/* on short screens (a phone in landscape) the min-height would push the hero
+   taller than the screen itself — let the locked height win there */
+@media (max-height: 640px) {
+  .hero { min-height: 0; }
 }
 
 /* ============================================================

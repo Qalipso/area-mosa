@@ -361,6 +361,35 @@ function detectLang() {
   setLang(initialLang);
 })();
 
+/* ---- LOCK HERO HEIGHT -------------------------------------- */
+/* Mobile browsers grow/shrink the visual viewport as the URL bar hides and
+   reveals during scroll. A viewport-unit hero height follows that, so the
+   section resizes mid-scroll and the page reads as stretching. Measure once
+   and re-measure only when the width (i.e. a real resize / rotation)
+   changes — never on the height-only changes browser chrome causes. */
+(function lockHeroHeight() {
+  var hero = document.getElementById('hero');
+  if (!hero) return;
+
+  var lastWidth = null;
+
+  function apply() {
+    if (window.innerWidth === lastWidth) return;
+    lastWidth = window.innerWidth;
+    var ratio = window.innerWidth <= 680 ? 0.88 : 1;
+    document.documentElement.style.setProperty(
+      '--hero-h', Math.round(window.innerHeight * ratio) + 'px'
+    );
+  }
+
+  apply();
+  window.addEventListener('resize', apply);
+  window.addEventListener('orientationchange', function() {
+    lastWidth = null;               /* force a re-measure after rotating */
+    setTimeout(apply, 120);         /* wait for the new viewport to settle */
+  });
+})();
+
 /* ---- INIT MOBILE NAV BURGER -------------------------------- */
 (function initNavBurger() {
   var burger = document.getElementById('navBurger');
