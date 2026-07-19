@@ -27,7 +27,13 @@
 
 /* -- RESET -------------------------------------------------- */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; font-size: 16px; }
+html { font-size: 16px; }
+/* smooth-scroll only where there's real hover/a mouse — on touch devices some
+   mobile browsers apply this to native finger-drag scrolling too, which is
+   what read as "elastic"/laggy scrolling on the very first (hero) section */
+@media (hover: hover) {
+  html { scroll-behavior: smooth; }
+}
 body {
   font-family: var(--sans);
   background: var(--cream);
@@ -490,7 +496,7 @@ em { font-style: italic; color: var(--terracotta); }
 .about__photo--main  { top: 0; left: 0; width: 72%; height: 73%; }
 .about__photo--accent {
   bottom: 0; right: 0; width: 56%; height: 58%;
-  outline: 5px solid var(--sand); outline-offset: -5px;
+  outline: 5px solid var(--sand-dim); outline-offset: -5px;
   z-index: 2;
 }
 .about__photo-label {
