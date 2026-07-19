@@ -361,6 +361,93 @@ function detectLang() {
   setLang(initialLang);
 })();
 
+/* ---- HERO AMBIENT FIGURE ----------------------------------- */
+/* The poster ships with the markup and is all that ever loads for
+   reduced-motion, slow connections and save-data. The clip itself is
+   attached only after load, so it can't compete with FCP/LCP, and it
+   only ever plays while the hero is actually on screen. */
+(function initHeroFigure() {
+  var figure = document.getElementById('heroFigure');
+  var video  = document.getElementById('heroFigureVideo');
+  if (!figure || !video) return;
+
+  var reduced  = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var touch    = window.matchMedia('(hover: none)').matches;
+  var conn     = navigator.connection || {};
+  var thin     = conn.saveData === true ||
+                 /^(slow-)?2g$/.test(conn.effectiveType || '');
+
+  /* ---- playback ---- */
+  if (!reduced && !thin) {
+    var attach = function() {
+      if (video.dataset.ready) return;
+      video.dataset.ready = '1';
+      [['images/hero/hero-woman.webm?v=1', 'video/webm'],
+       ['images/hero/hero-woman.mp4?v=1',  'video/mp4']].forEach(function(s) {
+        var el = document.createElement('source');
+        el.src = s[0]; el.type = s[1];
+        video.appendChild(el);
+      });
+      video.load();
+
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function(entries) {
+          entries.forEach(function(e) {
+            if (e.isIntersecting) {
+              var p = video.play();
+              if (p && p.catch) p.catch(function() {});   /* autoplay refused: poster stays */
+            } else if (!video.paused) {
+              video.pause();
+            }
+          });
+        }, { threshold: 0.01 }).observe(figure);
+      } else {
+        var p = video.play();
+        if (p && p.catch) p.catch(function() {});
+      }
+    };
+    if (document.readyState === 'complete') setTimeout(attach, 60);
+    else window.addEventListener('load', function() { setTimeout(attach, 60); });
+  }
+
+  if (reduced) return;   /* everything below is motion */
+
+  /* ---- scroll hand-off into the About section ---- */
+  var heroEl = document.getElementById('hero');
+  var ticking = false;
+  function onFigureScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function() {
+      var h = heroEl ? heroEl.offsetHeight : window.innerHeight;
+      var t = Math.min(Math.max(window.scrollY / (h * 0.85), 0), 1);
+      figure.style.setProperty('--fig-scroll', t.toFixed(3));
+      ticking = false;
+    });
+  }
+  window.addEventListener('scroll', onFigureScroll, { passive: true });
+  onFigureScroll();
+
+  /* ---- pointer: nudges the warm glow only, heavily damped, never on touch ---- */
+  if (!touch) {
+    var tx = 0, ty = 0, cx = 0, cy = 0, raf = null;
+    window.addEventListener('pointermove', function(e) {
+      tx = ((e.clientX / window.innerWidth)  - 0.5) * 6;   /* max 6px, per spec */
+      ty = ((e.clientY / window.innerHeight) - 0.5) * 4;
+      if (!raf) raf = requestAnimationFrame(glide);
+    }, { passive: true });
+
+    function glide() {
+      cx += (tx - cx) * 0.045;                              /* heavy damping */
+      cy += (ty - cy) * 0.045;
+      figure.style.setProperty('--glow-x', cx.toFixed(2) + 'px');
+      figure.style.setProperty('--glow-y', cy.toFixed(2) + 'px');
+      raf = (Math.abs(tx - cx) > 0.05 || Math.abs(ty - cy) > 0.05)
+        ? requestAnimationFrame(glide) : null;
+    }
+  }
+})();
+
 /* ---- LOCK HERO HEIGHT -------------------------------------- */
 /* Mobile browsers grow/shrink the visual viewport as the URL bar hides and
    reveals during scroll. A viewport-unit hero height follows that, so the

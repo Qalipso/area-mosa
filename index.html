@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AREA MOSA — Парикмахерская, Монтевидео</title>
   <meta name="description" content="AREA MOSA — авторская парикмахерская в Кордоне, Монтевидео. Стрижка, окрашивание, атмосфера. Мастер Санэк. 4.9 в Google." />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'none';">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'none';">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css?v=22" />
+  <link rel="stylesheet" href="style.css?v=28" />
 </head>
 <body>
 
@@ -55,6 +55,18 @@
       <div class="hero__gradient"></div>
       <div class="hero__noise"></div>
     </div>
+
+    <!-- Ambient figure. Sits between the background and the overlay so the
+         overlay's existing bottom gradient falls across her lower body.
+         Sources are attached by app.js after load; the poster carries the
+         first paint and is all that reduced-motion / slow connections get. -->
+    <div class="hero__figure" id="heroFigure" aria-hidden="true">
+      <video class="hero__figure-media" id="heroFigureVideo"
+             poster="images/hero/hero-woman-poster.jpg?v=1"
+             autoplay muted loop playsinline preload="none"
+             disablepictureinpicture tabindex="-1"></video>
+    </div>
+
     <div class="hero__overlay"></div>
 
     <div class="hero__content">
@@ -338,6 +350,6 @@
   </div>
 
   <script src="data/masters.js?v=7"></script>
-  <script src="app.js?v=16"></script>
+  <script src="app.js?v=18"></script>
 </body>
 </html>

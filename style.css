@@ -312,6 +312,16 @@ em { font-style: italic; color: var(--terracotta); }
     radial-gradient(ellipse 80% 60% at 65% 40%, rgba(139,58,42,.55) 0%, transparent 70%),
     radial-gradient(ellipse 50% 80% at 20% 80%, rgba(196,113,74,.25) 0%, transparent 60%),
     linear-gradient(160deg, #1a1714 0%, #2a1a14 40%, #1a1714 100%);
+  /* ~2% drift over a slow, prime-ish cycle so no looping point is legible */
+  animation: heroDrift 47s ease-in-out infinite;
+}
+@keyframes heroDrift {
+  0%   { transform: scale(1.02) translate3d(0, 0, 0); }
+  50%  { transform: scale(1.02) translate3d(-1.4%, .8%, 0); }
+  100% { transform: scale(1.02) translate3d(0, 0, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero__gradient { animation: none; transform: none; }
 }
 /* SVG noise texture */
 .hero__noise {
@@ -319,6 +329,93 @@ em { font-style: italic; color: var(--terracotta); }
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
   background-size: 180px 180px;
 }
+/* -- AMBIENT FIGURE ----------------------------------------------------
+   The clip is graded so its own backdrop sits at true black, then composited
+   with mix-blend-mode: screen — black contributes nothing, so there is no
+   rectangle and every hair strand survives (a luma matte would fringe here).
+   A left-edge mask dissolves her into the dark long before the type starts. */
+.hero__figure {
+  position: absolute; top: 0; right: 0;
+  height: 106%;
+  aspect-ratio: 1036 / 1080;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+  transform: translate3d(0, 14px, 0);
+  animation: figureIn 1.1s cubic-bezier(.22,1,.36,1) .45s forwards;
+  will-change: opacity, transform;
+}
+/* warm rim light that arrives with her, never a hard halo */
+.hero__figure::before {
+  content: '';
+  position: absolute; inset: -8% -6% 12% 8%;
+  background: radial-gradient(ellipse 58% 48% at 68% 30%,
+              rgba(196,113,74,.20) 0%, rgba(196,113,74,.07) 45%, transparent 72%);
+  opacity: 0;
+  /* pointer nudge (app.js, capped at 6px) rides on top of the reveal */
+  translate: var(--glow-x, 0) var(--glow-y, 0);
+  transition: translate .9s cubic-bezier(.22,1,.36,1);
+  animation: figureIn 1s cubic-bezier(.22,1,.36,1) .55s forwards;
+}
+.hero__figure-media {
+  display: block; width: 100%; height: 100%;
+  object-fit: cover; object-position: center top;
+  mix-blend-mode: screen;
+  -webkit-mask-image: linear-gradient(to right,
+      transparent 0%, rgba(0,0,0,.18) 20%, rgba(0,0,0,.72) 42%, #000 62%);
+          mask-image: linear-gradient(to right,
+      transparent 0%, rgba(0,0,0,.18) 20%, rgba(0,0,0,.72) 42%, #000 62%);
+}
+@keyframes figureIn { to { opacity: 1; transform: translate3d(0,0,0); } }
+
+/* scroll hand-off into the light About section (set by app.js) */
+.hero__figure {
+  --fig-scroll: 0;
+}
+.hero__figure-media {
+  opacity: calc(1 - var(--fig-scroll) * .55);
+  transform: translate3d(0, calc(var(--fig-scroll) * 16px), 0);
+}
+
+/* tablet range: shrink her so the gap to the title never gets tight */
+@media (max-width: 1100px) {
+  .hero__figure { height: 86%; opacity: .92; }
+  .hero__figure-media {
+    -webkit-mask-image: linear-gradient(to right,
+        transparent 0%, rgba(0,0,0,.14) 24%, rgba(0,0,0,.66) 48%, #000 68%);
+            mask-image: linear-gradient(to right,
+        transparent 0%, rgba(0,0,0,.14) 24%, rgba(0,0,0,.66) 48%, #000 68%);
+  }
+}
+/* phones: only the upper back and hair, kept clear of the CTA */
+@media (max-width: 680px) {
+  .hero__figure {
+    height: 62%; top: 0;
+    opacity: .78;
+  }
+  .hero__figure::before { inset: -6% -8% 20% 14%; }
+}
+/* Portrait viewports size her from the WIDTH — deriving the box from height on
+   a tall screen pushes it past the viewport and over the type. Declared last so
+   it wins over the width-based blocks above. */
+@media (max-aspect-ratio: 1/1) {
+  .hero__figure { height: auto; width: 56%; top: 5%; }
+}
+/* Phones: bleed her off the right edge so only the upper back and hair read,
+   clear of the wordmark — hair behind the type kills contrast at this size. */
+@media (max-aspect-ratio: 1/1) and (max-width: 680px) {
+  .hero__figure {
+    width: 68%; top: 1%; right: -17%;
+    opacity: .72;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero__figure,
+  .hero__figure::before { animation: none; opacity: 1; transform: none; }
+  .hero__figure::before { opacity: .8; }
+  .hero__figure-media { opacity: 1; transform: none; }
+}
+
 .hero__overlay {
   position: absolute; inset: 0;
   background: linear-gradient(to bottom,
@@ -368,7 +465,7 @@ em { font-style: italic; color: var(--terracotta); }
   font-size: clamp(1.3rem, 3.2vw, 2.1rem);
   color: var(--cream);
   margin-top: 1.5rem; max-width: 28rem;
-  opacity: 0; animation: fadeUp .8s var(--ease) .3s forwards;
+  opacity: 0; animation: fadeUp .8s cubic-bezier(.22,1,.36,1) .5s forwards;
 }
 .hero__sub {
   display: flex; align-items: center;
@@ -377,7 +474,8 @@ em { font-style: italic; color: var(--terracotta); }
      so the desktop side-by-side row keeps its original spacing */
   gap: 3rem 2rem;
   margin-top: 2.5rem;
-  opacity: 0; animation: fadeUp .8s var(--ease) .45s forwards;
+  /* CTA lands last, after the figure has settled */
+  opacity: 0; animation: fadeUp .78s cubic-bezier(.22,1,.36,1) .72s forwards;
 }
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(20px); }
