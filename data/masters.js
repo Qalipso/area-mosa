@@ -98,11 +98,11 @@ var MASTERS_DATA = [
 
   {
     id:    'nacho',
-    photo: 'images/masters/nacho.png?v=1',
-    photoFit: 'contain',
+    photo: 'images/masters/nacho-new.jpg?v=1',
     works: [
       'images/works/nacho-1.jpg?v=1',
-      'images/works/nacho-2.jpg?v=1'
+      'images/works/nacho-2.jpg?v=1',
+      'images/works/nacho-3.jpg?v=1'
     ],
     name: {
       ru: 'Начо',
