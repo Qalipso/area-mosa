@@ -60,20 +60,93 @@ var MASTERS_DATA = [
       en: 'Marat'
     },
     role: {
-      ru: 'Мастер-стилист',
-      es: 'Maestro estilista',
-      en: 'Master Stylist'
+      ru: 'Эксперт-колорист · парикмахер-универсал',
+      es: 'Colorista experto · peluquero integral',
+      en: 'Expert Colorist · All-round Hairdresser'
     },
     desc: {
-      ru: 'Мастер с тонким чувством стиля и вниманием к деталям. Создаёт образы, которые подчёркивают индивидуальность каждого клиента.',
-      es: 'Maestro con un fino sentido del estilo y atención al detalle. Crea looks que realzan la individualidad de cada cliente.',
-      en: 'Master with a fine sense of style and attention to detail. Creates looks that highlight the individuality of each client.'
+      ru: 'Мужские и женские стрижки, окрашивание и тотал-блонд.',
+      es: 'Cortes para hombre y mujer, coloración y rubio total.',
+      en: 'Men’s and women’s haircuts, coloring and total blonde.'
     },
     tags: {
-      ru: ['Стрижки', 'Уход', 'Стиль'],
-      es: ['Cortes', 'Cuidado', 'Estilo'],
-      en: ['Haircuts', 'Care', 'Style']
-    }
+      ru: ['Стрижки', 'Окрашивание', 'Тотал-блонд'],
+      es: ['Cortes', 'Coloración', 'Rubio total'],
+      en: ['Haircuts', 'Coloring', 'Total blonde']
+    },
+    prices: [
+      {
+        service: { ru: 'Мужская стрижка', es: 'Corte masculino', en: 'Men’s haircut' },
+        price: '$ 700'
+      },
+      {
+        service: { ru: 'Женская стрижка', es: 'Corte femenino', en: 'Women’s haircut' },
+        price: '$ 1.000'
+      },
+      {
+        service: { ru: 'Окрашивание', es: 'Coloración', en: 'Coloring' },
+        note: { ru: 'от', es: 'desde', en: 'from' },
+        price: '$ 1.600'
+      },
+      {
+        service: { ru: 'Тотал-блонд', es: 'Rubio total', en: 'Total blonde' },
+        note: { ru: 'от', es: 'desde', en: 'from' },
+        price: '$ 3.000'
+      }
+    ]
+  },
+
+  {
+    id:    'nacho',
+    photo: 'images/masters/nacho.png?v=1',
+    photoFit: 'contain',
+    works: [
+      'images/works/nacho-1.jpg?v=1',
+      'images/works/nacho-2.jpg?v=1'
+    ],
+    name: {
+      ru: 'Начо',
+      es: 'Nacho',
+      en: 'Nacho'
+    },
+    role: {
+      ru: 'Стилист-парикмахер · колорист · барбер',
+      es: 'Estilista · colorista · barbero',
+      en: 'Hair Stylist · Colorist · Barber'
+    },
+    desc: {
+      ru: 'Мужские и женские стрижки, оформление бороды и окрашивание.',
+      es: 'Cortes para hombre y mujer, barba y coloración.',
+      en: 'Men’s and women’s haircuts, beard grooming and coloring.'
+    },
+    tags: {
+      ru: ['Стрижки', 'Борода', 'Окрашивание'],
+      es: ['Cortes', 'Barba', 'Coloración'],
+      en: ['Haircuts', 'Beard', 'Coloring']
+    },
+    frontPromo: {
+      ru: '−20% на стрижки',
+      es: '−20% en cortes',
+      en: '−20% on haircuts'
+    },
+    prices: [
+      {
+        service: { ru: 'Мужская стрижка + борода', es: 'Corte masculino + barba', en: 'Men’s haircut + beard' },
+        price: '$ 1.000',
+        promo: { ru: 'Скидка 20%', es: '20% de descuento', en: '20% off' }
+      },
+      {
+        service: { ru: 'Женская стрижка', es: 'Corte femenino', en: 'Women’s haircut' },
+        note: { ru: 'Мытьё и укладка входят', es: 'Incluye lavado y peinado', en: 'Wash and styling included' },
+        price: '$ 1.300',
+        promo: { ru: 'Скидка 20%', es: '20% de descuento', en: '20% off' }
+      },
+      {
+        service: { ru: 'Окрашивание · короткие волосы', es: 'Coloración · cabello corto', en: 'Coloring · short hair' },
+        note: { ru: 'Остальное — по запросу', es: 'Otros largos: consultar', en: 'Other lengths: on request' },
+        price: '$ 2.000'
+      }
+    ]
   }
 
   /* Добавить нового мастера — скопируй блок выше, измени id и данные */

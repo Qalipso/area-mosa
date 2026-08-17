@@ -67,6 +67,8 @@ var T = {
     "booking.desc": "\u0417\u0430\u043f\u0438\u0448\u0438\u0442\u0435\u0441\u044c \u043b\u044e\u0431\u044b\u043c \u0443\u0434\u043e\u0431\u043d\u044b\u043c \u0441\u043f\u043e\u0441\u043e\u0431\u043e\u043c \u2014 \u043e\u0442\u0432\u0435\u0442\u0438\u043c \u0431\u044b\u0441\u0442\u0440\u043e. \u0414\u043b\u044f \u043d\u0430\u0441 \u0432\u0430\u0436\u0435\u043d \u043a\u0430\u0436\u0434\u044b\u0439 \u043a\u043b\u0438\u0435\u043d\u0442.",
     "booking.monFri": "\u041f\u043d \u2014 \u0412\u0441",
     "booking.address": "\u041a\u043e\u0440\u0434\u043e\u043d, \u041c\u043e\u043d\u0442\u0435\u0432\u0438\u0434\u0435\u043e, \u0423\u0440\u0443\u0433\u0432\u0430\u0439",
+    "booking.widgetLabel": "\u0417\u0430\u043f\u0438\u0441\u0430\u0442\u044c\u0441\u044f \u043e\u043d\u043b\u0430\u0439\u043d",
+    "booking.widgetSub": "\u0412\u044b\u0431\u0440\u0430\u0442\u044c \u0443\u0441\u043b\u0443\u0433\u0443, \u043c\u0430\u0441\u0442\u0435\u0440\u0430 \u0438 \u0432\u0440\u0435\u043c\u044f \u2014 \u0437\u0430 \u043c\u0438\u043d\u0443\u0442\u0443",
     "booking.waLabel": "WhatsApp",
     "booking.waSub": "\u041e\u0441\u043d\u043e\u0432\u043d\u043e\u0439 \u043a\u0430\u043d\u0430\u043b \u0437\u0430\u043f\u0438\u0441\u0438",
     "booking.igLabel": "Instagram",
@@ -152,6 +154,8 @@ var T = {
     "booking.desc": "Reserva de la forma que prefieras \u2014 respondemos r\u00e1pido. Cada cliente es importante para nosotros.",
     "booking.monFri": "Lun \u2014 Dom",
     "booking.address": "Cord\u00f3n, Montevideo, Uruguay",
+    "booking.widgetLabel": "Reservar online",
+    "booking.widgetSub": "Elige servicio, especialista y hora \u2014 en un minuto",
     "booking.waLabel": "WhatsApp",
     "booking.waSub": "Canal principal de reservas",
     "booking.igLabel": "Instagram",
@@ -237,6 +241,8 @@ var T = {
     "booking.desc": "Book in any way you prefer \u2014 we respond quickly. Every client matters to us.",
     "booking.monFri": "Mon \u2014 Sun",
     "booking.address": "Cord\u00f3n, Montevideo, Uruguay",
+    "booking.widgetLabel": "Book online",
+    "booking.widgetSub": "Pick a service, specialist and time \u2014 in a minute",
     "booking.waLabel": "WhatsApp",
     "booking.waSub": "Main booking channel",
     "booking.igLabel": "Instagram",
@@ -448,7 +454,7 @@ if (cursor && window.matchMedia('(hover: hover)').matches) {
     requestAnimationFrame(lerp);
   })();
 
-  document.querySelectorAll('a, button, .service-card, .bento__item, .fab').forEach(function(el) {
+  document.querySelectorAll('a, button, .service-card, .bento__item').forEach(function(el) {
     el.addEventListener('mouseenter', function() { cursor.classList.add('is-hovering'); });
     el.addEventListener('mouseleave', function() { cursor.classList.remove('is-hovering'); });
   });
@@ -563,6 +569,11 @@ function renderMasters(lang) {
   var dict       = T[lang] || T.ru;
   var worksLabel = dict['masters.works'] || 'Work examples';
   var bookLabel  = dict['nav.cta']       || 'Book';
+  var pricesLabel = {
+    ru: 'Услуги и цены · UYU',
+    es: 'Servicios y precios · UYU',
+    en: 'Services & prices · UYU'
+  }[lang] || 'Services & prices · UYU';
 
   var html = '';
   MASTERS_DATA.forEach(function(m) {
@@ -570,6 +581,7 @@ function renderMasters(lang) {
     var role = m.role[lang] || m.role.ru;
     var desc = m.desc[lang] || m.desc.ru;
     var tags = m.tags[lang] || m.tags.ru || [];
+    var frontPromo = m.frontPromo && (m.frontPromo[lang] || m.frontPromo.ru);
 
     /* front photo */
     var photoFitClass = m.photoFit ? ' master-card__photo--' + m.photoFit : '';
@@ -579,16 +591,33 @@ function renderMasters(lang) {
 
     /* back work thumbnails */
     var worksHtml = '';
-    for (var i = 0; i < 3; i++) {
-      var src = m.works && m.works[i];
+    var visibleWorks = (m.works || []).filter(Boolean).slice(0, 3);
+    for (var i = 0; i < visibleWorks.length; i++) {
+      var src = visibleWorks[i];
       var cls = (m.workClasses && m.workClasses[i]) || 'ph--dark';
       worksHtml += src
         ? '<div class="master-card__work-slot"><img src="' + src + '" alt="" loading="lazy" /></div>'
         : '<div class="master-card__work-slot photo-ph ' + cls + '"></div>';
     }
+    var worksCountClass = ' master-card__works-grid--' + Math.max(visibleWorks.length, 1);
 
     /* tags */
     var tagsHtml = tags.map(function(t) { return '<span>' + t + '</span>'; }).join('');
+
+    /* services and prices */
+    var pricesHtml = (m.prices || []).map(function(p) {
+      var service = p.service[lang] || p.service.ru;
+      var note = p.note && (p.note[lang] || p.note.ru);
+      var promo = p.promo && (p.promo[lang] || p.promo.ru);
+      return '<div class="master-card__price-row">' +
+        '<div class="master-card__price-copy">' +
+          '<span>' + service + '</span>' +
+          (note ? '<small>' + note + '</small>' : '') +
+          (promo ? '<small class="master-card__promo">' + promo + '</small>' : '') +
+        '</div>' +
+        '<strong>' + p.price + '</strong>' +
+      '</div>';
+    }).join('');
 
     html +=
       '<article class="master-card reveal" data-id="' + m.id + '">' +
@@ -598,6 +627,7 @@ function renderMasters(lang) {
             '<div class="master-card__front-info">' +
               '<h3>' + name + '</h3>' +
               '<span class="master-card__role">' + role + '</span>' +
+              (frontPromo ? '<span class="master-card__front-promo">' + frontPromo + '</span>' : '') +
             '</div>' +
           '</div>' +
           '<div class="master-card__back">' +
@@ -605,8 +635,9 @@ function renderMasters(lang) {
             '<span class="master-card__role">' + role + '</span>' +
             '<p>' + desc + '</p>' +
             '<div class="master-card__tags">' + tagsHtml + '</div>' +
+            (pricesHtml ? '<div class="master-card__prices-title">' + pricesLabel + '</div><div class="master-card__prices">' + pricesHtml + '</div>' : '') +
             '<div class="master-card__works-title">' + worksLabel + '</div>' +
-            '<div class="master-card__works-grid">' + worksHtml + '</div>' +
+            '<div class="master-card__works-grid' + worksCountClass + '">' + worksHtml + '</div>' +
             '<a href="#reservar" class="master-card__book">' + bookLabel + '</a>' +
           '</div>' +
         '</div>' +
