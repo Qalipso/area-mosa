@@ -340,14 +340,6 @@ em { font-style: italic; color: var(--terracotta); }
   position: relative; z-index: 1;
   padding: 0 var(--px); max-width: var(--max); margin: 0 auto; width: 100%;
 }
-.hero__meta {
-  display: flex; align-items: center; gap: .6rem;
-  font-size: .72rem; font-weight: 500; letter-spacing: .15em;
-  text-transform: uppercase; color: var(--sand); opacity: .7;
-  margin-bottom: 1.5rem;
-}
-.hero__rating { color: var(--terracotta); opacity: 1; }
-.hero__sep { opacity: .4; }
 .hero__title {
   display: flex; flex-direction: column; overflow: hidden;
 }
