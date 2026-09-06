@@ -9,6 +9,8 @@
   // Код бизнеса: из data-tenant, либо из ?tenant= в адресе страницы (удобно для демо).
   const TENANT = script?.dataset.tenant
     || new URLSearchParams(location.search).get('tenant') || '';
+  const SOURCE = script?.dataset.source
+    || new URLSearchParams(location.search).get('utm_source') || 'web';
   const withTenant = (path) => (TENANT
     ? path + (path.includes('?') ? '&' : '?') + 'tenant=' + encodeURIComponent(TENANT)
     : path);
@@ -31,26 +33,55 @@
       wantService: 'Хочу записаться: {title}', fromList: 'Выбрать из списка',
       msgPh: 'Ваше сообщение…', writeWa: 'Написать в WhatsApp',
       guidedStart: 'Хорошо, выберем по шагам.',
+      pickLocation: 'Выберите филиал', whichLocation: 'В какой филиал хотите записаться?',
+      pickGroup: 'Сколько мест?', groupPlaces: '{n} мест',
       pickService: 'Выберите услугу', pickMaster: 'Выберите мастера',
       noMasters: 'На эту услугу сейчас нет свободных мастеров. Напишите в WhatsApp — подберём вариант.',
       whichMaster: '«{title}» — {price}.\nК кому записать?', minutes: '{n} мин',
-      serviceItem: '{title} · {n} мин', slotHint: '{date} · {n} мин',
+      serviceItem: '{title} · {n} мин', serviceItemPriced: '{title} · {n} мин · {price}',
+      slotHint: '{date} · {n} мин',
       noDays: 'У мастера нет рабочих дней в ближайшие две недели.',
       whichDay: 'На какой день?', nearestDates: 'Ближайшие даты',
       noSlots: 'На этот день свободных окон нет. Выберем другой?', otherDate: '← Другая дата',
+      back: '← Назад',
+      wishPh: 'Например: мужская стрижка к Nacho в субботу в 15:00',
+      wishHint: 'Напишите своими словами — или выберите кнопкой',
+      greetingFree: 'Здравствуйте! Я помогу записаться в {salon}.\nНапишите, что и когда хотите — например «мужская стрижка к Nacho в субботу в 15:00». Или выберите из списка.',
+      wishUnclear: 'Не понял, что подобрать. Выберите из списка — или напишите иначе.',
+      wishNarrow: 'Уточните, пожалуйста:',
+      wishNoMaster: 'Такого мастера на эту услугу нет. Вот кто её делает:',
+      wishNoDay: 'На этот день записи нет. Ближайшие даты:',
+      wishNoTime: '{time} на {date} занято или уже прошло.',
       freeAt: 'Свободное время у {master}:',
       askName: 'Как вас зовут?', namePh: 'Ваше имя',
       askPhone: 'Телефон или WhatsApp для связи?', phonePh: '+598 ...',
       badPhone: 'Похоже, номер неполный. Проверьте, пожалуйста.',
+      needCode: 'Если номер не уругвайский, укажите код страны — например +54 9 11 2345 6789.',
+      phoneCountryHint: 'Номер другой страны? Выберите код:',
       askComment: 'Есть пожелания к мастеру? Можно пропустить.', commentPh: 'Комментарий', skip: 'Пропустить',
+      askPromo: 'Есть промокод?', promoPh: 'Например, HOLA10', noPromo: 'Без промокода',
       askConsent: 'Прислать подтверждение и напоминание о записи в WhatsApp?',
       yesNotify: 'Да, присылайте', noNotify: 'Не нужно',
       summary: 'Проверьте запись:\n\n{service} · {duration}\nМастер: {master}\nКогда: {date}, {time}\nИмя: {name}\nТелефон: {phone}',
       summaryComment: '\nКомментарий: {comment}',
+      summaryPromo: '\nПромокод: {promo}',
+      summaryGroup: '\nМест: {n}',
       summaryNotify: '\nНапоминания: {value}', notifyOn: 'в WhatsApp', notifyOff: 'не присылать',
       confirmBtn: '✓ Подтвердить', restart: 'Начать заново',
       booked: 'Вы записаны', bookedNote: 'Событие добавлено в календарь мастера. До встречи!',
+      manageSent: 'Ссылку на запись — перенести или отменить — пришлём вместе с подтверждением.',
       bookedNoteLocal: 'Записали вас. Администратор подтвердит визит — до встречи!',
+      errSlotTaken: 'Это время только что заняли. Выберите, пожалуйста, другое.',
+      errGroupFull: 'В этой группе не осталось свободных мест.',
+      errGroupOver: 'Столько мест в одной записи нельзя — выберите меньше.',
+      errPromoUnknown: 'Такого промокода нет или он больше не действует.',
+      errPromoFirst: 'Этот промокод действует только на первый визит.',
+      errBadPhone: 'Похоже, номер неполный. Проверьте, пожалуйста.',
+      errNeedCountryCode: 'Укажите номер с кодом страны — например +54 9 11 2345 6789.',
+      errNeedName: 'Напишите, пожалуйста, ваше имя.',
+      errBlocked: 'Онлайн-запись для этого номера отключена. Напишите нам в WhatsApp.',
+      errDailyLimit: 'На сегодня по этому номеру уже максимум записей. Напишите нам в WhatsApp.',
+      errCalendarDown: 'Не могу подтвердить запись прямо сейчас. Напишите нам в WhatsApp — запишем вручную.',
       sending: 'Отправляю запись…', bookAgain: 'Записаться ещё раз', otherTime: 'Выбрать другое время',
     },
     es: {
@@ -68,26 +99,54 @@
       wantService: 'Quiero reservar: {title}', fromList: 'Elegir de la lista',
       msgPh: 'Su mensaje…', writeWa: 'Escribir por WhatsApp',
       guidedStart: 'Perfecto, vamos paso a paso.',
+      pickLocation: 'Elija la sucursal', whichLocation: '¿En qué sucursal quiere reservar?',
+      pickGroup: '¿Cuántas plazas?', groupPlaces: '{n} plazas',
       pickService: 'Elija el servicio', pickMaster: 'Elija al profesional',
       noMasters: 'Ahora no hay profesionales libres para este servicio. Escríbanos por WhatsApp.',
       whichMaster: '«{title}» — {price}.\n¿Con quién le reservo?', minutes: '{n} min',
-      serviceItem: '{title} · {n} min', slotHint: '{date} · {n} min',
+      serviceItem: '{title} · {n} min', serviceItemPriced: '{title} · {n} min · {price}', slotHint: '{date} · {n} min',
       noDays: 'El profesional no tiene días laborables en las próximas dos semanas.',
       whichDay: '¿Qué día le viene bien?', nearestDates: 'Próximas fechas',
       noSlots: 'Ese día no queda ningún hueco. ¿Probamos otro?', otherDate: '← Otra fecha',
+      back: '← Atrás',
+      wishPh: 'Por ejemplo: corte de caballero con Nacho el sábado a las 15:00',
+      wishHint: 'Escríbalo con sus palabras — o elija con un botón',
+      greetingFree: '¡Hola! Le ayudo a reservar en {salon}.\nEscriba qué y cuándo quiere — por ejemplo «corte de caballero con Nacho el sábado a las 15:00». O elija de la lista.',
+      wishUnclear: 'No entendí qué reservar. Elija de la lista — o escríbalo de otra forma.',
+      wishNarrow: 'Precise, por favor:',
+      wishNoMaster: 'Ese profesional no hace este servicio. Estos sí:',
+      wishNoDay: 'Ese día no hay turnos. Próximas fechas:',
+      wishNoTime: 'Las {time} del {date} ya están ocupadas o pasaron.',
       freeAt: 'Horarios libres de {master}:',
       askName: '¿Cómo se llama?', namePh: 'Su nombre',
       askPhone: '¿Teléfono o WhatsApp de contacto?', phonePh: '+598 ...',
       badPhone: 'El número parece incompleto. Revíselo, por favor.',
+      needCode: 'Si el número no es uruguayo, indique el código de país — por ejemplo +54 9 11 2345 6789.',
+      phoneCountryHint: '¿Número de otro país? Elija el código:',
       askComment: '¿Alguna preferencia? Puede omitirlo.', commentPh: 'Comentario', skip: 'Omitir',
+      askPromo: '¿Tiene un código promocional?', promoPh: 'Por ejemplo, HOLA10', noPromo: 'Sin código',
       askConsent: '¿Le enviamos la confirmación y el recordatorio por WhatsApp?',
       yesNotify: 'Sí, envíenmelo', noNotify: 'No hace falta',
       summary: 'Revise la reserva:\n\n{service} · {duration}\nProfesional: {master}\nCuándo: {date}, {time}\nNombre: {name}\nTeléfono: {phone}',
       summaryComment: '\nComentario: {comment}',
+      summaryPromo: '\nCódigo promocional: {promo}',
+      summaryGroup: '\nPlazas: {n}',
       summaryNotify: '\nRecordatorios: {value}', notifyOn: 'por WhatsApp', notifyOff: 'no enviar',
       confirmBtn: '✓ Confirmar', restart: 'Empezar de nuevo',
       booked: 'Reserva confirmada', bookedNote: 'El evento se añadió al calendario. ¡Hasta pronto!',
+      manageSent: 'Junto con la confirmación le enviamos el enlace para cambiar o cancelar la cita.',
       bookedNoteLocal: 'Reserva registrada. El administrador la confirmará. ¡Hasta pronto!',
+      errSlotTaken: 'Acaban de reservar ese horario. Elija otro, por favor.',
+      errGroupFull: 'Ya no quedan lugares en ese grupo.',
+      errGroupOver: 'No se pueden reservar tantos lugares a la vez — elija menos.',
+      errPromoUnknown: 'Ese código promocional no existe o ya no está vigente.',
+      errPromoFirst: 'Ese código promocional es solo para la primera visita.',
+      errBadPhone: 'El número parece incompleto. Revíselo, por favor.',
+      errNeedCountryCode: 'Indique el número con el código de país — por ejemplo +54 9 11 2345 6789.',
+      errNeedName: 'Escriba su nombre, por favor.',
+      errBlocked: 'La reserva en línea está desactivada para este número. Escríbanos por WhatsApp.',
+      errDailyLimit: 'Ya hay demasiadas reservas con este número para hoy. Escríbanos por WhatsApp.',
+      errCalendarDown: 'No puedo confirmar la reserva en este momento. Escríbanos por WhatsApp y la hacemos a mano.',
       sending: 'Enviando la reserva…', bookAgain: 'Reservar otra vez', otherTime: 'Elegir otro horario',
     },
     en: {
@@ -105,26 +164,54 @@
       wantService: 'I would like to book: {title}', fromList: 'Choose from the list',
       msgPh: 'Your message…', writeWa: 'Message on WhatsApp',
       guidedStart: 'Sure, let us go step by step.',
+      pickLocation: 'Choose a location', whichLocation: 'Which location would you like to visit?',
+      pickGroup: 'How many places?', groupPlaces: '{n} places',
       pickService: 'Choose a service', pickMaster: 'Choose a specialist',
       noMasters: 'No specialist is available for this service right now. Please write to us on WhatsApp.',
       whichMaster: '“{title}” — {price}.\nWho should I book you with?', minutes: '{n} min',
-      serviceItem: '{title} · {n} min', slotHint: '{date} · {n} min',
+      serviceItem: '{title} · {n} min', serviceItemPriced: '{title} · {n} min · {price}', slotHint: '{date} · {n} min',
       noDays: 'This specialist has no working days in the next two weeks.',
       whichDay: 'Which day works for you?', nearestDates: 'Nearest dates',
       noSlots: 'No free slots that day. Shall we try another?', otherDate: '← Another date',
+      back: '← Back',
+      wishPh: 'For example: men’s haircut with Nacho on Saturday at 15:00',
+      wishHint: 'Write it in your own words — or tap a button',
+      greetingFree: 'Hello! I will help you book at {salon}.\nWrite what and when you want — for example “men’s haircut with Nacho on Saturday at 15:00”. Or pick from the list.',
+      wishUnclear: 'I did not catch what to book. Pick from the list — or say it differently.',
+      wishNarrow: 'Could you be more precise:',
+      wishNoMaster: 'That specialist does not do this service. These do:',
+      wishNoDay: 'No slots that day. Nearest dates:',
+      wishNoTime: '{time} on {date} is taken or already past.',
       freeAt: 'Free times with {master}:',
       askName: 'What is your name?', namePh: 'Your name',
       askPhone: 'Phone or WhatsApp to reach you?', phonePh: '+598 ...',
       badPhone: 'That number looks incomplete. Please check it.',
+      needCode: 'If the number is not Uruguayan, include the country code — for example +1 305 555 0134.',
+      phoneCountryHint: 'Number from another country? Pick the code:',
       askComment: 'Any preferences? You can skip this.', commentPh: 'Comment', skip: 'Skip',
+      askPromo: 'Do you have a promo code?', promoPh: 'For example, HOLA10', noPromo: 'No promo code',
       askConsent: 'Send the confirmation and a reminder on WhatsApp?',
       yesNotify: 'Yes, please', noNotify: 'No need',
       summary: 'Please check the booking:\n\n{service} · {duration}\nSpecialist: {master}\nWhen: {date}, {time}\nName: {name}\nPhone: {phone}',
       summaryComment: '\nComment: {comment}',
+      summaryPromo: '\nPromo code: {promo}',
+      summaryGroup: '\nPlaces: {n}',
       summaryNotify: '\nReminders: {value}', notifyOn: 'on WhatsApp', notifyOff: 'do not send',
       confirmBtn: '✓ Confirm', restart: 'Start over',
       booked: 'You are booked', bookedNote: 'The event was added to the calendar. See you soon!',
+      manageSent: 'We are sending the link to reschedule or cancel together with the confirmation.',
       bookedNoteLocal: 'Your booking is saved. The manager will confirm it — see you soon!',
+      errSlotTaken: 'That time has just been taken. Please pick another one.',
+      errGroupFull: 'There are no places left in that group.',
+      errGroupOver: 'That many places cannot be booked at once — please pick fewer.',
+      errPromoUnknown: 'That promo code does not exist or is no longer valid.',
+      errPromoFirst: 'That promo code is for the first visit only.',
+      errBadPhone: 'That number looks incomplete. Please check it.',
+      errNeedCountryCode: 'Please include the country code — for example +1 305 555 0134.',
+      errNeedName: 'Please tell us your name.',
+      errBlocked: 'Online booking is disabled for this number. Please message us on WhatsApp.',
+      errDailyLimit: 'There are already too many bookings for this number today. Please message us on WhatsApp.',
+      errCalendarDown: 'I cannot confirm the booking right now. Message us on WhatsApp and we will book it by hand.',
       sending: 'Sending the booking…', bookAgain: 'Book again', otherTime: 'Pick another time',
     },
   };
@@ -136,10 +223,17 @@
   };
   const siteLang = () => normLang(document.documentElement.getAttribute('lang'))
     || normLang(document.documentElement.getAttribute('xml:lang'));
+  // `?lang=es` в ссылке: салон рассылает её испаноязычным клиентам, и язык
+  // страницы для них — не показатель. Раз выбран явно, дальше не меняется.
+  const urlLang = () => {
+    try { return normLang(new URLSearchParams(location.search).get('lang')); }
+    catch { return null; }
+  };
 
-  let lang = normLang(script?.dataset.lang) || siteLang() || normLang(navigator.language) || 'ru';
+  let lang = normLang(script?.dataset.lang) || urlLang() || siteLang()
+    || normLang(navigator.language) || 'ru';
   // Пока клиент не написал сам, язык следует за языком страницы.
-  let langPinned = Boolean(normLang(script?.dataset.lang));
+  let langPinned = Boolean(normLang(script?.dataset.lang) || urlLang());
 
   const t = (key, vars) => String((DICT[lang] || DICT.ru)[key] ?? DICT.ru[key] ?? key)
     .replace(/\{(\w+)\}/g, (_, k) => (vars && vars[k] != null ? vars[k] : ''));
@@ -184,6 +278,11 @@
     </div>
     <section class="panel" role="dialog" tabindex="-1" aria-labelledby="am-title" aria-describedby="am-sub">
       <header>
+        <button class="back" type="button" hidden>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M14.5 5 8 11.5 14.5 18"/>
+          </svg>
+        </button>
         <div class="avatar" aria-hidden="true">A</div>
         <div class="ttl">
           <h3 id="am-title">AREA MOSA</h3>
@@ -209,23 +308,34 @@
 
   const $ = (s) => root.querySelector(s);
   const fab = $('.fab'), panel = $('.panel'), log = $('.log'), choices = $('.choices'),
-        form = $('form'), input = $('form input'), bubble = $('.bubble'), dock = $('.dock');
+        form = $('form'), input = $('form input'), bubble = $('.bubble'), dock = $('.dock'),
+        backBtn = $('.back');
 
   const calm = window.matchMedia('(prefers-reduced-motion: reduce)');
   const reduced = () => calm.matches;
   const wait = (ms) => new Promise((r) => setTimeout(r, reduced() ? 0 : ms));
+
+  const touch = window.matchMedia('(pointer: coarse)');
+  const fullscreen = window.matchMedia('(max-width: 460px)');
+
+  /** На телефоне фокус ставит только сам клиент: программный focus() поднимает
+      клавиатуру, экран прыгает, а нужная кнопка уезжает из виду. */
+  const focusInput = () => { if (!touch.matches) input.focus(); };
 
   let cfg = null;
   const draft = {};
   let step = 'idle';
   let conversationId = null;
   let chatMode = false;
+  let fromChat = false;   // в кнопочный сценарий пришли из свободного диалога
+  let fixing = false;     // переспрашиваем одно поле после отказа сервера
 
   /** Переводит статичные части интерфейса. Уже показанные сообщения не переписываем. */
   function applyLang() {
     panel.setAttribute('lang', lang);
     fab.setAttribute('aria-label', t('fabLabel'));
     $('.close').setAttribute('aria-label', t('closeLabel'));
+    backBtn.setAttribute('aria-label', t('back').replace(/^[←\s]+/, ''));
     $('.status-text').textContent = t('status');
     $('#am-sub').textContent = chatMode ? t('subChat') : (cfg?.salon?.tagline || t('sub'));
     input.setAttribute('aria-label', t('answerLabel'));
@@ -253,7 +363,7 @@
   // Язык страницы может меняться переключателем сайта — следим за <html lang>.
   new MutationObserver(() => {
     if (langPinned) return;
-    setLang(siteLang());
+    if (!langPinned) setLang(siteLang());
   }).observe(document.documentElement, { attributes: true, attributeFilter: ['lang', 'xml:lang'] });
 
   /** Перезабирает каталог на текущем языке. Кнопки услуг, если они на экране,
@@ -303,11 +413,27 @@
     return t(spec.k, typeof spec.v === 'function' ? spec.v() : spec.v);
   };
 
+  // Переписка кнопочного сценария — для панели салона. AI-путь пишет диалог на
+  // сервере сам, а шаги «выбрал услугу → выбрал время» жили только в браузере:
+  // владелец видел в «Диалогах» пустую карточку «без переписки» у каждой записи.
+  const TRANSCRIPT_MAX = 60;
+  const TRANSCRIPT_LEN = 500;
+  let transcript = [];
+
+  function remember(role, text) {
+    const line = String(text || '').trim().slice(0, TRANSCRIPT_LEN);
+    if (!line) return;
+    transcript.push({ role, text: line });
+    if (transcript.length > TRANSCRIPT_MAX) transcript.shift();
+  }
+
   function say(spec, cls = 'bot') {
     const el = document.createElement('div');
     el.className = `msg ${cls}`;
     el.textContent = render(spec);
     if (typeof spec !== 'string') el.__i18n = spec;
+    // Ошибки в переписку не пишем: это наш отказ, а не реплика разговора.
+    if (cls !== 'err') remember(cls === 'me' ? 'user' : 'assistant', el.textContent);
     log.appendChild(el);
     scroll();
     return el;
@@ -386,24 +512,121 @@
 
   let phKey = 'answerPh';   // ключ текущего плейсхолдера — чтобы пережить смену языка
 
+  /* ---- шаги кнопочного сценария ----------------------------------------
+     «Назад» возвращает ровно на один шаг, а не в начало: клиент, ошибившийся
+     мастером, не должен заново выбирать услугу и день. Точка возврата — длина
+     переписки перед шагом: уходя назад, снимаем сообщения этого шага, и диалог
+     не обрастает брошенными ветками, в которых потом не разобраться. */
+  const marks = {};
+
+  const stepStart = (name) => { marks[name] = log.children.length; };
+
+  /** Кнопка возврата: имя шага, куда вернуться, и поля черновика, которые он переспросит. */
+  const backTo = (name, fn, ...drop) => ({
+    label: { k: 'back' }, kind: 'ghost', onClick: () => rewind(name, fn, drop),
+  });
+
+  /* «Назад» держим в шапке, а не в конце списка кнопок: среди двух десятков
+     дат и времён она терялась, и клиент, выбравший женскую стрижку вместо
+     мужской, считал, что выхода нет. В шапке она на одном месте весь диалог. */
+  let backSpec = null;
+
+  function setBack(name, fn, ...drop) {
+    backSpec = { name, fn, drop };
+    backBtn.hidden = false;
+  }
+
+  function clearBack() {
+    backSpec = null;
+    backBtn.hidden = true;
+  }
+
+  backBtn.addEventListener('click', () => {
+    if (!backSpec) return;
+    const { name, fn, drop } = backSpec;
+    clearBack();
+    rewind(name, fn, drop);
+  });
+
+  async function rewind(name, fn, drop) {
+    drop.forEach((k) => delete draft[k]);
+    choices.innerHTML = '';
+    lastChoices = null;
+    hideForm();
+    // Сначала сворачиваем сообщения шага, и только потом убираем их из разметки:
+    // мгновенное исчезновение читается как сбой, а не как «вернулись назад».
+    const from = marks[name] ?? 0;
+    const doomed = [...log.children].slice(from);
+    if (doomed.length && !reduced()) {
+      doomed.forEach((el) => el.classList.add('out'));
+      await wait(200);
+    }
+    doomed.forEach((el) => el.remove());
+    await fn();
+  }
+
   function askText(key, next) {
     choices.innerHTML = '';
+    lastChoices = null;
     form.classList.add('on');
     phKey = key;
     input.placeholder = t(key);
     input.value = '';
-    input.focus();
+    // Телефон набирают с телефона же: без этой подсказки на мобильном
+    // открывается буквенная клавиатура, и до цифр нужно жать «123».
+    // `type` остаётся текстовым: `tel` в некоторых браузерах подставляет
+    // чужой номер из автозаполнения поверх набранного.
+    const phone = key === 'phonePh';
+    input.inputMode = phone ? 'tel' : 'text';
+    input.autocomplete = phone ? 'tel' : 'off';
+    focusInput();
     step = next;
   }
 
   const hideForm = () => { form.classList.remove('on'); step = 'idle'; };
 
+  /* Поле ввода открыто и в кнопочном сценарии: клиенту не обязательно
+     проходить пять экранов, если он и так знает, чего хочет. Фразу
+     «мужская стрижка к Nacho в субботу в 15:00» виджет разбирает сам —
+     без AI, — и спрашивает только то, чего в ней не было. */
+  function openWish() {
+    if (chatMode) return;
+    form.classList.add('on');
+    phKey = 'wishPh';
+    input.placeholder = t('wishPh');
+    input.value = '';
+    input.inputMode = 'text';
+    input.autocomplete = 'off';
+    input.disabled = false;
+    form.querySelector('button').disabled = false;
+    step = 'wish';
+  }
+
   applyLang();
+
+  // Код отказа → ключ словаря. Сервер объясняет отказ по-русски (этот текст
+  // читает модель), а клиенту нужен его язык, поэтому текст с сервера остаётся
+  // запасным вариантом для кода, которого мы ещё не знаем.
+  const ERROR_KEYS = {
+    slot_taken: 'errSlotTaken', group_full: 'errGroupFull', group_over: 'errGroupOver',
+    promo_unknown: 'errPromoUnknown', promo_first: 'errPromoFirst',
+    bad_phone: 'errBadPhone', need_country_code: 'errNeedCountryCode', need_name: 'errNeedName',
+    blocked: 'errBlocked', daily_limit: 'errDailyLimit', calendar_down: 'errCalendarDown',
+  };
 
   const api = async (path, opts) => {
     const res = await fetch(API + withTenant(path), opts);
     const data = await res.json().catch(() => ({}));
-    if (!res.ok) throw new Error(data.error || data.detail?.error || data.detail || t('apiDown'));
+    if (!res.ok) {
+      const code = data.detail?.code || data.code;
+      const key = ERROR_KEYS[code];
+      const err = new Error(key ? t(key)
+        : (data.error || data.detail?.error || data.detail || t('apiDown')));
+      // Код отказа нужен не только для текста: по нему видно, какое поле
+      // переспросить, — иначе клиенту остаётся только начать сначала.
+      err.code = code;
+      throw err;
+    }
     return data;
   };
 
@@ -414,7 +637,14 @@
     choices.innerHTML = '';
     hideForm();
     Object.keys(draft).forEach((k) => delete draft[k]);
+    Object.keys(marks).forEach((k) => delete marks[k]);
     conversationId = null;
+    transcript = [];
+    clearBack();
+    wishRest = null;
+    fixing = false;
+    // Диалог начат заново — возвращаться в прежний чат больше некуда.
+    fromChat = false;
     try {
       if (!cfg) cfg = await api(`/api/config?lang=${lang}`);
     } catch (e) {
@@ -430,14 +660,17 @@
 
     if (cfg.aiEnabled) return startChat();
 
-    await botSay({ k: 'greeting', v: () => ({ salon: cfg.salon.name }) });
-    askService();
+    // Без AI фразу разбирает сам виджет — приглашение написать честное:
+    // «мужская стрижка к Nacho в субботу в 15:00» действительно сработает.
+    await botSay({ k: 'greetingFree', v: () => ({ salon: cfg.salon.name }) });
+    beginBooking();
   }
 
   // ---- свободный диалог (AI включён) -------------------------------------
 
   async function startChat() {
     chatMode = true;
+    clearBack();
     $('.sub').textContent = t('subChat');
     await botSay({ k: 'greetingChat', v: () => ({ salon: cfg.salon.name }) });
     setChoices(
@@ -462,7 +695,7 @@
     input.disabled = false;
     form.querySelector('button').disabled = false;
     step = 'chat';
-    input.focus();
+    focusInput();
   }
 
   const lockInput = (on) => {
@@ -476,9 +709,48 @@
     choices.innerHTML = '';
     hideForm();
     chatMode = false;
+    fromChat = true;
+    stepStart('guided');
     $('.sub').textContent = cfg?.salon?.tagline || t('sub');
     await botSay({ k: 'guidedStart' });
-    askService();
+    beginBooking();
+  }
+
+  /** Начало кнопочного сценария. Филиал спрашиваем одинаково и из чата, и без него:
+      пока этот шаг жил только в одном пути, салон с включённым AI спрашивал филиал,
+      а с выключенным — нет, и клиент из одного района записывался в другой. */
+  function beginBooking() {
+    if ((cfg.locations || []).length > 1) askLocation();
+    else { draft.location = (cfg.locations || [])[0] || null; askService(); }
+  }
+
+  async function askLocation() {
+    stepStart('location');
+    clearBack();
+    await botSay({ k: 'whichLocation' });
+    setChoices((cfg.locations || []).map((location) => ({
+      label: `${location.name}${location.address ? ` — ${location.address}` : ''}`,
+      onClick: () => { draft.location = location; say(location.name, 'me'); askService(); },
+    })), { k: 'pickLocation' });
+  }
+
+  /** Возврат из кнопочного сценария в свободный диалог: переписка продолжается
+      с того же места, разговор с ботом не начинается заново. */
+  function resumeChat() {
+    chatMode = true;
+    clearBack();
+    $('.sub').textContent = t('subChat');
+    setChoices(
+      [
+        ...cfg.services.slice(0, 3).map((s) => ({
+          label: s.title,
+          onClick: () => sendChat(t('wantService', { title: s.title })),
+        })),
+        { label: { k: 'fromList' }, kind: 'ghost', onClick: startGuided },
+      ],
+      { k: 'chatHint' },
+    );
+    openInput();
   }
 
   async function sendChat(text) {
@@ -504,10 +776,18 @@
         service: res.booking.service, master: res.booking.master,
         dateLabel: res.booking.date_label, time: res.booking.time, address: res.booking.address,
         inCalendar: Boolean(res.booking.html_link),
+        manageSent: Boolean(cfg?.notifySends),
       });
-      if (res.handoff) {
-        setChoices([{ label: { k: 'writeWa' }, onClick: () => window.open(cfg.salon.whatsapp, '_blank') }]);
+      // Варианты ответа от бота: клиенту не обязательно печатать — достаточно нажать.
+      const chips = (res.suggestions || [])
+        .filter((s) => s && s.label && s.text)
+        .map((s) => ({ label: s.label, kind: s.kind || '', onClick: () => sendChat(s.text) }));
+      // Сбой на стороне бота — предлагаем тот же путь кнопками, по шагам.
+      if (res.fallback) chips.push({ label: { k: 'fromList' }, kind: 'ghost', onClick: startGuided });
+      if (res.handoff && cfg.salon.whatsapp) {
+        chips.push({ label: { k: 'writeWa' }, kind: 'ghost', onClick: () => window.open(cfg.salon.whatsapp, '_blank') });
       }
+      if (chips.length) setChoices(chips);
       scroll();
     } catch (e) {
       typing.remove();
@@ -518,21 +798,275 @@
       ]);
     }
     lockInput(false);
-    input.focus();
+    focusInput();
   }
 
-  function askService() {
-    setChoices(
-      cfg.services.map((s) => ({
-        label: { k: 'serviceItem', v: { title: s.title, n: s.duration } },
-        onClick: () => { draft.service = s; say(s.title, 'me'); askMaster(); },
-      })),
-      { k: 'pickService' },
+
+  // ---- свободная фраза в кнопочном сценарии ------------------------------
+  /* «Мужская стрижка к Nacho в субботу в 15:00» — в одной строке есть услуга,
+     мастер, день и время. Разбираем её сами: AI у салона может быть выключен,
+     а гонять клиента по пяти экранам ради того, что он уже сказал, незачем.
+     Разбор нарочно осторожный: понятое подставляем, остальное спрашиваем
+     кнопками, а неузнанную фразу не выдумываем — показываем список услуг. */
+
+  const B = '(?:^|[^\\p{L}\\p{N}])';   // граница слова, работающая и для кириллицы
+
+  /** Слово без регистра, акцентов и «ё» — для сравнения названий с текстом. */
+  const fold = (str) => String(str || '').toLowerCase().replace(/ё/g, 'е')
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
+
+  /** Грубая основа: «стрижку», «стрижка» и «стрижки» дают одно и то же. */
+  const stem = (w) => (w.length >= 6 ? w.slice(0, 5) : w);
+
+  const WEEK_WORDS = [
+    'воскрес\\p{L}*|domingo|sunday',
+    'понедельн\\p{L}*|lunes|monday',
+    'вторник|вторн\\p{L}*|martes|tuesday',
+    'сред[ауы]|среда|mi[eé]rcoles|wednesday',
+    'четверг\\p{L}*|jueves|thursday',
+    'пятниц\\p{L}*|viernes|friday',
+    'суббот\\p{L}*|s[aá]bado|saturday',
+  ];
+
+  // Порядок важен: «мар» проверяется раньше «ма», иначе март становится маем.
+  const MONTH_WORDS = [
+    'янв|ene|jan', 'фев|feb', 'мар|mar', 'апр|abr|apr', 'ма|may',
+    'июн|jun', 'июл|jul', 'авг|ago|aug', 'сен|sep', 'окт|oct', 'ноя|nov', 'дек|dic|dec',
+  ];
+
+  const isoDate = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`
+    + `-${String(d.getDate()).padStart(2, '0')}`;
+
+  const midnight = () => { const d = new Date(); d.setHours(0, 0, 0, 0); return d; };
+
+  const shiftDays = (n) => { const d = midnight(); d.setDate(d.getDate() + n); return d; };
+
+  /** Ближайшая дата с этим днём недели, начиная с сегодня. */
+  function nextWeekday(dow) {
+    const d = midnight();
+    d.setDate(d.getDate() + ((dow - d.getDay() + 7) % 7));
+    return d;
+  }
+
+  /** Ближайшая дата с этим числом и месяцем: год клиент не пишет никогда. */
+  function nextDate(day, month) {
+    const now = midnight();
+    const d = new Date(now.getFullYear(), month, day);
+    if (d < now) d.setFullYear(d.getFullYear() + 1);
+    return d.getMonth() === month ? d : null;   // 31 февраля не существует
+  }
+
+  /** Дата из фразы. Возвращает саму дату и кусок текста, который её задал:
+      вырезав его, дальше ищем время и не принимаем «29.08» за «29:08». */
+  function findDate(text) {
+    const rel = [
+      [/(послезавтра|pasado\s+ma[nñ]ana|day\s+after\s+tomorrow)/iu, 2],
+      [/(завтра|ma[nñ]ana|tomorrow)/iu, 1],
+      [/(сегодня|hoy|today)/iu, 0],
+    ];
+    for (const [re, n] of rel) {
+      const m = text.match(re);
+      if (m) return { date: isoDate(shiftDays(n)), cut: m[0] };
+    }
+    for (let i = 0; i < WEEK_WORDS.length; i += 1) {
+      const m = text.match(new RegExp(`${B}(${WEEK_WORDS[i]})`, 'iu'));
+      if (m) return { date: isoDate(nextWeekday(i)), cut: m[0] };
+    }
+    const named = text.match(new RegExp(`(\\d{1,2})\\s*(?:de\\s+)?(${MONTH_WORDS.join('|')})\\p{L}*`, 'iu'));
+    if (named) {
+      const month = MONTH_WORDS.findIndex((w) => new RegExp(`^(?:${w})`, 'iu').test(named[2]));
+      const d = month >= 0 ? nextDate(Number(named[1]), month) : null;
+      if (d) return { date: isoDate(d), cut: named[0] };
+    }
+    const numeric = text.match(/(?:^|\s)(\d{1,2})[./-](\d{1,2})(?![\d:])/);
+    if (numeric) {
+      const d = nextDate(Number(numeric[1]), Number(numeric[2]) - 1);
+      if (d) return { date: isoDate(d), cut: numeric[0] };
+    }
+    return null;
+  }
+
+  /** Время из фразы: «15:00», «15.30», «в 15», «a las 15», «at 15». */
+  function findTime(text) {
+    const exact = text.match(/(?:^|\s)([01]?\d|2[0-3])\s*[:.]\s*([0-5]\d)(?!\d)/);
+    if (exact) return `${String(exact[1]).padStart(2, '0')}:${exact[2]}`;
+    const loose = text.match(
+      new RegExp(`(?:${B}(?:в|к|at|a\\s+las|a\\s+la|para\\s+las|hacia\\s+las)\\s*)([01]?\\d|2[0-3])(?![\\d.,:])`, 'iu'),
     );
+    if (loose) return `${String(loose[1]).padStart(2, '0')}:00`;
+    const hourly = text.match(new RegExp(`${B}([01]?\\d|2[0-3])\\s*(?:час\\p{L}*|ч|h|hs|hrs)${B}`, 'iu'));
+    if (hourly) return `${String(hourly[1]).padStart(2, '0')}:00`;
+    return null;
+  }
+
+  /** Услуги, названия которых перекликаются с фразой. Одна — берём её,
+      несколько — покажем именно их: «стрижка» бывает мужская и женская. */
+  function findServices(text) {
+    const words = new Set(fold(text).split(' ').filter(Boolean).map(stem));
+    const scored = cfg.services.map((service) => {
+      const tokens = fold(service.title).split(' ')
+        .filter((w) => w.length > 2).map(stem);
+      return { service, hit: tokens.filter((w) => words.has(w)).length };
+    }).filter((x) => x.hit > 0);
+    if (!scored.length) return [];
+    const best = Math.max(...scored.map((x) => x.hit));
+    return scored.filter((x) => x.hit === best).map((x) => x.service);
+  }
+
+  function findMaster(text) {
+    const said = ` ${fold(text)} `;
+    return cfg.masters.find((m) => {
+      const name = fold(m.name);
+      return name.length > 2 && said.includes(` ${name} `);
+    }) || null;
+  }
+
+  /** Мастера, которые делают эту услугу в выбранном филиале. */
+  function mastersFor(service) {
+    // Мастер, у которого филиал не указан или указан несуществующий, работает
+    // во всех: иначе первый же созданный филиал прячет всех мастеров разом —
+    // у них у всех стоит умолчание «main», а у настоящего филиала свой код.
+    const known = new Set((cfg.locations || []).map((x) => x.id));
+    return cfg.masters.filter((m) => m.services.includes(service.id)
+      && (!draft.location || !known.has(m.locationId) || m.locationId === draft.location.id));
+  }
+
+  function parseWish(text) {
+    const date = findDate(text);
+    // Дату вырезаем перед поиском времени: «29.08» — не «29:08», а «3 сентября»
+    // не должно превратиться в три часа ночи.
+    const rest = date ? text.replace(date.cut, ' ') : text;
+    return {
+      services: findServices(text),
+      master: findMaster(text),
+      date: date?.date || null,
+      time: findTime(rest),
+    };
+  }
+
+  /* Остаток фразы, пока клиент уточняет услугу: сказанные мастер, день и время
+     не должны пропасть из-за того, что «стрижка» в прайсе не одна. */
+  let wishRest = null;
+
+  /** Подставляет всё понятое из фразы и спрашивает только то, чего в ней не было. */
+  async function applyWish(text) {
+    return applyParsed(parseWish(text));
+  }
+
+  async function applyParsed(wish) {
+    wishRest = null;
+    // Точки возврата всех пропущенных шагов — здесь: «назад» с любого из них
+    // снимает подставленное и переспрашивает, а не стирает диалог целиком.
+    ['service', 'group', 'master', 'day', 'slot'].forEach(stepStart);
+
+    if (!wish.services.length && !wish.master && !wish.date && !wish.time) {
+      await botSay({ k: 'wishUnclear' });
+      return askService();
+    }
+    // Названный мастер сужает выбор: «мужская стрижка к Marat» — из двух
+    // мужских услуг Marat делает одну, спрашивать не о чем.
+    if (wish.services.length > 1 && wish.master) {
+      const his = wish.services.filter((x) => wish.master.services.includes(x.id));
+      if (his.length) wish.services = his;
+    }
+    if (wish.services.length === 1) [draft.service] = wish.services;
+    else if (wish.services.length > 1) {
+      wishRest = wish;
+      return askService(wish.services);
+    }
+    if (!draft.service) { wishRest = wish; return askService(); }
+
+    // Число мест в групповой услуге словами не берём — только кнопкой.
+    if (Number(draft.service.groupCapacity || 1) > 1 && !(draft.groupSize > 1)) return askGroup();
+    draft.groupSize = draft.groupSize || 1;
+
+    const fits = mastersFor(draft.service);
+    if (wish.master && fits.includes(wish.master)) draft.master = wish.master;
+    else if (wish.master) { await botSay({ k: 'wishNoMaster' }); delete draft.master; }
+    if (draft.master && !fits.includes(draft.master)) delete draft.master;
+    if (!draft.master) return askMaster();
+
+    if (!wish.date) return askDay();
+    let days;
+    try { ({ days } = await api(`/api/days?masterId=${draft.master.id}&lang=${lang}`)); }
+    catch (e) { return say(e.message, 'err'); }
+    const day = days.find((d) => d.date === wish.date);
+    if (!day) { await botSay({ k: 'wishNoDay' }); return askDay(); }
+    draft.date = day.date; draft.dateLabel = day.label; draft.dateLang = lang;
+
+    if (!wish.time) return askSlot();
+    let slots;
+    try {
+      ({ slots } = await api(
+        `/api/slots?masterId=${draft.master.id}&serviceId=${draft.service.id}&date=${draft.date}`,
+      ));
+    } catch (e) { return say(e.message, 'err'); }
+    if (!slots.some((x) => x.time === wish.time)) {
+      await botSay({ k: 'wishNoTime', v: () => ({ time: wish.time, date: draft.dateLabel }) });
+      return askSlot();
+    }
+    draft.time = wish.time;
+    // Что именно бот понял — вслух: клиент должен увидеть свою запись словами,
+    // прежде чем оставит имя и телефон.
+    await botSay({ fn: () => `${draft.service.title} · ${draft.master.name}\n`
+      + `${draft.dateLabel}, ${draft.time}` });
+    return askName();
+  }
+
+  function askService(only) {
+    stepStart('service');
+    // Первый шаг: возвращаться некуда, кроме свободного диалога, — и только
+    // если клиент пришёл оттуда сам.
+    if ((cfg.locations || []).length > 1) setBack('location', askLocation, 'service');
+    else if (fromChat) setBack('guided', resumeChat, 'service');
+    else clearBack();
+    // `only` — короткий список: клиент написал «стрижка», а их две, мужская и
+    // женская. Показываем эти две, а не весь прайс заново.
+    const list = only && only.length ? only : cfg.services;
+    setChoices(
+      [
+        ...list.map((s) => ({
+          // Цену показываем сразу в списке: раньше она появлялась только после
+          // выбора услуги, и клиент узнавал стоимость, уже сделав шаг.
+          label: s.price
+            ? { k: 'serviceItemPriced', v: { title: s.title, n: s.duration, price: s.price } }
+            : { k: 'serviceItem', v: { title: s.title, n: s.duration } },
+          onClick: () => {
+            draft.service = s; say(s.title, 'me');
+            // Клиент уточнил услугу — остальное из его фразы уже известно.
+            if (wishRest) {
+              const rest = wishRest;
+              wishRest = null;
+              return applyParsed({ ...rest, services: [s] });
+            }
+            if (Number(s.groupCapacity || 1) > 1) askGroup();
+            else { draft.groupSize = 1; askMaster(); }
+            return undefined;
+          },
+        })),
+      ],
+      { k: only && only.length ? 'wishNarrow' : 'pickService' },
+    );
+    openWish();
+  }
+
+  function askGroup() {
+    stepStart('group');
+    const capacity = Math.min(100, Number(draft.service.groupCapacity || 1));
+    setChoices([
+      ...Array.from({ length: capacity }, (_, i) => i + 1).map((n) => ({
+        label: { k: 'groupPlaces', v: { n } },
+        onClick: () => { draft.groupSize = n; say(t('groupPlaces', { n }), 'me'); askMaster(); },
+      })),
+    ], { k: 'pickGroup' });
+    setBack('service', askService, 'service', 'groupSize');
+    openWish();
   }
 
   async function askMaster() {
-    const list = cfg.masters.filter((m) => m.services.includes(draft.service.id));
+    stepStart('master');
+    const list = mastersFor(draft.service);
     if (!list.length) {
       await botSay({ k: 'noMasters' }, 'err');
       return;
@@ -545,15 +1079,22 @@
       }),
     });
     setChoices(
-      list.map((m) => ({
-        label: `${m.name} — ${m.role}`,
-        onClick: () => { draft.master = m; say(m.name, 'me'); askDay(); },
-      })),
+      [
+        ...list.map((m) => ({
+          label: m.name,
+          onClick: () => { draft.master = m; say(m.name, 'me'); askDay(); },
+        })),
+      ],
       { k: 'pickMaster' },
     );
+    const grouped = Number(draft.service.groupCapacity || 1) > 1;
+    setBack(grouped ? 'group' : 'service', grouped ? askGroup : askService,
+      'master', 'date', 'dateLabel', 'time');
+    openWish();
   }
 
   async function askDay() {
+    stepStart('day');
     let days;
     try {
       ({ days } = await api(`/api/days?masterId=${draft.master.id}&lang=${lang}`));
@@ -562,20 +1103,25 @@
 
     await botSay({ k: 'whichDay' });
     setChoices(
-      days.map((d) => ({
-        label: d.label,
-        onClick: () => {
-          draft.date = d.date; draft.dateLabel = d.label; draft.dateLang = lang;
-          const echo = say(d.label, 'me');
-          echo.__dateEcho = true;   // подпись дня зависит от языка — обновляем вместе с ним
-          askSlot();
-        },
-      })),
+      [
+        ...days.map((d) => ({
+          label: d.label,
+          onClick: () => {
+            draft.date = d.date; draft.dateLabel = d.label; draft.dateLang = lang;
+            const echo = say(d.label, 'me');
+            echo.__dateEcho = true;   // подпись дня зависит от языка — обновляем вместе с ним
+            askSlot();
+          },
+        })),
+      ],
       { k: 'nearestDates' },
     );
+    setBack('master', askMaster, 'master', 'date', 'dateLabel', 'time');
+    openWish();
   }
 
   async function askSlot() {
+    stepStart('slot');
     let slots;
     try {
       ({ slots } = await api(
@@ -585,7 +1131,11 @@
 
     if (!slots.length) {
       await botSay({ k: 'noSlots' });
-      return setChoices([{ label: { k: 'otherDate' }, kind: 'ghost', onClick: askDay }]);
+      setBack('day', askDay, 'date', 'dateLabel', 'time');
+      openWish();
+      return setChoices([
+        { ...backTo('day', askDay, 'date', 'dateLabel', 'time'), label: { k: 'otherDate' } },
+      ]);
     }
     await botSay({ k: 'freeAt', v: () => ({ master: draft.master.name }) });
     setChoices(
@@ -595,16 +1145,97 @@
           kind: 'slot',
           onClick: () => { draft.time = s.time; say(s.time, 'me'); askName(); },
         })),
-        { label: { k: 'otherDate' }, kind: 'ghost', onClick: askDay },
       ],
       { k: 'slotHint', v: () => ({ date: draft.dateLabel, n: draft.service.duration }) },
     );
+    setBack('day', askDay, 'date', 'dateLabel', 'time');
+    openWish();
   }
 
   async function askName() {
+    stepStart('name');
     await botSay({ k: 'askName' });
     askText('namePh', 'name');
+    setBack('slot', askSlot, 'time', 'name');
+    focusInput();
   }
+
+  // Коды соседних стран под рукой: клиент из Аргентины или Бразилии иначе
+  // наберёт домашний формат без «+», и номер молча станет уругвайским.
+  const PHONE_CODES = ['+598', '+54', '+55', '+1'];
+
+  /**
+   * Что не так с номером: '' — всё в порядке, иначе ключ сообщения.
+   *
+   * Длины местного номера приходят с сервера: пока виджет знал их сам, правила
+   * разошлись. Виджет пропускал семизначный номер и номер без «+» у салона
+   * из другой страны, сервер отвечал отказом уже после сводки — а починить
+   * телефон на том экране было негде.
+   */
+  function phoneProblem(value) {
+    const digits = value.replace(/\D/g, '');
+    if (digits.length < 7 || new Set(digits).size < 2) return 'badPhone';
+    if (value.startsWith('+')) return '';
+    const lengths = cfg?.salon?.phoneLengths || [];
+    if (!lengths.length) return '';
+    const code = String(cfg?.salon?.phoneCountry || '').replace(/\D/g, '');
+    // Номер, уже начинающийся с кода страны, ничего не потерял.
+    if (code && digits.startsWith(code) && lengths.includes(digits.length - code.length)) return '';
+    if (lengths.includes(digits.length)) return '';
+    // Цифр меньше, чем в местном номере, — код страны тут не поможет: номер
+    // просто неполный, и совет про код отправляет искать несуществующую ошибку.
+    return digits.length < Math.min(...lengths) ? 'badPhone' : 'needCode';
+  }
+
+  async function askPhone() {
+    stepStart('phone');
+    await botSay({ k: 'askPhone' });
+    askText('phonePh', 'phone');
+    const codes = PHONE_CODES.map((code) => ({
+      label: code, kind: 'ghost',
+      onClick: () => { input.value = code + ' '; focusInput(); },
+    }));
+    setChoices(codes, { k: 'phoneCountryHint' });
+    setBack('name', askName, 'name', 'phone');
+    focusInput();
+  }
+
+  // Ответ кнопкой — такая же реплика клиента, как набранный текст. Пока
+  // «Пропустить» и «Без промокода» ничего не оставляли в переписке, три вопроса
+  // бота шли подряд, будто клиент молчал, и было не понять, на что уже ответил.
+  async function askComment() {
+    stepStart('comment');
+    await botSay({ k: 'askComment' });
+    askText('commentPh', 'comment');
+    setChoices([
+      { label: { k: 'skip' }, kind: 'ghost',
+        onClick: () => { draft.comment = ''; say(t('skip'), 'me'); hideForm(); askPromo(); } },
+    ]);
+    setBack('phone', askPhone, 'phone', 'comment');
+    focusInput();
+  }
+
+  async function askPromo() {
+    stepStart('promo');
+    await botSay({ k: 'askPromo' });
+    askText('promoPh', 'promoCode');
+    setChoices([
+      { label: { k: 'noPromo' }, kind: 'ghost',
+        onClick: () => { draft.promoCode = ''; say(t('noPromo'), 'me'); hideForm(); askConsent(); } },
+    ]);
+    setBack('comment', askComment, 'comment', 'promoCode');
+    focusInput();
+  }
+
+  /* Enter внутри Shadow DOM не отправляет форму сам: неявная отправка ищет
+     форму в дереве документа и в теневом её не находит — нажатие гаснет, и
+     клиент, набравший имя, думает, что виджет завис. Отправляем вручную. */
+  input.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter' || e.shiftKey || e.isComposing) return;
+    e.preventDefault();
+    if (form.requestSubmit) form.requestSubmit();
+    else form.dispatchEvent(new Event('submit', { cancelable: true }));
+  });
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -624,27 +1255,38 @@
     say(value, 'me');
     input.value = '';
 
+    // Свободная фраза посреди кнопочного сценария: клиент написал, чего хочет,
+    // — подставляем понятое и спрашиваем только остаток.
+    if (step === 'wish') {
+      hideForm();
+      await applyWish(value);
+      return;
+    }
+
     if (step === 'name') {
       draft.name = value;
       hideForm();
-      await botSay({ k: 'askPhone' });
-      askText('phonePh', 'phone');
+      await (fixing ? backToSummary() : askPhone());
       return;
     }
     if (step === 'phone') {
-      if (value.replace(/\D/g, '').length < 7) return botSay({ k: 'badPhone' }, 'err');
+      const bad = phoneProblem(value);
+      if (bad) return botSay({ k: bad }, 'err');
       draft.phone = value;
       hideForm();
-      await botSay({ k: 'askComment' });
-      form.classList.add('on');
-      phKey = 'commentPh';
-      input.placeholder = t('commentPh');
-      step = 'comment';
-      setChoices([{ label: { k: 'skip' }, kind: 'ghost', onClick: () => { draft.comment = ''; hideForm(); askConsent(); } }]);
+      // Телефон переспрашивали из-за отказа сервера — остальное клиент уже
+      // ответил, и гнать его по тем же вопросам заново незачем.
+      await (fixing ? backToSummary() : askComment());
       return;
     }
     if (step === 'comment') {
       draft.comment = value;
+      hideForm();
+      askPromo();
+      return;
+    }
+    if (step === 'promo') {
+      draft.promoCode = value.toUpperCase();
       hideForm();
       askConsent();
     }
@@ -652,20 +1294,43 @@
 
   /** Напоминания уходят только с явного согласия — без него канал не используется. */
   async function askConsent() {
+    stepStart('consent');
     await botSay({ k: 'askConsent' });
     setChoices([
-      { label: { k: 'yesNotify' }, onClick: () => { draft.notifyConsent = true; confirm(); } },
-      { label: { k: 'noNotify' }, kind: 'ghost', onClick: () => { draft.notifyConsent = false; confirm(); } },
+      { label: { k: 'yesNotify' },
+        onClick: () => { draft.notifyConsent = true; say(t('yesNotify'), 'me'); confirm(); } },
+      { label: { k: 'noNotify' }, kind: 'ghost',
+        onClick: () => { draft.notifyConsent = false; say(t('noNotify'), 'me'); confirm(); } },
     ]);
+    setBack('promo', askPromo, 'promoCode', 'notifyConsent');
+  }
+
+  // Поля, которые сервер отвергает по одному, и шаг, где их спрашивают. Отказ
+  // приходит на готовой сводке, когда формы на экране уже нет: без этой таблицы
+  // клиенту оставались «другое время» и «начать заново» — то есть выхода не
+  // было, и запись обрывалась на последнем шаге.
+  const FIXABLE = {
+    bad_phone: ['phone', askPhone], need_country_code: ['phone', askPhone],
+    need_name: ['name', askName],
+  };
+
+  /** Поправленное поле принято — возвращаемся к сводке, а не к следующему вопросу. */
+  function backToSummary() {
+    fixing = false;
+    return confirm();
   }
 
   async function confirm() {
+    stepStart('confirm');
     await relabelDate();
     await botSay({ fn: summaryText });
     setChoices([
       { label: { k: 'confirmBtn' }, kind: 'pending', pending: true, onClick: submit },
       { label: { k: 'restart' }, kind: 'ghost', onClick: start },
     ]);
+    // Поправить одну строчку сводки — шаг назад. «Начать заново» остаётся
+    // рядом, но уже как осознанный выбор, а не единственный выход.
+    setBack('consent', askConsent, 'notifyConsent');
   }
 
   /** Полный текст сводки и карточки успеха — собираются заново при смене языка. */
@@ -676,6 +1341,8 @@
       name: draft.name, phone: draft.phone,
     })
       + (draft.comment ? t('summaryComment', { comment: draft.comment }) : '')
+      + (draft.promoCode ? t('summaryPromo', { promo: draft.promoCode }) : '')
+      + ((draft.groupSize || 1) > 1 ? t('summaryGroup', { n: draft.groupSize }) : '')
       + t('summaryNotify', { value: draft.notifyConsent ? t('notifyOn') : t('notifyOff') });
   }
 
@@ -683,7 +1350,11 @@
   // backend возвращает htmlLink пустым, и обещать запись в календаре мастера нельзя.
   const successText = (s) =>
     `${s.service} · ${s.master}\n${s.dateLabel}, ${s.time}\n${s.address}\n\n`
-    + t(s.inCalendar ? 'bookedNote' : 'bookedNoteLocal');
+    + t(s.inCalendar ? 'bookedNote' : 'bookedNoteLocal')
+    // Саму ссылку на «мои записи» виджет не показывает и показывать не должен:
+    // записаться можно с чужого телефона, а ссылка открывает все визиты этого
+    // номера. Право на неё подтверждает доставка в тот самый WhatsApp.
+    + (s.manageSent ? `\n\n${t('manageSent')}` : '');
 
   /** Если язык сменился после выбора даты, берём подпись дня заново — уже на новом языке. */
   async function relabelDate() {
@@ -731,21 +1402,81 @@
           name: draft.name,
           phone: draft.phone,
           comment: draft.comment,
+          promoCode: draft.promoCode || '',
+          source: SOURCE,
+          groupSize: draft.groupSize || 1,
           notifyConsent: Boolean(draft.notifyConsent),
           lang,
+          conversationId,
+          transcript,
         }),
       });
       pend.remove();
-      successCard({ ...res.summary, inCalendar: Boolean(res.htmlLink) });
+      successCard({
+        ...res.summary,
+        inCalendar: Boolean(res.htmlLink),
+        manageSent: Boolean(draft.notifyConsent && cfg?.notifySends),
+      });
+      trackBooking(res);
+      clearBack();
+      hideForm();
       setChoices([{ label: { k: 'bookAgain' }, kind: 'ghost', onClick: start }]);
     } catch (e) {
       pend.remove();
+      const fix = FIXABLE[e.code];
+      if (fix) {
+        // Сообщение говорим уже на нужном шаге: сначала сворачиваем всё, что
+        // было после него, иначе отказ исчезнет вместе с этими сообщениями.
+        fixing = true;
+        await rewind(fix[0], fix[1], [fix[0]]);
+        say(e.message, 'err');
+        return;
+      }
       say(e.message, 'err');
       setChoices([
         { label: { k: 'otherTime' }, onClick: askSlot },
         { label: { k: 'restart' }, kind: 'ghost', onClick: start },
       ]);
     }
+  }
+
+  /**
+   * Конверсия «запись» для аналитики сайта.
+   *
+   * Своё событие `bookingagent:booking-complete` остаётся — но требовать от
+   * салона написать на него слушатель значит не получить конверсий никогда.
+   * Поэтому пиксели дёргаем сами, если они на странице есть: Meta ждёт
+   * `Schedule`, Google Ads — событие в `gtag`, GTM — запись в `dataLayer`.
+   *
+   * Персональных данных не отправляем: услуга, мастер, сумма, промокод и
+   * источник. Имя и телефон клиента в рекламный кабинет не уезжают.
+   */
+  function trackBooking(res) {
+    const detail = {
+      bookingId: res.bookingId || '',
+      service: draft.service?.id || '',
+      master: draft.master?.id || '',
+      promo: draft.promoCode || '',
+      source: SOURCE,
+      value: Number(draft.service?.priceAmount || 0),
+      currency: draft.service?.currency || 'UYU',
+    };
+    window.dispatchEvent(new CustomEvent('bookingagent:booking-complete', { detail }));
+    try {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ event: 'booking_complete', ...detail });
+      // Meta: «Schedule» — стандартное событие записи на приём.
+      if (typeof window.fbq === 'function') {
+        window.fbq('track', 'Schedule',
+          detail.value ? { value: detail.value, currency: detail.currency } : {});
+      }
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'booking_complete', {
+          value: detail.value, currency: detail.currency,
+          items: [{ item_id: detail.service }],
+        });
+      }
+    } catch { /* аналитика не должна ломать запись — она уже создана */ }
   }
 
   // ---- подсказка у закрытой кнопки ---------------------------------------
@@ -764,6 +1495,63 @@
     setTimeout(() => { showTip(); tipTimer = setInterval(showTip, 18000); }, 1500);
   }
 
+  // ---- телефон: страница под окном и клавиатура ---------------------------
+  // На полном экране окно перекрывает сайт целиком. Если страницу под ним не
+  // придержать, палец скроллит её, а не переписку, и после закрытия клиент
+  // оказывается в другом месте сайта.
+  let pageY = 0, pageLocked = false;
+  const pageStyle = {};
+
+  function lockPage() {
+    if (pageLocked || !fullscreen.matches) return;
+    pageY = window.scrollY || window.pageYOffset || 0;
+    const b = document.body;
+    ['position', 'top', 'left', 'right', 'width'].forEach((k) => { pageStyle[k] = b.style[k]; });
+    b.style.position = 'fixed';
+    b.style.top = `-${pageY}px`;
+    b.style.left = '0';
+    b.style.right = '0';
+    b.style.width = '100%';
+    pageLocked = true;
+  }
+
+  function unlockPage() {
+    if (!pageLocked) return;
+    const b = document.body;
+    Object.keys(pageStyle).forEach((k) => { b.style[k] = pageStyle[k] || ''; });
+    pageLocked = false;
+    window.scrollTo(0, pageY);
+  }
+
+  // Клавиатура не уменьшает окно браузера — она уменьшает видимую область.
+  // Без этой подгонки поле ввода прячется под клавиатурой, и телефон начинает
+  // возить страницу вверх-вниз в попытке его показать.
+  const vv = window.visualViewport;
+
+  function fitViewport() {
+    if (!vv) return;
+    if (!fullscreen.matches || !panel.classList.contains('open')) {
+      host.style.removeProperty('--vv-h');
+      host.style.removeProperty('--vv-top');
+      return;
+    }
+    host.style.setProperty('--vv-h', `${Math.round(vv.height)}px`);
+    host.style.setProperty('--vv-top', `${Math.round(vv.offsetTop)}px`);
+  }
+
+  if (vv) {
+    vv.addEventListener('resize', () => { fitViewport(); scroll(); });
+    vv.addEventListener('scroll', fitViewport);
+  }
+
+  // Поворот экрана или смена размера окна: полноэкранный режим включается и
+  // выключается на лету — держим страницу и высоту окна в согласии с ним.
+  fullscreen.addEventListener('change', () => {
+    if (fullscreen.matches) { if (panel.classList.contains('open')) lockPage(); }
+    else unlockPage();
+    fitViewport();
+  });
+
   // ---- открытие/закрытие -------------------------------------------------
   let opener = null;   // элемент страницы, с которого открыли окно, — ему вернём фокус
 
@@ -775,6 +1563,8 @@
     panel.classList.add('open');
     dock.classList.add('hidden');   // на полноэкранном мобильном кнопка не должна лежать поверх диалога
     fab.setAttribute('aria-expanded', 'true');
+    lockPage();
+    fitViewport();
     panel.focus({ preventScroll: true });
     if (!log.children.length) {
       await wait(180); // сначала показывается шапка, затем первое сообщение
@@ -785,6 +1575,8 @@
   function close() {
     panel.classList.remove('open');
     dock.classList.remove('hidden');
+    fitViewport();
+    unlockPage();
     fab.setAttribute('aria-expanded', 'false');
     // Фокус возвращается тому, кто открыл окно: кнопке на странице, если она была.
     const back = opener && opener.isConnected ? opener : fab;
