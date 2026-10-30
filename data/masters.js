@@ -92,6 +92,11 @@ var MASTERS_DATA = [
         service: { ru: 'Тотал-блонд', es: 'Rubio total', en: 'Total blonde' },
         note: { ru: 'от', es: 'desde', en: 'from' },
         price: '$ 3.000'
+      },
+      {
+        service: { ru: 'Сложное окрашивание', es: 'Coloración compleja', en: 'Complex coloring' },
+        note: { ru: 'от', es: 'desde', en: 'from' },
+        price: '$ 4.000'
       }
     ]
   },
