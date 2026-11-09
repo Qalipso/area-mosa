@@ -4,10 +4,10 @@ Vector print files are in `out/print/` (text converted to outlines, no fonts nee
 
 | File | Purpose |
 |------|---------|
-| `top_manifest_MIRROR_for-print.{svg,pdf}` | Transom glass slogan, **mirrored** — send to print for application on the inside of the glass |
-| `door_logo-hours-qr_MIRROR_for-print.{svg,pdf}` | Door: logo, PELUQUERÍA, hours, QR (https://area-mosa.com/), **mirrored** |
+| `door_450x650mm_MIRROR_for-print_{sand,white}.{svg,pdf}` | Door film 45 x 65 cm: logo O (Ø 17 cm), PELUQUERÍA (32 cm), hours (15 cm), QR 6x6 cm (https://area-mosa.com/), **mirrored** — for application on the inside of the glass |
+| `top_manifest_MIRROR_for-print.{svg,pdf}` | Transom glass slogan, **mirrored** (placeholder size 1000 x 500 mm, vector — rescale) |
 | `*_NORMAL_street-view.*` | Same artwork as seen from the street (reference / proof) |
 
-Default artboards: top 1000 x 500 mm (the whole 2:1 pane), door ring diameter 200 mm. Both are vector, so resize freely.
+PDFs are pure vector (text outlined, page size exact in mm). Logo is a vector reconstruction of `src/logo_reference.jpg` (`src/logo.py`).
 
-Rebuild: `python3 src/export_print.py` (needs `fonttools uharfbuzz segno shapely` + Playwright). Content (hours, QR URL) lives in `src/door.py`; slogan in `src/designs.py`.
+Rebuild: `python3 src/export_print.py` (needs `fonttools uharfbuzz segno shapely cairosvg` + Playwright for previews). Content (hours, QR URL) lives in `src/door.py`; slogan in `src/designs.py`.

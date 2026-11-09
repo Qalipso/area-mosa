@@ -14,7 +14,8 @@ HERE = os.path.dirname(__file__)
 def write(name, svg, w_mm, h_mm):
     sp = os.path.join(OUT, name + ".svg")
     open(sp, "w").write(svg)
-    subprocess.run(["node", os.path.join(HERE, "pdf.js"), sp, os.path.join(OUT, name + ".pdf"), f"{w_mm:g}", f"{h_mm:g}"], check=True)
+    import cairosvg   # точный размер страницы в мм, чистый вектор
+    cairosvg.svg2pdf(url=sp, write_to=os.path.join(OUT, name + ".pdf"))
     print(name, f"{w_mm:g} x {h_mm:g} мм")
 
 
@@ -23,14 +24,14 @@ def main():
     t = v3(); dx, dy = t.centered_offset(bias=-4)
     for mirror, tag in ((False, "NORMAL_street-view"), (True, "MIRROR_for-print")):
         write(f"top_manifest_{tag}", t.svg(mirror=mirror, dx=dx, dy=dy, color=COLOR, width=f"{W}mm", height=f"{H}mm"), W, H)
-    # дверь: масштаб, при котором кольцо Ø 200 мм
+    # дверь: плёнка 450 x 650 мм, композиция по центру
+    from door import ART_W, ART_H
     c, _ = cluster()
-    k, m = 200 / 300, 10
-    bw, bh = c.right - c.left + 2 * m, c.bottom - c.top + 2 * m
+    dy = (ART_H - (c.top + c.bottom)) / 2
     for mirror, tag in ((False, "NORMAL_street-view"), (True, "MIRROR_for-print")):
-        svg = c.svg(mirror=mirror, dx=-c.left + m, dy=-c.top + m, view=(bw, bh), color=COLOR,
-                    width=f"{bw * k:.1f}mm", height=f"{bh * k:.1f}mm")
-        write(f"door_logo-hours-qr_{tag}", svg, round(bw * k, 1), round(bh * k, 1))
+        for cname, col in (("sand", COLOR), ("white", "#FFFFFF")):
+            svg = c.svg(mirror=mirror, dx=0, dy=dy, view=(ART_W, ART_H), color=col, width=f"{ART_W}mm", height=f"{ART_H}mm")
+            write(f"door_450x650mm_{tag}_{cname}", svg, ART_W, ART_H)
 
 
 if __name__ == "__main__":

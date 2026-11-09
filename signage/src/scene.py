@@ -10,7 +10,7 @@ TMP = os.path.join(os.path.dirname(__file__), "..", "out", "tmp")
 os.makedirs(TMP, exist_ok=True)
 S = 3
 TOP_RECT = (mockup.X0, mockup.Y0, mockup.X1, mockup.Y1)
-K = 85 / 300.0           # px фото на единицу двери (кольцо Ø 85 px)
+K = 85 / 170.0           # px фото на мм двери (кольцо Ø 17 см = 85 px)
 
 
 def clean_door(img):

@@ -46,35 +46,39 @@ def qr_path(url, x, y, size, quiet_ec="m"):
     return "".join(ds), n
 
 
-def cluster(qr_size=190):
+ART_W, ART_H = 450, 650          # плёнка 45 x 65 см (правая створка двери ≈ 90 см шириной)
+
+
+def cluster(D=170, word_w=320, hours_w=150, qr_size=60, art_w=ART_W):
+    """Единицы — миллиметры. Размеры по рекомендации: кольцо Ø 16–18 см, PELUQUERÍA 30–34 см,
+    часы 15–20 см, QR 6x6 см. Композиция строится от верха кольца, ось симметрии x = art_w/2."""
     c = Canvas()
-    cx, D = 500, 300
-    R = D / 2
+    cx, R = art_w / 2, D / 2
     # логотип «О» с чертой — по эталону (src/logo_reference.jpg), см. logo.py
     d, (bx, by, bw, bh), bb = logo_geometry(cx, R, D)
     c.raw(d, bb)
     c.rect(bx, by, bw, bh)
-    # PELUQUERÍA — широкий трекинг, ширина ≈ 1.5 диаметра
+    # PELUQUERÍA — широкий трекинг
     tr = 0.22
-    size = fit_size("PELUQUERÍA", DM_R, 450, tr)
-    y = D + 100 + cap_height(DM_R, size)
-    c.text("PELUQUERÍA", DM_R, size, cx, y, tr, "center")
+    sw = fit_size("PELUQUERÍA", DM_R, word_w, tr)
+    y = D + 45 + cap_height(DM_R, sw)
+    c.text("PELUQUERÍA", DM_R, sw, cx, y, tr, "center")
     # часы
-    y += 135
-    s1 = 27
+    s2 = fit_size(HOURS_TIME, DM_R, hours_w, 0.07)
+    s1 = s2 * 0.62
+    y += 70 + cap_height(DM_M, s1)
     c.text(HOURS_TITLE, DM_M, s1, cx, y, 0.16, "center")
-    y += 62
-    s2 = 33
+    y += 30 + cap_height(DM_R, s2)
     c.text(HOURS_DAYS, DM_R, s2, cx, y, 0.07, "center")
-    y += 52
+    y += s2 * 1.55
     c.text(HOURS_TIME, DM_R, s2, cx, y, 0.07, "center")
     # QR
-    y += 80
-    d, n = qr_path(QR_URL, cx - qr_size / 2, y, qr_size)
-    c.raw(d, (cx - qr_size / 2, y, cx + qr_size / 2, y + qr_size))
+    y += 50
+    dq, n = qr_path(QR_URL, cx - qr_size / 2, y, qr_size)
+    c.raw(dq, (cx - qr_size / 2, y, cx + qr_size / 2, y + qr_size))
     return c, n
 
 
 if __name__ == "__main__":
     c, n = cluster()
-    print("bbox: x %.0f..%.0f  y %.0f..%.0f   QR %dx%d модулей" % (c.left, c.right, c.top, c.bottom, n, n))
+    print("bbox мм: x %.0f..%.0f  y %.0f..%.0f (высота %.0f)  QR %dx%d модулей" % (c.left, c.right, c.top, c.bottom, c.bottom - c.top, n, n))
