@@ -44,7 +44,7 @@ services:
       - EXECUTIONS_DATA_SAVE_ON_SUCCESS=all
       - EXECUTIONS_DATA_SAVE_MANUAL_EXECUTIONS=true
       - N8N_RESTRICT_ENVIRONMENT_VARIABLES_ACCESS=false
-      - NODE_FUNCTION_ALLOW_BUILTIN=crypto,fs,path,https,url,querystring
+      - NODE_FUNCTION_ALLOW_BUILTIN=crypto,fs,path,http,https,url,querystring
       # --- AREA MOSA env vars (used by workflows) ---
       - EVOLUTION_API_URL=http://evo_api:8080
       - EVOLUTION_API_KEY=${EVOLUTION_API_KEY:-area-mosa-evo-key}

@@ -55,7 +55,7 @@ These cause runtime errors if violated:
 2. **No `$helpers` in toolCode nodes** — LangChain tool nodes cannot access `$helpers.httpRequest`
 3. **No `$('NodeName')` in toolCode nodes** — cannot reference other nodes' output
 4. **No `$input` in toolCode nodes** — tool receives input via `$fromAI()` parameters only
-5. **Allowed builtins**: `crypto,fs,path,https,url,querystring` (set in docker-compose)
+5. **Allowed builtins**: `crypto,fs,path,http,https,url,querystring` (set in docker-compose; `http` is needed to message the master via `evo_api`; env changes need `docker compose up -d n8n`, not just restart)
 
 Pattern: Each tool must be **fully self-contained** — generate its own JWT, make its own HTTP requests.
 

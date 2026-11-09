@@ -6,7 +6,10 @@
       "name": "README - Setup Instructions",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
-      "position": [180, 40],
+      "position": [
+        180,
+        40
+      ],
       "parameters": {
         "content": "## AREA MOSA - WhatsApp Booking Agent\n\n### Setup\n- Mount service-account.json at /home/node/service-account.json\n- Share Google Calendar with service account email\n- Set NODE_FUNCTION_ALLOW_BUILTIN=crypto,fs,path,https,url,querystring\n\n### Evolution API\n- Webhook URL: YOUR_N8N_URL/webhook/whatsapp-booking\n- Event: MESSAGES_UPSERT, byEvents: false",
         "height": 220,
@@ -19,7 +22,10 @@
       "name": "Workflow Error Trigger",
       "type": "n8n-nodes-base.errorTrigger",
       "typeVersion": 1,
-      "position": [200, 700],
+      "position": [
+        200,
+        700
+      ],
       "parameters": {}
     },
     {
@@ -27,7 +33,10 @@
       "name": "Notify Error via WhatsApp",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
-      "position": [440, 700],
+      "position": [
+        440,
+        700
+      ],
       "onError": "continueRegularOutput",
       "parameters": {
         "method": "POST",
@@ -35,16 +44,28 @@
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
-            { "name": "apikey", "value": "area-mosa-evo-key" },
-            { "name": "Content-Type", "value": "application/json" }
+            {
+              "name": "apikey",
+              "value": "area-mosa-evo-key"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
           ]
         },
         "sendBody": true,
         "contentType": "json",
         "bodyParameters": {
           "parameters": [
-            { "name": "number", "value": "59892122029" },
-            { "name": "text", "value": "Technical issue. Please contact +598 94 786877" }
+            {
+              "name": "number",
+              "value": "59892122029"
+            },
+            {
+              "name": "text",
+              "value": "Technical issue. Please contact +598 94 786877"
+            }
           ]
         }
       }
@@ -54,7 +75,10 @@
       "name": "WhatsApp Webhook",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
-      "position": [200, 360],
+      "position": [
+        200,
+        360
+      ],
       "onError": "continueRegularOutput",
       "parameters": {
         "httpMethod": "POST",
@@ -69,7 +93,10 @@
       "name": "Filter Incoming Messages",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
-      "position": [440, 360],
+      "position": [
+        440,
+        360
+      ],
       "parameters": {
         "conditions": {
           "options": {
@@ -82,7 +109,10 @@
               "id": "cond-has-message",
               "leftValue": "={{ $json.body.data.message.conversation || ($json.body.data.message.extendedTextMessage ? $json.body.data.message.extendedTextMessage.text : '') }}",
               "rightValue": "",
-              "operator": { "type": "string", "operation": "notEmpty" }
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty"
+              }
             }
           ],
           "combinator": "and"
@@ -94,7 +124,10 @@
       "name": "Extract Message Data",
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
-      "position": [680, 260],
+      "position": [
+        680,
+        260
+      ],
       "parameters": {
         "mode": "manual",
         "assignments": {
@@ -133,7 +166,10 @@
       "name": "Get Google Token",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [680, 400],
+      "position": [
+        680,
+        400
+      ],
       "parameters": {
         "jsCode": "const crypto = require('crypto');\nconst fs = require('fs');\nconst https = require('https');\n\nconst sa = JSON.parse(fs.readFileSync('/home/node/service-account.json', 'utf8'));\n\nconst header = Buffer.from(JSON.stringify({alg: 'RS256', typ: 'JWT'})).toString('base64url');\nconst now = Math.floor(Date.now() / 1000);\nconst payload = Buffer.from(JSON.stringify({\n  iss: sa.client_email,\n  scope: 'https://www.googleapis.com/auth/calendar',\n  aud: 'https://oauth2.googleapis.com/token',\n  iat: now,\n  exp: now + 3600\n})).toString('base64url');\n\nconst signingInput = header + '.' + payload;\nconst sign = crypto.createSign('RSA-SHA256');\nsign.update(signingInput);\nconst signature = sign.sign(sa.private_key, 'base64url');\nconst jwt = signingInput + '.' + signature;\n\nconst postData = 'grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer&assertion=' + jwt;\n\nconst tokenData = await new Promise((resolve, reject) => {\n  const req = https.request('https://oauth2.googleapis.com/token', {\n    method: 'POST',\n    headers: {\n      'Content-Type': 'application/x-www-form-urlencoded',\n      'Content-Length': Buffer.byteLength(postData)\n    }\n  }, (res) => {\n    let data = '';\n    res.on('data', (chunk) => data += chunk);\n    res.on('end', () => resolve(JSON.parse(data)));\n  });\n  req.on('error', reject);\n  req.write(postData);\n  req.end();\n});\n\nconst items = $input.all();\nreturn items.map(item => ({\n  json: {\n    ...item.json,\n    googleToken: tokenData.access_token,\n    calendarId: 'ae4d71467b7b1970bac78ebbfc075f2c3451427a3bf7cdddce921bbce0b92344@group.calendar.google.com'\n  }\n}));"
       }
@@ -143,11 +179,14 @@
       "name": "Booking AI Agent",
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
-      "position": [920, 260],
+      "position": [
+        920,
+        260
+      ],
       "parameters": {
         "promptType": "define",
         "text": "={{ $json.message + '\\n[clientName=' + $json.clientName + ', phone=' + $json.phone + ', today=' + $now.format('yyyy-MM-dd') + ', dayOfWeek=' + $now.format('EEEE') + ']' }}",
-        "systemMessage": "You are a booking assistant for AREA MOSA hair salon in Montevideo, Uruguay.\nMaster: Artem. Address: Cordon, Montevideo, Uruguay.\nTimezone: America/Montevideo (UTC-3).\n\nIMPORTANT: The current date is provided in the user message as 'today=YYYY-MM-DD, dayOfWeek=...'. ALWAYS use this date for scheduling. When a client says 'tomorrow', add 1 day to today. When they say 'next Monday', calculate from today's date.\n\nCRITICAL RULE - LANGUAGE: You MUST detect the client's language from their message and reply ONLY in that same language. If the client writes in Russian - reply in Russian. If in Spanish - reply in Spanish. If in English - reply in English. NEVER reply in English if the client wrote in Russian or Spanish.\n\nClient info (internal, do not repeat back):\n- Name: use from conversation context\n- Phone: use from conversation context\n\nYour job:\n1. Greet warmly and introduce yourself as the AREA MOSA booking assistant\n2. Present available services when asked\n3. Ask for preferred date and time\n4. Check calendar availability using the check_availability tool\n5. If available - book using the create_booking tool then send confirmation\n6. If not available - suggest 2-3 alternative times the same day or next day\n7. Send confirmation with: service name, date, time, duration, and salon address\n\nAvailable services:\n- Стрижка / Corte / Haircut - 45 min\n- Окрашивание / Coloracion / Coloring - 90 min\n- Уход за волосами / Cuidado capilar / Hair Care - 60 min\n- Комбо / Combo - 120 min\n\nWorking hours: Mon-Fri 9:00-20:00, Saturday by appointment only, Sunday closed.\n\nRules:\n- Be friendly, professional and concise\n- Always confirm service, date, and time BEFORE creating the booking\n- If client asks about prices, say that Master Artem will discuss pricing based on specific needs at the appointment\n- Never book outside working hours (9:00-20:00) or on Sunday\n- For Saturday bookings, mention it is by special appointment only\n- Always end booking confirmations with the salon address: Cordon, Montevideo, Uruguay\n- When calling create_booking, use client name from $json.clientName and phone from $json.phone\n- When calling create_booking, pass the detected language code (ru, es, or en) in the language field\n\nREMEMBER: Reply in the SAME language as the client's message. This is the most important rule.",
+        "systemMessage": "You are a booking assistant for AREA MOSA hair salon in Montevideo, Uruguay.\nMaster: Artem. Address: Cordon, Montevideo, Uruguay.\nTimezone: America/Montevideo (UTC-3).\n\nIMPORTANT: The current date is provided in the user message as 'today=YYYY-MM-DD, dayOfWeek=...'. ALWAYS use this date for scheduling. When a client says 'tomorrow', add 1 day to today. When they say 'next Monday', calculate from today's date.\n\nCRITICAL RULE - LANGUAGE: You MUST detect the client's language from their message and reply ONLY in that same language. If the client writes in Russian - reply in Russian. If in Spanish - reply in Spanish. If in English - reply in English. NEVER reply in English if the client wrote in Russian or Spanish.\n\nClient info (internal, do not repeat back):\n- Name: use from conversation context\n- Phone: use from conversation context\n\nYour job:\n1. Greet warmly and introduce yourself as the AREA MOSA booking assistant\n2. Present available services when asked\n3. Ask for preferred date and time\n4. Check calendar availability using the check_availability tool\n5. If available - book using the create_booking tool then send confirmation\n6. If not available - suggest 2-3 alternative times the same day or next day\n7. Send confirmation with: service name, date, time, duration, and salon address\n\nCancelling and rescheduling:\n- If the client wants to CANCEL or MOVE an existing appointment, FIRST call find_bookings (with the client phone) to get their upcoming bookings and event_id values. NEVER invent an event_id.\n- If there are several bookings, ask which one. If there are none, say so politely.\n- CANCEL: confirm with the client which booking will be cancelled, then call cancel_booking. Tell the client it is cancelled and that the slot was freed.\n- RESCHEDULE: ask for the new date and time, call reschedule_booking (it checks availability itself and keeps the same service and duration). If it says NOT AVAILABLE, suggest 2-3 alternative times and try again. Do NOT cancel and re-create the booking, and do NOT call create_booking for a reschedule.\n- The master (Artem) is notified automatically by the tools. Never tell the client how the master is notified, and never mention lines marked '(Internal: ...)'.\n- Same working-hours rules apply to the new time (Mon-Fri 9:00-20:00, Saturday by appointment, Sunday closed).\n\nAvailable services:\n- Стрижка / Corte / Haircut - 45 min\n- Окрашивание / Coloracion / Coloring - 90 min\n- Уход за волосами / Cuidado capilar / Hair Care - 60 min\n- Комбо / Combo - 120 min\n\nWorking hours: Mon-Fri 9:00-20:00, Saturday by appointment only, Sunday closed.\n\nRules:\n- Be friendly, professional and concise\n- Always confirm service, date, and time BEFORE creating the booking\n- If client asks about prices, say that Master Artem will discuss pricing based on specific needs at the appointment\n- Never book outside working hours (9:00-20:00) or on Sunday\n- For Saturday bookings, mention it is by special appointment only\n- Always end booking confirmations with the salon address: Cordon, Montevideo, Uruguay\n- When calling create_booking, use client name from $json.clientName and phone from $json.phone\n- When calling create_booking, pass the detected language code (ru, es, or en) in the language field\n\nREMEMBER: Reply in the SAME language as the client's message. This is the most important rule.",
         "options": {
           "maxIterations": 10
         }
@@ -158,14 +197,26 @@
       "name": "GPT-4o-mini",
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
-      "position": [760, 480],
+      "position": [
+        760,
+        480
+      ],
       "onError": "continueRegularOutput",
       "parameters": {
-        "model": { "mode": "id", "value": "gpt-4o-mini" },
-        "options": { "temperature": 0.7, "maxTokens": 1500 }
+        "model": {
+          "mode": "id",
+          "value": "gpt-4o-mini"
+        },
+        "options": {
+          "temperature": 0.7,
+          "maxTokens": 1500
+        }
       },
       "credentials": {
-        "openAiApi": { "id": "3euq2rW2MeGvlMag", "name": "OpenAI API" }
+        "openAiApi": {
+          "id": "3euq2rW2MeGvlMag",
+          "name": "OpenAI API"
+        }
       }
     },
     {
@@ -173,7 +224,10 @@
       "name": "Conversation Memory",
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
-      "position": [920, 480],
+      "position": [
+        920,
+        480
+      ],
       "parameters": {
         "contextWindowLength": 10,
         "sessionIdType": "customKey",
@@ -185,7 +239,10 @@
       "name": "check_availability",
       "type": "@n8n/n8n-nodes-langchain.toolCode",
       "typeVersion": 1.3,
-      "position": [1060, 480],
+      "position": [
+        1060,
+        480
+      ],
       "parameters": {
         "name": "check_availability",
         "description": "Check if a specific date and time slot is available in the salon calendar for a booking. Always call this tool before creating any booking. Returns AVAILABLE or NOT AVAILABLE with details.",
@@ -201,15 +258,18 @@
       "name": "create_booking",
       "type": "@n8n/n8n-nodes-langchain.toolCode",
       "typeVersion": 1.3,
-      "position": [1200, 480],
+      "position": [
+        1200,
+        480
+      ],
       "parameters": {
         "name": "create_booking",
-        "description": "Create a confirmed booking appointment in the Google Calendar. Only call this AFTER checking availability AND confirming all details with the client.",
+        "description": "Create a confirmed booking appointment in the Google Calendar and notify the master. Only call this AFTER checking availability AND confirming all details with the client.",
         "language": "javaScript",
         "specifyInputSchema": true,
         "schemaType": "manual",
         "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"service\": { \"type\": \"string\", \"description\": \"Service: Haircut, Coloring, Hair Care, or Combo\" },\n    \"date\": { \"type\": \"string\", \"description\": \"Date YYYY-MM-DD\" },\n    \"time\": { \"type\": \"string\", \"description\": \"Start time HH:MM 24h\" },\n    \"duration_minutes\": { \"type\": \"number\", \"description\": \"Duration: 45/60/90/120\" },\n    \"client_name\": { \"type\": \"string\", \"description\": \"Client name\" },\n    \"client_phone\": { \"type\": \"string\", \"description\": \"Client phone (digits)\" },\n    \"language\": { \"type\": \"string\", \"description\": \"Language: ru, es, or en\" }\n  },\n  \"required\": [\"service\", \"date\", \"time\", \"duration_minutes\", \"client_name\", \"client_phone\", \"language\"]\n}",
-        "jsCode": "const crypto = require('crypto');\nconst fs = require('fs');\nconst https = require('https');\n\nlet input;\ntry {\n  input = typeof query === 'string' ? JSON.parse(query) : query;\n} catch (e) {\n  return `Error: Invalid input. Got: ${query}`;\n}\n\nconst { service, date, time, duration_minutes, client_name, client_phone, language } = input;\nconst lang = language || 'es';\nif (!service || !date || !time || !duration_minutes || !client_name || !client_phone) return 'Error: Missing required fields.';\n\nconst [h, m] = time.split(':').map(Number);\nconst endMin = h * 60 + m + Number(duration_minutes);\nconst endH = Math.floor(endMin / 60).toString().padStart(2, '0');\nconst endM = (endMin % 60).toString().padStart(2, '0');\nconst endTime = `${endH}:${endM}`;\n\nfunction getToken() {\n  const sa = JSON.parse(fs.readFileSync('/home/node/service-account.json', 'utf8'));\n  const hdr = Buffer.from(JSON.stringify({alg:'RS256',typ:'JWT'})).toString('base64url');\n  const now = Math.floor(Date.now()/1000);\n  const pl = Buffer.from(JSON.stringify({iss:sa.client_email,scope:'https://www.googleapis.com/auth/calendar',aud:'https://oauth2.googleapis.com/token',iat:now,exp:now+3600})).toString('base64url');\n  const si = hdr+'.'+pl;\n  const sign = crypto.createSign('RSA-SHA256');\n  sign.update(si);\n  const sig = sign.sign(sa.private_key,'base64url');\n  const jwt = si+'.'+sig;\n  const pd = 'grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer&assertion='+jwt;\n  return new Promise((resolve,reject) => {\n    const req = https.request('https://oauth2.googleapis.com/token',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded','Content-Length':Buffer.byteLength(pd)}},(res)=>{let d='';res.on('data',c=>d+=c);res.on('end',()=>resolve(JSON.parse(d)));});\n    req.on('error',reject);req.write(pd);req.end();\n  });\n}\n\nfunction gcalPost(token, calId, body) {\n  const bodyStr = JSON.stringify(body);\n  const path = `/calendar/v3/calendars/${encodeURIComponent(calId)}/events`;\n  return new Promise((resolve,reject) => {\n    const req = https.request({hostname:'www.googleapis.com',path:path,method:'POST',headers:{'Authorization':'Bearer '+token,'Content-Type':'application/json','Content-Length':Buffer.byteLength(bodyStr)}},(res)=>{let d='';res.on('data',c=>d+=c);res.on('end',()=>resolve(JSON.parse(d)));});\n    req.on('error',reject);req.write(bodyStr);req.end();\n  });\n}\n\nconst calId = 'ae4d71467b7b1970bac78ebbfc075f2c3451427a3bf7cdddce921bbce0b92344@group.calendar.google.com';\n\nconst eventBody = {\n  summary: `${service} - ${client_name}`,\n  description: `Client: ${client_name}\\nPhone: ${client_phone}\\nService: ${service}\\nDuration: ${duration_minutes} min\\nLanguage: ${lang}\\n\\nBooked via WhatsApp Bot`,\n  location: 'Cordon, Montevideo, Uruguay',\n  start: { dateTime: `${date}T${time}:00-03:00`, timeZone: 'America/Montevideo' },\n  end: { dateTime: `${date}T${endTime}:00-03:00`, timeZone: 'America/Montevideo' },\n  reminders: { useDefault: false, overrides: [{ method: 'popup', minutes: 60 }, { method: 'popup', minutes: 1440 }] },\n  colorId: '2'\n};\n\ntry {\n  const tokenData = await getToken();\n  const token = tokenData.access_token;\n  if (!token) return `BOOKING ERROR: Could not get Google token: ${JSON.stringify(tokenData)}`;\n  const resp = await gcalPost(token, calId, eventBody);\n  if (resp.id) {\n    return `BOOKING CONFIRMED\\nEvent ID: ${resp.id}\\nService: ${service}\\nDate: ${date}\\nTime: ${time}-${endTime} (${duration_minutes} min)\\nClient: ${client_name}\\nSalon: AREA MOSA, Cordon, Montevideo, Uruguay`;\n  }\n  return `BOOKING ERROR: ${JSON.stringify(resp)}`;\n} catch (err) {\n  return `BOOKING ERROR: ${err.message}. Ask client to contact +598 94 786877.`;\n}"
+        "jsCode": "const crypto = require('crypto');\nconst fs = require('fs');\nconst https = require('https');\n\nconst CAL_ID = 'ae4d71467b7b1970bac78ebbfc075f2c3451427a3bf7cdddce921bbce0b92344@group.calendar.google.com';\nconst MASTER_PHONE = '59892122029';\nconst EVO_HOST = 'evo_api';\nconst EVO_PORT = 8080;\nconst EVO_PATH = '/message/sendText/area-mosa';\nconst EVO_KEY = 'area-mosa-evo-key';\n\nfunction getToken() {\n  const sa = JSON.parse(fs.readFileSync('/home/node/service-account.json', 'utf8'));\n  const hdr = Buffer.from(JSON.stringify({alg:'RS256',typ:'JWT'})).toString('base64url');\n  const now = Math.floor(Date.now()/1000);\n  const pl = Buffer.from(JSON.stringify({iss:sa.client_email,scope:'https://www.googleapis.com/auth/calendar',aud:'https://oauth2.googleapis.com/token',iat:now,exp:now+3600})).toString('base64url');\n  const si = hdr+'.'+pl;\n  const sign = crypto.createSign('RSA-SHA256');\n  sign.update(si);\n  const sig = sign.sign(sa.private_key,'base64url');\n  const pd = 'grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer&assertion='+si+'.'+sig;\n  return new Promise((resolve,reject) => {\n    const req = https.request('https://oauth2.googleapis.com/token',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded','Content-Length':Buffer.byteLength(pd)}},(res)=>{let d='';res.on('data',c=>d+=c);res.on('end',()=>{try{resolve(JSON.parse(d));}catch(e){reject(e);}});});\n    req.on('error',reject);req.write(pd);req.end();\n  });\n}\n\n// Generic Google Calendar call. Returns {status, body} (body = parsed JSON or null for empty replies like DELETE 204).\nfunction gcal(token, method, path, bodyObj) {\n  const bodyStr = bodyObj ? JSON.stringify(bodyObj) : null;\n  const headers = {'Authorization':'Bearer '+token};\n  if (bodyStr) { headers['Content-Type'] = 'application/json'; headers['Content-Length'] = Buffer.byteLength(bodyStr); }\n  return new Promise((resolve,reject) => {\n    const req = https.request({hostname:'www.googleapis.com',path:`/calendar/v3/calendars/${encodeURIComponent(CAL_ID)}${path}`,method,headers},(res)=>{\n      let d='';res.on('data',c=>d+=c);\n      res.on('end',()=>{let b=null;if(d){try{b=JSON.parse(d);}catch(e){b={raw:d};}}resolve({status:res.statusCode,body:b});});\n    });\n    req.on('error',reject);\n    if (bodyStr) req.write(bodyStr);\n    req.end();\n  });\n}\n\n// Send a WhatsApp text via Evolution API. Needs 'http' in NODE_FUNCTION_ALLOW_BUILTIN. Never throws; returns true/false.\nasync function sendWhatsApp(number, text) {\n  let http;\n  try { http = require('http'); } catch (e) { return false; }\n  const body = JSON.stringify({ number, text });\n  for (let attempt = 0; attempt < 2; attempt++) {\n    const ok = await new Promise((resolve) => {\n      const req = http.request({hostname:EVO_HOST,port:EVO_PORT,path:EVO_PATH,method:'POST',timeout:10000,headers:{'apikey':EVO_KEY,'Content-Type':'application/json','Content-Length':Buffer.byteLength(body)}},(res)=>{\n        res.on('data',()=>{});\n        res.on('end',()=>resolve(res.statusCode>=200 && res.statusCode<300));\n      });\n      req.on('timeout',()=>{req.destroy();resolve(false);});\n      req.on('error',()=>resolve(false));\n      req.write(body);req.end();\n    });\n    if (ok) return true;\n  }\n  return false;\n}\n\nfunction digits(s) { return String(s||'').replace(/\\D/g,''); }\nfunction samePhone(a, b) {\n  const x = digits(a), y = digits(b);\n  if (!x || !y) return false;\n  const n = Math.min(8, x.length, y.length);\n  return x.slice(-n) === y.slice(-n);\n}\nfunction phoneOfEvent(e) {\n  const m = (e.description||'').match(/Phone:\\s*([\\d+\\-\\s]+)/i);\n  return m ? m[1] : '';\n}\nfunction nameOfEvent(e) {\n  const s = e.summary || '';\n  const i = s.indexOf(' - ');\n  return i !== -1 ? s.substring(i+3).trim() : 'Client';\n}\nfunction serviceOfEvent(e) {\n  const s = e.summary || '';\n  const i = s.indexOf(' - ');\n  return i !== -1 ? s.substring(0,i).trim() : s.trim();\n}\n// Event times are always written in America/Montevideo (UTC-3, no DST), so slicing the ISO string is safe.\nfunction evDate(e) { return e.start && e.start.dateTime ? e.start.dateTime.substring(0,10) : ''; }\nfunction evStart(e) { return e.start && e.start.dateTime ? e.start.dateTime.substring(11,16) : ''; }\nfunction evEnd(e) { return e.end && e.end.dateTime ? e.end.dateTime.substring(11,16) : ''; }\nfunction toMin(hhmm) { const [h,m] = hhmm.split(':').map(Number); return h*60+m; }\nfunction fromMin(min) { return String(Math.floor(min/60)).padStart(2,'0')+':'+String(min%60).padStart(2,'0'); }\nfunction parseInput(q) { try { return typeof q === 'string' ? JSON.parse(q) : q; } catch (e) { return null; } }\n\nconst input = parseInput(query);\nif (!input) return `Error: Invalid input. Got: ${query}`;\nconst { service, date, time, duration_minutes, client_name, client_phone, language } = input;\nconst lang = language || 'es';\nif (!service || !date || !time || !duration_minutes || !client_name || !client_phone) return 'Error: Missing required fields.';\n\nconst endTime = fromMin(toMin(time) + Number(duration_minutes));\n\nconst eventBody = {\n  summary: `${service} - ${client_name}`,\n  description: `Client: ${client_name}\\nPhone: ${client_phone}\\nService: ${service}\\nDuration: ${duration_minutes} min\\nLanguage: ${lang}\\n\\nBooked via WhatsApp Bot`,\n  location: 'Cordon, Montevideo, Uruguay',\n  start: { dateTime: `${date}T${time}:00-03:00`, timeZone: 'America/Montevideo' },\n  end: { dateTime: `${date}T${endTime}:00-03:00`, timeZone: 'America/Montevideo' },\n  reminders: { useDefault: false, overrides: [{ method: 'popup', minutes: 60 }, { method: 'popup', minutes: 1440 }] },\n  colorId: '2'\n};\n\ntry {\n  const tokenData = await getToken();\n  const token = tokenData.access_token;\n  if (!token) return `BOOKING ERROR: Could not get Google token: ${JSON.stringify(tokenData)}`;\n  const r = await gcal(token, 'POST', '/events', eventBody);\n  if (r.body && r.body.id) {\n    const sent = await sendWhatsApp(MASTER_PHONE,\n      `✅ НОВАЯ ЗАПИСЬ\\nКлиент: ${client_name}\\nТелефон: +${digits(client_phone)}\\nУслуга: ${service}\\nДата: ${date}\\nВремя: ${time}-${endTime} (${duration_minutes} мин)`);\n    return `BOOKING CONFIRMED\\nEvent ID: ${r.body.id}\\nService: ${service}\\nDate: ${date}\\nTime: ${time}-${endTime} (${duration_minutes} min)\\nClient: ${client_name}\\nSalon: AREA MOSA, Cordon, Montevideo, Uruguay` + (sent ? '' : '\\n(Internal: master notification failed - do NOT mention to the client.)');\n  }\n  return `BOOKING ERROR: ${JSON.stringify(r.body)}`;\n} catch (err) {\n  return `BOOKING ERROR: ${err.message}. Ask client to contact +598 94 786877.`;\n}\n"
       }
     },
     {
@@ -217,7 +277,10 @@
       "name": "Send WhatsApp Response",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
-      "position": [1180, 260],
+      "position": [
+        1180,
+        260
+      ],
       "onError": "continueRegularOutput",
       "parameters": {
         "method": "POST",
@@ -225,55 +288,242 @@
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
-            { "name": "apikey", "value": "area-mosa-evo-key" },
-            { "name": "Content-Type", "value": "application/json" }
+            {
+              "name": "apikey",
+              "value": "area-mosa-evo-key"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
           ]
         },
         "sendBody": true,
         "contentType": "json",
         "bodyParameters": {
           "parameters": [
-            { "name": "number", "value": "={{ $('Extract Message Data').item.json.phone }}" },
-            { "name": "text", "value": "={{ $json.output }}" }
+            {
+              "name": "number",
+              "value": "={{ $('Extract Message Data').item.json.phone }}"
+            },
+            {
+              "name": "text",
+              "value": "={{ $json.output }}"
+            }
           ]
         },
         "options": {
           "timeout": 15000,
-          "response": { "response": { "neverError": true } }
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
         }
+      }
+    },
+    {
+      "id": "node-find-bookings-tool",
+      "name": "find_bookings",
+      "type": "@n8n/n8n-nodes-langchain.toolCode",
+      "typeVersion": 1.3,
+      "position": [
+        1340,
+        480
+      ],
+      "parameters": {
+        "name": "find_bookings",
+        "description": "List the client's upcoming bookings (with event_id). Call this FIRST whenever the client wants to cancel or reschedule an appointment. Returns event_id, service, date and time of each upcoming booking.",
+        "language": "javaScript",
+        "specifyInputSchema": true,
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"client_phone\": {\n      \"type\": \"string\",\n      \"description\": \"Client phone (digits) from conversation context\"\n    }\n  },\n  \"required\": [\n    \"client_phone\"\n  ]\n}",
+        "jsCode": "const crypto = require('crypto');\nconst fs = require('fs');\nconst https = require('https');\n\nconst CAL_ID = 'ae4d71467b7b1970bac78ebbfc075f2c3451427a3bf7cdddce921bbce0b92344@group.calendar.google.com';\nconst MASTER_PHONE = '59892122029';\nconst EVO_HOST = 'evo_api';\nconst EVO_PORT = 8080;\nconst EVO_PATH = '/message/sendText/area-mosa';\nconst EVO_KEY = 'area-mosa-evo-key';\n\nfunction getToken() {\n  const sa = JSON.parse(fs.readFileSync('/home/node/service-account.json', 'utf8'));\n  const hdr = Buffer.from(JSON.stringify({alg:'RS256',typ:'JWT'})).toString('base64url');\n  const now = Math.floor(Date.now()/1000);\n  const pl = Buffer.from(JSON.stringify({iss:sa.client_email,scope:'https://www.googleapis.com/auth/calendar',aud:'https://oauth2.googleapis.com/token',iat:now,exp:now+3600})).toString('base64url');\n  const si = hdr+'.'+pl;\n  const sign = crypto.createSign('RSA-SHA256');\n  sign.update(si);\n  const sig = sign.sign(sa.private_key,'base64url');\n  const pd = 'grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer&assertion='+si+'.'+sig;\n  return new Promise((resolve,reject) => {\n    const req = https.request('https://oauth2.googleapis.com/token',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded','Content-Length':Buffer.byteLength(pd)}},(res)=>{let d='';res.on('data',c=>d+=c);res.on('end',()=>{try{resolve(JSON.parse(d));}catch(e){reject(e);}});});\n    req.on('error',reject);req.write(pd);req.end();\n  });\n}\n\n// Generic Google Calendar call. Returns {status, body} (body = parsed JSON or null for empty replies like DELETE 204).\nfunction gcal(token, method, path, bodyObj) {\n  const bodyStr = bodyObj ? JSON.stringify(bodyObj) : null;\n  const headers = {'Authorization':'Bearer '+token};\n  if (bodyStr) { headers['Content-Type'] = 'application/json'; headers['Content-Length'] = Buffer.byteLength(bodyStr); }\n  return new Promise((resolve,reject) => {\n    const req = https.request({hostname:'www.googleapis.com',path:`/calendar/v3/calendars/${encodeURIComponent(CAL_ID)}${path}`,method,headers},(res)=>{\n      let d='';res.on('data',c=>d+=c);\n      res.on('end',()=>{let b=null;if(d){try{b=JSON.parse(d);}catch(e){b={raw:d};}}resolve({status:res.statusCode,body:b});});\n    });\n    req.on('error',reject);\n    if (bodyStr) req.write(bodyStr);\n    req.end();\n  });\n}\n\n// Send a WhatsApp text via Evolution API. Needs 'http' in NODE_FUNCTION_ALLOW_BUILTIN. Never throws; returns true/false.\nasync function sendWhatsApp(number, text) {\n  let http;\n  try { http = require('http'); } catch (e) { return false; }\n  const body = JSON.stringify({ number, text });\n  for (let attempt = 0; attempt < 2; attempt++) {\n    const ok = await new Promise((resolve) => {\n      const req = http.request({hostname:EVO_HOST,port:EVO_PORT,path:EVO_PATH,method:'POST',timeout:10000,headers:{'apikey':EVO_KEY,'Content-Type':'application/json','Content-Length':Buffer.byteLength(body)}},(res)=>{\n        res.on('data',()=>{});\n        res.on('end',()=>resolve(res.statusCode>=200 && res.statusCode<300));\n      });\n      req.on('timeout',()=>{req.destroy();resolve(false);});\n      req.on('error',()=>resolve(false));\n      req.write(body);req.end();\n    });\n    if (ok) return true;\n  }\n  return false;\n}\n\nfunction digits(s) { return String(s||'').replace(/\\D/g,''); }\nfunction samePhone(a, b) {\n  const x = digits(a), y = digits(b);\n  if (!x || !y) return false;\n  const n = Math.min(8, x.length, y.length);\n  return x.slice(-n) === y.slice(-n);\n}\nfunction phoneOfEvent(e) {\n  const m = (e.description||'').match(/Phone:\\s*([\\d+\\-\\s]+)/i);\n  return m ? m[1] : '';\n}\nfunction nameOfEvent(e) {\n  const s = e.summary || '';\n  const i = s.indexOf(' - ');\n  return i !== -1 ? s.substring(i+3).trim() : 'Client';\n}\nfunction serviceOfEvent(e) {\n  const s = e.summary || '';\n  const i = s.indexOf(' - ');\n  return i !== -1 ? s.substring(0,i).trim() : s.trim();\n}\n// Event times are always written in America/Montevideo (UTC-3, no DST), so slicing the ISO string is safe.\nfunction evDate(e) { return e.start && e.start.dateTime ? e.start.dateTime.substring(0,10) : ''; }\nfunction evStart(e) { return e.start && e.start.dateTime ? e.start.dateTime.substring(11,16) : ''; }\nfunction evEnd(e) { return e.end && e.end.dateTime ? e.end.dateTime.substring(11,16) : ''; }\nfunction toMin(hhmm) { const [h,m] = hhmm.split(':').map(Number); return h*60+m; }\nfunction fromMin(min) { return String(Math.floor(min/60)).padStart(2,'0')+':'+String(min%60).padStart(2,'0'); }\nfunction parseInput(q) { try { return typeof q === 'string' ? JSON.parse(q) : q; } catch (e) { return null; } }\n\nconst input = parseInput(query);\nif (!input) return `Error: Invalid input. Got: ${query}`;\nconst { client_phone } = input;\nif (!client_phone) return 'Error: Missing client_phone.';\n\ntry {\n  const tokenData = await getToken();\n  const token = tokenData.access_token;\n  if (!token) return `Error getting Google token: ${JSON.stringify(tokenData)}`;\n  const qs = ['timeMin='+encodeURIComponent(new Date().toISOString()),'singleEvents=true','orderBy=startTime','maxResults=50','q='+encodeURIComponent(digits(client_phone).slice(-8))].join('&');\n  const r = await gcal(token, 'GET', `/events?${qs}`);\n  if (r.status !== 200) return `Error: calendar returned ${r.status}: ${JSON.stringify(r.body)}`;\n  const mine = (r.body.items||[]).filter(e => e.status !== 'cancelled' && e.start && e.start.dateTime && samePhone(phoneOfEvent(e), client_phone));\n  if (mine.length === 0) return 'NO BOOKINGS FOUND for this client.';\n  return 'UPCOMING BOOKINGS:\\n' + mine.map(e => `- event_id=${e.id} | ${serviceOfEvent(e)} | ${evDate(e)} ${evStart(e)}-${evEnd(e)}`).join('\\n');\n} catch (err) {\n  return `Error: ${err.message}`;\n}\n"
+      }
+    },
+    {
+      "id": "node-cancel-booking-tool",
+      "name": "cancel_booking",
+      "type": "@n8n/n8n-nodes-langchain.toolCode",
+      "typeVersion": 1.3,
+      "position": [
+        1480,
+        480
+      ],
+      "parameters": {
+        "name": "cancel_booking",
+        "description": "Cancel a client's booking: removes it from Google Calendar (frees the slot) and notifies the master via WhatsApp. Only call AFTER find_bookings AND after the client has explicitly confirmed which booking to cancel.",
+        "language": "javaScript",
+        "specifyInputSchema": true,
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"event_id\": {\n      \"type\": \"string\",\n      \"description\": \"event_id of the booking, taken from find_bookings\"\n    },\n    \"client_phone\": {\n      \"type\": \"string\",\n      \"description\": \"Client phone (digits) from conversation context\"\n    }\n  },\n  \"required\": [\n    \"event_id\",\n    \"client_phone\"\n  ]\n}",
+        "jsCode": "const crypto = require('crypto');\nconst fs = require('fs');\nconst https = require('https');\n\nconst CAL_ID = 'ae4d71467b7b1970bac78ebbfc075f2c3451427a3bf7cdddce921bbce0b92344@group.calendar.google.com';\nconst MASTER_PHONE = '59892122029';\nconst EVO_HOST = 'evo_api';\nconst EVO_PORT = 8080;\nconst EVO_PATH = '/message/sendText/area-mosa';\nconst EVO_KEY = 'area-mosa-evo-key';\n\nfunction getToken() {\n  const sa = JSON.parse(fs.readFileSync('/home/node/service-account.json', 'utf8'));\n  const hdr = Buffer.from(JSON.stringify({alg:'RS256',typ:'JWT'})).toString('base64url');\n  const now = Math.floor(Date.now()/1000);\n  const pl = Buffer.from(JSON.stringify({iss:sa.client_email,scope:'https://www.googleapis.com/auth/calendar',aud:'https://oauth2.googleapis.com/token',iat:now,exp:now+3600})).toString('base64url');\n  const si = hdr+'.'+pl;\n  const sign = crypto.createSign('RSA-SHA256');\n  sign.update(si);\n  const sig = sign.sign(sa.private_key,'base64url');\n  const pd = 'grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer&assertion='+si+'.'+sig;\n  return new Promise((resolve,reject) => {\n    const req = https.request('https://oauth2.googleapis.com/token',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded','Content-Length':Buffer.byteLength(pd)}},(res)=>{let d='';res.on('data',c=>d+=c);res.on('end',()=>{try{resolve(JSON.parse(d));}catch(e){reject(e);}});});\n    req.on('error',reject);req.write(pd);req.end();\n  });\n}\n\n// Generic Google Calendar call. Returns {status, body} (body = parsed JSON or null for empty replies like DELETE 204).\nfunction gcal(token, method, path, bodyObj) {\n  const bodyStr = bodyObj ? JSON.stringify(bodyObj) : null;\n  const headers = {'Authorization':'Bearer '+token};\n  if (bodyStr) { headers['Content-Type'] = 'application/json'; headers['Content-Length'] = Buffer.byteLength(bodyStr); }\n  return new Promise((resolve,reject) => {\n    const req = https.request({hostname:'www.googleapis.com',path:`/calendar/v3/calendars/${encodeURIComponent(CAL_ID)}${path}`,method,headers},(res)=>{\n      let d='';res.on('data',c=>d+=c);\n      res.on('end',()=>{let b=null;if(d){try{b=JSON.parse(d);}catch(e){b={raw:d};}}resolve({status:res.statusCode,body:b});});\n    });\n    req.on('error',reject);\n    if (bodyStr) req.write(bodyStr);\n    req.end();\n  });\n}\n\n// Send a WhatsApp text via Evolution API. Needs 'http' in NODE_FUNCTION_ALLOW_BUILTIN. Never throws; returns true/false.\nasync function sendWhatsApp(number, text) {\n  let http;\n  try { http = require('http'); } catch (e) { return false; }\n  const body = JSON.stringify({ number, text });\n  for (let attempt = 0; attempt < 2; attempt++) {\n    const ok = await new Promise((resolve) => {\n      const req = http.request({hostname:EVO_HOST,port:EVO_PORT,path:EVO_PATH,method:'POST',timeout:10000,headers:{'apikey':EVO_KEY,'Content-Type':'application/json','Content-Length':Buffer.byteLength(body)}},(res)=>{\n        res.on('data',()=>{});\n        res.on('end',()=>resolve(res.statusCode>=200 && res.statusCode<300));\n      });\n      req.on('timeout',()=>{req.destroy();resolve(false);});\n      req.on('error',()=>resolve(false));\n      req.write(body);req.end();\n    });\n    if (ok) return true;\n  }\n  return false;\n}\n\nfunction digits(s) { return String(s||'').replace(/\\D/g,''); }\nfunction samePhone(a, b) {\n  const x = digits(a), y = digits(b);\n  if (!x || !y) return false;\n  const n = Math.min(8, x.length, y.length);\n  return x.slice(-n) === y.slice(-n);\n}\nfunction phoneOfEvent(e) {\n  const m = (e.description||'').match(/Phone:\\s*([\\d+\\-\\s]+)/i);\n  return m ? m[1] : '';\n}\nfunction nameOfEvent(e) {\n  const s = e.summary || '';\n  const i = s.indexOf(' - ');\n  return i !== -1 ? s.substring(i+3).trim() : 'Client';\n}\nfunction serviceOfEvent(e) {\n  const s = e.summary || '';\n  const i = s.indexOf(' - ');\n  return i !== -1 ? s.substring(0,i).trim() : s.trim();\n}\n// Event times are always written in America/Montevideo (UTC-3, no DST), so slicing the ISO string is safe.\nfunction evDate(e) { return e.start && e.start.dateTime ? e.start.dateTime.substring(0,10) : ''; }\nfunction evStart(e) { return e.start && e.start.dateTime ? e.start.dateTime.substring(11,16) : ''; }\nfunction evEnd(e) { return e.end && e.end.dateTime ? e.end.dateTime.substring(11,16) : ''; }\nfunction toMin(hhmm) { const [h,m] = hhmm.split(':').map(Number); return h*60+m; }\nfunction fromMin(min) { return String(Math.floor(min/60)).padStart(2,'0')+':'+String(min%60).padStart(2,'0'); }\nfunction parseInput(q) { try { return typeof q === 'string' ? JSON.parse(q) : q; } catch (e) { return null; } }\n\nconst input = parseInput(query);\nif (!input) return `Error: Invalid input. Got: ${query}`;\nconst { event_id, client_phone } = input;\nif (!event_id || !client_phone) return 'Error: Missing event_id or client_phone.';\n\ntry {\n  const tokenData = await getToken();\n  const token = tokenData.access_token;\n  if (!token) return `CANCEL ERROR: Could not get Google token: ${JSON.stringify(tokenData)}`;\n\n  const got = await gcal(token, 'GET', `/events/${encodeURIComponent(event_id)}`);\n  if (got.status === 404 || (got.body && got.body.status === 'cancelled')) return 'CANCEL ERROR: Booking not found (already cancelled?). Call find_bookings again.';\n  if (got.status !== 200) return `CANCEL ERROR: calendar returned ${got.status}: ${JSON.stringify(got.body)}`;\n  const ev = got.body;\n  if (!samePhone(phoneOfEvent(ev), client_phone)) return 'CANCEL ERROR: This booking belongs to another client. Do not cancel it.';\n\n  const del = await gcal(token, 'DELETE', `/events/${encodeURIComponent(event_id)}`);\n  if (del.status !== 204 && del.status !== 200 && del.status !== 410) return `CANCEL ERROR: calendar returned ${del.status}: ${JSON.stringify(del.body)}. Ask client to contact +598 94 786877.`;\n\n  const info = `${serviceOfEvent(ev)} | ${evDate(ev)} ${evStart(ev)}-${evEnd(ev)}`;\n  const sent = await sendWhatsApp(MASTER_PHONE,\n    `❌ ОТМЕНА ЗАПИСИ\\nКлиент: ${nameOfEvent(ev)}\\nТелефон: +${digits(phoneOfEvent(ev))}\\nУслуга: ${serviceOfEvent(ev)}\\nДата: ${evDate(ev)}\\nВремя: ${evStart(ev)}-${evEnd(ev)}\\n\\nСлот освобождён в календаре.`);\n  return `BOOKING CANCELLED\\n${info}\\nCalendar: slot freed.` + (sent ? '' : '\\n(Internal: master notification failed - do NOT mention to the client.)');\n} catch (err) {\n  return `CANCEL ERROR: ${err.message}. Ask client to contact +598 94 786877.`;\n}\n"
+      }
+    },
+    {
+      "id": "node-reschedule-booking-tool",
+      "name": "reschedule_booking",
+      "type": "@n8n/n8n-nodes-langchain.toolCode",
+      "typeVersion": 1.3,
+      "position": [
+        1620,
+        480
+      ],
+      "parameters": {
+        "name": "reschedule_booking",
+        "description": "Move an existing booking to a new date/time (same service and duration): checks the new slot, updates Google Calendar and notifies the master via WhatsApp. Only call AFTER find_bookings AND after the client has confirmed the booking and the new date and time. Returns NOT AVAILABLE if the new slot is busy (booking stays unchanged).",
+        "language": "javaScript",
+        "specifyInputSchema": true,
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"event_id\": {\n      \"type\": \"string\",\n      \"description\": \"event_id of the booking, taken from find_bookings\"\n    },\n    \"client_phone\": {\n      \"type\": \"string\",\n      \"description\": \"Client phone (digits) from conversation context\"\n    },\n    \"new_date\": {\n      \"type\": \"string\",\n      \"description\": \"New date YYYY-MM-DD\"\n    },\n    \"new_time\": {\n      \"type\": \"string\",\n      \"description\": \"New start time HH:MM 24h\"\n    }\n  },\n  \"required\": [\n    \"event_id\",\n    \"client_phone\",\n    \"new_date\",\n    \"new_time\"\n  ]\n}",
+        "jsCode": "const crypto = require('crypto');\nconst fs = require('fs');\nconst https = require('https');\n\nconst CAL_ID = 'ae4d71467b7b1970bac78ebbfc075f2c3451427a3bf7cdddce921bbce0b92344@group.calendar.google.com';\nconst MASTER_PHONE = '59892122029';\nconst EVO_HOST = 'evo_api';\nconst EVO_PORT = 8080;\nconst EVO_PATH = '/message/sendText/area-mosa';\nconst EVO_KEY = 'area-mosa-evo-key';\n\nfunction getToken() {\n  const sa = JSON.parse(fs.readFileSync('/home/node/service-account.json', 'utf8'));\n  const hdr = Buffer.from(JSON.stringify({alg:'RS256',typ:'JWT'})).toString('base64url');\n  const now = Math.floor(Date.now()/1000);\n  const pl = Buffer.from(JSON.stringify({iss:sa.client_email,scope:'https://www.googleapis.com/auth/calendar',aud:'https://oauth2.googleapis.com/token',iat:now,exp:now+3600})).toString('base64url');\n  const si = hdr+'.'+pl;\n  const sign = crypto.createSign('RSA-SHA256');\n  sign.update(si);\n  const sig = sign.sign(sa.private_key,'base64url');\n  const pd = 'grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer&assertion='+si+'.'+sig;\n  return new Promise((resolve,reject) => {\n    const req = https.request('https://oauth2.googleapis.com/token',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded','Content-Length':Buffer.byteLength(pd)}},(res)=>{let d='';res.on('data',c=>d+=c);res.on('end',()=>{try{resolve(JSON.parse(d));}catch(e){reject(e);}});});\n    req.on('error',reject);req.write(pd);req.end();\n  });\n}\n\n// Generic Google Calendar call. Returns {status, body} (body = parsed JSON or null for empty replies like DELETE 204).\nfunction gcal(token, method, path, bodyObj) {\n  const bodyStr = bodyObj ? JSON.stringify(bodyObj) : null;\n  const headers = {'Authorization':'Bearer '+token};\n  if (bodyStr) { headers['Content-Type'] = 'application/json'; headers['Content-Length'] = Buffer.byteLength(bodyStr); }\n  return new Promise((resolve,reject) => {\n    const req = https.request({hostname:'www.googleapis.com',path:`/calendar/v3/calendars/${encodeURIComponent(CAL_ID)}${path}`,method,headers},(res)=>{\n      let d='';res.on('data',c=>d+=c);\n      res.on('end',()=>{let b=null;if(d){try{b=JSON.parse(d);}catch(e){b={raw:d};}}resolve({status:res.statusCode,body:b});});\n    });\n    req.on('error',reject);\n    if (bodyStr) req.write(bodyStr);\n    req.end();\n  });\n}\n\n// Send a WhatsApp text via Evolution API. Needs 'http' in NODE_FUNCTION_ALLOW_BUILTIN. Never throws; returns true/false.\nasync function sendWhatsApp(number, text) {\n  let http;\n  try { http = require('http'); } catch (e) { return false; }\n  const body = JSON.stringify({ number, text });\n  for (let attempt = 0; attempt < 2; attempt++) {\n    const ok = await new Promise((resolve) => {\n      const req = http.request({hostname:EVO_HOST,port:EVO_PORT,path:EVO_PATH,method:'POST',timeout:10000,headers:{'apikey':EVO_KEY,'Content-Type':'application/json','Content-Length':Buffer.byteLength(body)}},(res)=>{\n        res.on('data',()=>{});\n        res.on('end',()=>resolve(res.statusCode>=200 && res.statusCode<300));\n      });\n      req.on('timeout',()=>{req.destroy();resolve(false);});\n      req.on('error',()=>resolve(false));\n      req.write(body);req.end();\n    });\n    if (ok) return true;\n  }\n  return false;\n}\n\nfunction digits(s) { return String(s||'').replace(/\\D/g,''); }\nfunction samePhone(a, b) {\n  const x = digits(a), y = digits(b);\n  if (!x || !y) return false;\n  const n = Math.min(8, x.length, y.length);\n  return x.slice(-n) === y.slice(-n);\n}\nfunction phoneOfEvent(e) {\n  const m = (e.description||'').match(/Phone:\\s*([\\d+\\-\\s]+)/i);\n  return m ? m[1] : '';\n}\nfunction nameOfEvent(e) {\n  const s = e.summary || '';\n  const i = s.indexOf(' - ');\n  return i !== -1 ? s.substring(i+3).trim() : 'Client';\n}\nfunction serviceOfEvent(e) {\n  const s = e.summary || '';\n  const i = s.indexOf(' - ');\n  return i !== -1 ? s.substring(0,i).trim() : s.trim();\n}\n// Event times are always written in America/Montevideo (UTC-3, no DST), so slicing the ISO string is safe.\nfunction evDate(e) { return e.start && e.start.dateTime ? e.start.dateTime.substring(0,10) : ''; }\nfunction evStart(e) { return e.start && e.start.dateTime ? e.start.dateTime.substring(11,16) : ''; }\nfunction evEnd(e) { return e.end && e.end.dateTime ? e.end.dateTime.substring(11,16) : ''; }\nfunction toMin(hhmm) { const [h,m] = hhmm.split(':').map(Number); return h*60+m; }\nfunction fromMin(min) { return String(Math.floor(min/60)).padStart(2,'0')+':'+String(min%60).padStart(2,'0'); }\nfunction parseInput(q) { try { return typeof q === 'string' ? JSON.parse(q) : q; } catch (e) { return null; } }\n\nconst input = parseInput(query);\nif (!input) return `Error: Invalid input. Got: ${query}`;\nconst { event_id, client_phone, new_date, new_time } = input;\nif (!event_id || !client_phone || !new_date || !new_time) return 'Error: Missing event_id, client_phone, new_date or new_time.';\nif (!/^\\d{4}-\\d{2}-\\d{2}$/.test(new_date)) return `Error: Invalid new_date '${new_date}'. Use YYYY-MM-DD.`;\nif (!/^\\d{2}:\\d{2}$/.test(new_time)) return `Error: Invalid new_time '${new_time}'. Use HH:MM.`;\n\nconst dow = new Date(new_date + 'T12:00:00Z').getUTCDay();\nif (dow === 0) return 'NOT RESCHEDULED: Closed on Sundays.';\n\ntry {\n  const tokenData = await getToken();\n  const token = tokenData.access_token;\n  if (!token) return `RESCHEDULE ERROR: Could not get Google token: ${JSON.stringify(tokenData)}`;\n\n  const got = await gcal(token, 'GET', `/events/${encodeURIComponent(event_id)}`);\n  if (got.status === 404 || (got.body && got.body.status === 'cancelled')) return 'RESCHEDULE ERROR: Booking not found. Call find_bookings again.';\n  if (got.status !== 200) return `RESCHEDULE ERROR: calendar returned ${got.status}: ${JSON.stringify(got.body)}`;\n  const ev = got.body;\n  if (!samePhone(phoneOfEvent(ev), client_phone)) return 'RESCHEDULE ERROR: This booking belongs to another client. Do not change it.';\n\n  // Keep the same duration as the existing booking.\n  const duration = toMin(evEnd(ev)) - toMin(evStart(ev));\n  const startMin = toMin(new_time);\n  const endMin = startMin + duration;\n  if (startMin < 540 || endMin > 1200) return `NOT RESCHEDULED: ${new_time} with ${duration}min is outside 09:00-20:00.`;\n  const newEnd = fromMin(endMin);\n\n  // New slot must be in the future (Montevideo = UTC-3).\n  const nowMvd = new Date(Date.now() - 3*3600*1000).toISOString();\n  if (`${new_date}T${new_time}` <= nowMvd.substring(0,16)) return 'NOT RESCHEDULED: The new time is in the past.';\n\n  // Conflict check, ignoring the booking being moved.\n  const qs = ['timeMin='+encodeURIComponent(`${new_date}T${new_time}:00-03:00`),'timeMax='+encodeURIComponent(`${new_date}T${newEnd}:00-03:00`),'singleEvents=true','orderBy=startTime'].join('&');\n  const busyResp = await gcal(token, 'GET', `/events?${qs}`);\n  if (busyResp.status !== 200) return `RESCHEDULE ERROR: calendar returned ${busyResp.status}: ${JSON.stringify(busyResp.body)}`;\n  const busy = (busyResp.body.items||[]).filter(e => e.status !== 'cancelled' && e.id !== event_id);\n  if (busy.length > 0) {\n    return `NOT AVAILABLE: ${new_date} ${new_time}-${newEnd} conflicts with: ` + busy.map(e => `${evStart(e)}-${evEnd(e)}`).join('; ') + '. Booking NOT changed. Suggest other times.';\n  }\n\n  const oldDate = evDate(ev), oldStart = evStart(ev), oldEnd = evEnd(ev);\n  const patch = await gcal(token, 'PATCH', `/events/${encodeURIComponent(event_id)}`, {\n    start: { dateTime: `${new_date}T${new_time}:00-03:00`, timeZone: 'America/Montevideo' },\n    end: { dateTime: `${new_date}T${newEnd}:00-03:00`, timeZone: 'America/Montevideo' }\n  });\n  if (patch.status !== 200) return `RESCHEDULE ERROR: calendar returned ${patch.status}: ${JSON.stringify(patch.body)}. Booking NOT changed. Ask client to contact +598 94 786877.`;\n\n  const sat = dow === 6 ? ' (суббота - по записи)' : '';\n  const sent = await sendWhatsApp(MASTER_PHONE,\n    `🔄 ПЕРЕНОС ЗАПИСИ\\nКлиент: ${nameOfEvent(ev)}\\nТелефон: +${digits(phoneOfEvent(ev))}\\nУслуга: ${serviceOfEvent(ev)}\\n\\nБыло: ${oldDate} ${oldStart}-${oldEnd}\\nСтало: ${new_date} ${new_time}-${newEnd}${sat}`);\n  return `BOOKING RESCHEDULED\\nService: ${serviceOfEvent(ev)}\\nOld: ${oldDate} ${oldStart}-${oldEnd}\\nNew: ${new_date} ${new_time}-${newEnd} (${duration} min)\\nSalon: AREA MOSA, Cordon, Montevideo, Uruguay` + (sent ? '' : '\\n(Internal: master notification failed - do NOT mention to the client.)');\n} catch (err) {\n  return `RESCHEDULE ERROR: ${err.message}. Ask client to contact +598 94 786877.`;\n}\n"
       }
     }
   ],
   "connections": {
     "WhatsApp Webhook": {
-      "main": [[{ "node": "Filter Incoming Messages", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Filter Incoming Messages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Filter Incoming Messages": {
-      "main": [[{ "node": "Extract Message Data", "type": "main", "index": 0 }], []]
+      "main": [
+        [
+          {
+            "node": "Extract Message Data",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
     },
     "Extract Message Data": {
-      "main": [[{ "node": "Get Google Token", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Get Google Token",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Get Google Token": {
-      "main": [[{ "node": "Booking AI Agent", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Booking AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Booking AI Agent": {
-      "main": [[{ "node": "Send WhatsApp Response", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Send WhatsApp Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "GPT-4o-mini": {
-      "ai_languageModel": [[{ "node": "Booking AI Agent", "type": "ai_languageModel", "index": 0 }]]
+      "ai_languageModel": [
+        [
+          {
+            "node": "Booking AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Conversation Memory": {
-      "ai_memory": [[{ "node": "Booking AI Agent", "type": "ai_memory", "index": 0 }]]
+      "ai_memory": [
+        [
+          {
+            "node": "Booking AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
     },
     "check_availability": {
-      "ai_tool": [[{ "node": "Booking AI Agent", "type": "ai_tool", "index": 0 }]]
+      "ai_tool": [
+        [
+          {
+            "node": "Booking AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
     },
     "create_booking": {
-      "ai_tool": [[{ "node": "Booking AI Agent", "type": "ai_tool", "index": 0 }]]
+      "ai_tool": [
+        [
+          {
+            "node": "Booking AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Workflow Error Trigger": {
-      "main": [[{ "node": "Notify Error via WhatsApp", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Notify Error via WhatsApp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "find_bookings": {
+      "ai_tool": [
+        [
+          {
+            "node": "Booking AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "cancel_booking": {
+      "ai_tool": [
+        [
+          {
+            "node": "Booking AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "reschedule_booking": {
+      "ai_tool": [
+        [
+          {
+            "node": "Booking AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "pinData": {},
@@ -285,11 +535,23 @@
   },
   "staticData": null,
   "tags": [
-    { "id": "tag-area-mosa", "name": "area-mosa" },
-    { "id": "tag-whatsapp", "name": "whatsapp" },
-    { "id": "tag-booking", "name": "booking" }
+    {
+      "id": "tag-area-mosa",
+      "name": "area-mosa"
+    },
+    {
+      "id": "tag-whatsapp",
+      "name": "whatsapp"
+    },
+    {
+      "id": "tag-booking",
+      "name": "booking"
+    }
   ],
-  "meta": { "templateCredsSetupCompleted": false, "instanceId": "" },
+  "meta": {
+    "templateCredsSetupCompleted": false,
+    "instanceId": ""
+  },
   "id": "area-mosa-booking-agent",
   "versionId": "2.0.0"
 }

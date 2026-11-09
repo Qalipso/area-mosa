@@ -25,7 +25,13 @@ AI-powered conversational booking assistant that:
 - Presents 4 services: Haircut, Coloring, Hair Care, Combo
 - Checks Google Calendar availability
 - Creates calendar events for confirmed bookings
+- Cancels and reschedules bookings (`find_bookings`, `cancel_booking`, `reschedule_booking`) and updates the calendar
+- Notifies the master (Artem, WhatsApp 59892122029) about every new booking, cancellation and reschedule
 - Responds in the client's language
+
+> The master notifications are sent from inside the tool nodes via `http://evo_api:8080`, so n8n needs `http` in
+> `NODE_FUNCTION_ALLOW_BUILTIN` (set in `docker/docker-compose.yml`). After changing that env var run
+> `docker compose up -d n8n` in `docker/` — a plain `docker restart n8n` does not re-read it.
 
 ### 2. `reminder-workflow.json` - Daily Appointment Reminders
 
