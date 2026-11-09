@@ -8,6 +8,7 @@ from shapely.ops import unary_union
 from shapely.geometry.polygon import orient
 from typeset import face, measure, fit_size, cap_height
 from designs import Canvas
+from logo import logo_geometry
 
 DM_R = [face("DMSans-latin-400.ttf")]
 DM_M = [face("DMSans-latin-500.ttf")]
@@ -49,9 +50,10 @@ def cluster(qr_size=190):
     c = Canvas()
     cx, D = 500, 300
     R = D / 2
-    ring(c, cx, R, R, stroke=9)
-    # черта внутри кольца — как на сайте: отступ 14% с каждой стороны
-    c.rect(cx - D * 0.36, R - 2.5, D * 0.72, 5)
+    # логотип «О» с чертой — по эталону (src/logo_reference.jpg), см. logo.py
+    d, (bx, by, bw, bh), bb = logo_geometry(cx, R, D)
+    c.raw(d, bb)
+    c.rect(bx, by, bw, bh)
     # PELUQUERÍA — широкий трекинг, ширина ≈ 1.5 диаметра
     tr = 0.22
     size = fit_size("PELUQUERÍA", DM_R, 450, tr)
