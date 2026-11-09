@@ -37,19 +37,25 @@ class Canvas:
         self.items.append(("rect", x, y, w, h))
         self._bb(x, y, x + w, y + h)
 
-    def svg(self, mirror=False, dx=0, dy=0, bg=None, width=None, height=None, extra=""):
+    def raw(self, d, bbox):
+        """Готовый контур (кольцо, QR и т.п.); bbox = (x0, y0, x1, y1)."""
+        self.items.append(("path", d))
+        self._bb(*bbox)
+
+    def svg(self, mirror=False, dx=0, dy=0, bg=None, width=None, height=None, extra="", color=None, view=None):
         out = []
         for it in self.items:
             if it[0] == "path":
                 out.append(f'<path d="{it[1]}"/>')
             else:
                 out.append(f'<rect x="{it[1]:.2f}" y="{it[2]:.2f}" width="{it[3]:.2f}" height="{it[4]:.2f}"/>')
-        g = f'<g fill="{RED}" transform="translate({dx:.2f},{dy:.2f})">' + "".join(out) + "</g>"
+        g = f'<g fill="{color or RED}" transform="translate({dx:.2f},{dy:.2f})">' + "".join(out) + "</g>"
         if mirror:
             g = f'<g transform="translate({W},0) scale(-1,1)">{g}</g>'
         wh = f' width="{width}" height="{height}"' if width else ""
-        bgr = f'<rect width="{W}" height="{H}" fill="{bg}"/>' if bg else ""
-        return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}"{wh}>{bgr}{g}{extra}</svg>')
+        vw, vh = view or (W, H)
+        bgr = f'<rect width="{vw}" height="{vh}" fill="{bg}"/>' if bg else ""
+        return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {vw} {vh}"{wh}>{bgr}{g}{extra}</svg>')
 
     def centered_offset(self, bias=0.0):
         """Сдвиг, чтобы блок встал по центру стекла (bias<0 — чуть выше центра)."""
