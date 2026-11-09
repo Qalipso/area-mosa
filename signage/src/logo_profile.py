@@ -21,6 +21,10 @@ fold = np.zeros(91)
 for k in range(91):
     ang = [k, 180 - k, 180 + k, (360 - k) % 360]
     fold[k] = np.mean([t[int(a) % 360] for a in ang])
+# лучи 0..2° задеты чертой (она лежит на оси) — восстанавливаем по соседним углам: t = a + b*theta^2
+th = np.arange(3, 13); A = np.vstack([np.ones_like(th, dtype=float), th.astype(float) ** 2]).T
+a_, b_ = np.linalg.lstsq(A, fold[3:13], rcond=None)[0]
+fold[:3] = a_ + b_ * np.arange(3) ** 2
 # сглаживание (окно 5°), монотонное убывание от боков к верху
 pad = np.concatenate([fold[2:0:-1], fold, fold[-2:-4:-1]])
 sm = np.convolve(pad, np.ones(5) / 5, mode="valid")
