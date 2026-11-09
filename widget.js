@@ -17,7 +17,7 @@
   // Виджет говорит на языке страницы, а после первого сообщения — на языке клиента.
   const DICT = {
     ru: {
-      fabLabel: 'Записаться онлайн', closeLabel: 'Закрыть окно записи',
+      fabLabel: 'Записаться онлайн', closeLabel: 'Закрыть окно записи', backLabel: 'Назад',
       answerPh: 'Введите ответ…', answerLabel: 'Ваш ответ', sendLabel: 'Отправить',
       status: 'Онлайн-запись', sub: 'Подберём услугу, мастера и удобное время',
       subChat: 'Спросите про услуги, цены и время — или просто запишитесь',
@@ -36,6 +36,7 @@
       whichMaster: '«{title}» — {price}.\nК кому записать?', minutes: '{n} мин',
       serviceItem: '{title} · {n} мин', slotHint: '{date} · {n} мин',
       noDays: 'У мастера нет рабочих дней в ближайшие две недели.',
+      noFreeDays: 'У мастера нет свободных окон в ближайшие две недели. Вернитесь назад и выберите другого мастера — или напишите нам в WhatsApp.',
       whichDay: 'На какой день?', nearestDates: 'Ближайшие даты',
       noSlots: 'На этот день свободных окон нет. Выберем другой?', otherDate: '← Другая дата',
       freeAt: 'Свободное время у {master}:',
@@ -54,7 +55,7 @@
       sending: 'Отправляю запись…', bookAgain: 'Записаться ещё раз', otherTime: 'Выбрать другое время',
     },
     es: {
-      fabLabel: 'Reservar en línea', closeLabel: 'Cerrar la ventana de reserva',
+      fabLabel: 'Reservar en línea', closeLabel: 'Cerrar la ventana de reserva', backLabel: 'Atrás',
       answerPh: 'Escriba su respuesta…', answerLabel: 'Su respuesta', sendLabel: 'Enviar',
       status: 'Reserva en línea', sub: 'Elegimos servicio, profesional y horario',
       subChat: 'Pregunte por servicios, precios y horarios — o reserve directamente',
@@ -73,6 +74,7 @@
       whichMaster: '«{title}» — {price}.\n¿Con quién le reservo?', minutes: '{n} min',
       serviceItem: '{title} · {n} min', slotHint: '{date} · {n} min',
       noDays: 'El profesional no tiene días laborables en las próximas dos semanas.',
+      noFreeDays: 'El profesional no tiene huecos libres en las próximas dos semanas. Vuelva atrás y elija a otro profesional — o escríbanos por WhatsApp.',
       whichDay: '¿Qué día le viene bien?', nearestDates: 'Próximas fechas',
       noSlots: 'Ese día no queda ningún hueco. ¿Probamos otro?', otherDate: '← Otra fecha',
       freeAt: 'Horarios libres de {master}:',
@@ -91,7 +93,7 @@
       sending: 'Enviando la reserva…', bookAgain: 'Reservar otra vez', otherTime: 'Elegir otro horario',
     },
     en: {
-      fabLabel: 'Book online', closeLabel: 'Close the booking window',
+      fabLabel: 'Book online', closeLabel: 'Close the booking window', backLabel: 'Back',
       answerPh: 'Type your answer…', answerLabel: 'Your answer', sendLabel: 'Send',
       status: 'Online booking', sub: 'We will pick the service, specialist and time',
       subChat: 'Ask about services, prices and times — or just book',
@@ -110,6 +112,7 @@
       whichMaster: '“{title}” — {price}.\nWho should I book you with?', minutes: '{n} min',
       serviceItem: '{title} · {n} min', slotHint: '{date} · {n} min',
       noDays: 'This specialist has no working days in the next two weeks.',
+      noFreeDays: 'This specialist has no free slots in the next two weeks. Go back and pick another specialist — or message us on WhatsApp.',
       whichDay: 'Which day works for you?', nearestDates: 'Nearest dates',
       noSlots: 'No free slots that day. Shall we try another?', otherDate: '← Another date',
       freeAt: 'Free times with {master}:',
@@ -190,6 +193,7 @@
           <div class="status"><span class="dot" aria-hidden="true"></span><span class="status-text"></span></div>
           <div class="sub" id="am-sub"></div>
         </div>
+        <button class="back" type="button" hidden>←</button>
         <button class="close">✕</button>
       </header>
       <div class="log" role="log" aria-live="polite" aria-relevant="additions text"></div>
@@ -209,7 +213,8 @@
 
   const $ = (s) => root.querySelector(s);
   const fab = $('.fab'), panel = $('.panel'), log = $('.log'), choices = $('.choices'),
-        form = $('form'), input = $('form input'), bubble = $('.bubble'), dock = $('.dock');
+        form = $('form'), input = $('form input'), bubble = $('.bubble'), dock = $('.dock'),
+        backBtn = $('.back');
 
   const calm = window.matchMedia('(prefers-reduced-motion: reduce)');
   const reduced = () => calm.matches;
@@ -221,11 +226,66 @@
   let conversationId = null;
   let chatMode = false;
 
+  // ---- «Назад» -------------------------------------------------------------
+  // Каждый экран сценария запоминается снимком: сколько сообщений уже в ленте,
+  // черновик записи, кнопки и состояние поля ввода. «Назад» обрезает ленту до снимка
+  // предыдущего экрана и поднимает его заново — на любом шаге, включая ввод текста.
+  let epoch = 0;          // растёт при «Назад» и «Начать заново»: устаревшие шаги молча выходят
+  const stack = [];
+  let settled = true;     // false, пока клиент уже ответил, а следующий экран ещё не показан
+  let locked = false;     // идёт отправка записи — откатывать нельзя
+  const canBack = () => !locked && (stack.length > 1 || (stack.length === 1 && !settled));
+  const updateBack = () => { backBtn.hidden = !canBack(); };
+
+  /** Запоминает текущий экран. Повторный экран с тем же id (например, «Другая дата»)
+      вытесняет себя и всё, что было после него. */
+  function mark(id) {
+    const at = stack.findIndex((x) => x.id === id);
+    if (at >= 0) stack.length = at;
+    stack.push({
+      id, n: log.children.length, draft: { ...draft }, choices: lastChoices,
+      form: form.classList.contains('on'), step, ph: phKey, chat: chatMode,
+    });
+    settled = true;
+    updateBack();
+  }
+
+  function goBack() {
+    if (!canBack()) return;
+    epoch += 1;
+    clearInterval(scrollTimer);
+    // Если клиент уже ответил, но следующий экран не появился, возвращаем текущий экран;
+    // иначе — предыдущий.
+    if (settled) stack.pop();
+    const s = stack[stack.length - 1];
+    while (log.children.length > s.n) log.lastChild.remove();
+    Object.keys(draft).forEach((k) => delete draft[k]);
+    Object.assign(draft, s.draft);
+    chatMode = s.chat;
+    $('#am-sub').textContent = chatMode ? t('subChat') : (cfg?.salon?.tagline || t('sub'));
+    choices.innerHTML = '';
+    lastChoices = null;
+    if (s.choices) setChoices(s.choices.items, s.choices.hint);
+    lockInput(false);
+    form.classList.toggle('on', s.form);
+    phKey = s.ph;
+    input.placeholder = t(phKey);
+    input.value = '';
+    step = s.step;
+    settled = true;
+    updateBack();
+    if (s.form) input.focus();
+    scroll();
+  }
+  backBtn.addEventListener('click', goBack);
+
   /** Переводит статичные части интерфейса. Уже показанные сообщения не переписываем. */
   function applyLang() {
     panel.setAttribute('lang', lang);
     fab.setAttribute('aria-label', t('fabLabel'));
     $('.close').setAttribute('aria-label', t('closeLabel'));
+    backBtn.setAttribute('aria-label', t('backLabel'));
+    backBtn.title = t('backLabel');
     $('.status-text').textContent = t('status');
     $('#am-sub').textContent = chatMode ? t('subChat') : (cfg?.salon?.tagline || t('sub'));
     input.setAttribute('aria-label', t('answerLabel'));
@@ -266,7 +326,9 @@
       if (want !== lang) return;          // язык успел смениться снова — ответ уже неактуален
       cfg = fresh;
       // Список услуг на экране — перерисовываем его новыми названиями.
-      if (lastChoices?.hint?.k === 'pickService') askService();
+      // Снимки экранов с услугами тоже обновляем — иначе «Назад» вернёт старые названия.
+      stack.forEach((x) => { if (x.choices?.hint?.k === 'pickService') x.choices = { items: serviceItems(), hint: x.choices.hint }; });
+      if (lastChoices?.hint?.k === 'pickService') askService(false);
     } catch { /* каталог остаётся прежним — язык интерфейса уже переключился */ }
   }
 
@@ -320,8 +382,10 @@
     t0.innerHTML = '<i></i><i></i><i></i>';
     log.appendChild(t0);
     scroll();
+    const my = epoch;
     await wait(Math.min(750, 260 + text.length * 8));
     t0.remove();
+    if (my !== epoch) return null;      // клиент нажал «Назад» — это сообщение уже не нужно
     return say(spec, cls);
   }
 
@@ -372,9 +436,13 @@
       }
       b.addEventListener('click', async () => {
         if (b.disabled) return;
+        const my = epoch;
         [...choices.querySelectorAll('button')].forEach((x) => { x.disabled = true; });
         b.classList.add('selected');
+        settled = false;
+        updateBack();
         await wait(240);
+        if (my !== epoch) return;
         choices.innerHTML = '';
         lastChoices = null;
         it.onClick();
@@ -410,6 +478,11 @@
   // ---- сценарий ----------------------------------------------------------
 
   async function start() {
+    epoch += 1;
+    stack.length = 0;
+    settled = true;
+    locked = false;
+    updateBack();
     log.innerHTML = '';
     choices.innerHTML = '';
     hideForm();
@@ -451,6 +524,7 @@
       { k: 'chatHint' },
     );
     openInput();
+    mark('chat');
   }
 
   /** Поле ввода в свободном диалоге доступно всегда, кроме момента ожидания ответа. */
@@ -477,7 +551,7 @@
     hideForm();
     chatMode = false;
     $('.sub').textContent = cfg?.salon?.tagline || t('sub');
-    await botSay({ k: 'guidedStart' });
+    if (!(await botSay({ k: 'guidedStart' }))) return;
     askService();
   }
 
@@ -500,6 +574,7 @@
       conversationId = res.conversationId;
       typing.remove();
       if (res.text) say(res.text);
+      if (res.booking) { stack.length = 0; updateBack(); }
       if (res.booking) successCard({
         service: res.booking.service, master: res.booking.master,
         dateLabel: res.booking.date_label, time: res.booking.time, address: res.booking.address,
@@ -521,14 +596,15 @@
     input.focus();
   }
 
-  function askService() {
-    setChoices(
-      cfg.services.map((s) => ({
-        label: { k: 'serviceItem', v: { title: s.title, n: s.duration } },
-        onClick: () => { draft.service = s; say(s.title, 'me'); askMaster(); },
-      })),
-      { k: 'pickService' },
-    );
+  const serviceItems = () => cfg.services.map((s) => ({
+    label: { k: 'serviceItem', v: { title: s.title, n: s.duration } },
+    onClick: () => { draft.service = s; say(s.title, 'me'); askMaster(); },
+  }));
+
+  /** remark=false — только перерисовать список (смена языка), без нового экрана в истории. */
+  function askService(remark = true) {
+    setChoices(serviceItems(), { k: 'pickService' });
+    if (remark) mark('service');
   }
 
   async function askMaster() {
@@ -537,13 +613,14 @@
       await botSay({ k: 'noMasters' }, 'err');
       return;
     }
-    await botSay({
+    const ok = await botSay({
       k: 'whichMaster',
       v: () => ({
         title: draft.service.title,
         price: draft.service.price || t('minutes', { n: draft.service.duration }),
       }),
     });
+    if (!ok) return;
     setChoices(
       list.map((m) => ({
         label: `${m.name} — ${m.role}`,
@@ -551,16 +628,58 @@
       })),
       { k: 'pickMaster' },
     );
+    mark('master');
+  }
+
+  const typingOn = () => {
+    const el = document.createElement('div');
+    el.className = 'typing';
+    el.innerHTML = '<i></i><i></i><i></i>';
+    log.appendChild(el);
+    scroll();
+    return el;
+  };
+
+  /** Оставляет только дни, где у мастера реально есть свободные окна под выбранную услугу.
+      Если окна дня проверить не удалось (сеть, сервер) — день не прячем: лучше показать
+      лишний, чем потерять рабочий. */
+  async function withFreeSlots(days) {
+    const has = await Promise.all(days.map(async (d) => {
+      try {
+        const { slots } = await api(
+          `/api/slots?masterId=${draft.master.id}&serviceId=${draft.service.id}&date=${d.date}`,
+        );
+        return slots.length > 0;
+      } catch { return true; }
+    }));
+    return days.filter((_, i) => has[i]);
   }
 
   async function askDay() {
+    const my = epoch;
+    const typing = typingOn();
     let days;
     try {
       ({ days } = await api(`/api/days?masterId=${draft.master.id}&lang=${lang}`));
-    } catch (e) { return say(e.message, 'err'); }
-    if (!days.length) return botSay({ k: 'noDays' }, 'err');
+      if (my === epoch) days = await withFreeSlots(days);
+    } catch (e) {
+      typing.remove();
+      if (my !== epoch) return;
+      return say(e.message, 'err');
+    }
+    typing.remove();
+    if (my !== epoch) return;
 
-    await botSay({ k: 'whichDay' });
+    if (!days.length) {
+      const ok = await botSay({ k: 'noFreeDays' }, 'err');
+      if (!ok) return;
+      if (cfg.salon.whatsapp) {
+        setChoices([{ label: { k: 'writeWa' }, onClick: () => window.open(cfg.salon.whatsapp, '_blank') }]);
+      }
+      return mark('day');
+    }
+
+    if (!(await botSay({ k: 'whichDay' }))) return;
     setChoices(
       days.map((d) => ({
         label: d.label,
@@ -573,21 +692,30 @@
       })),
       { k: 'nearestDates' },
     );
+    mark('day');
   }
 
   async function askSlot() {
+    const my = epoch;
     let slots;
     try {
       ({ slots } = await api(
         `/api/slots?masterId=${draft.master.id}&serviceId=${draft.service.id}&date=${draft.date}`,
       ));
-    } catch (e) { return say(e.message, 'err'); }
-
-    if (!slots.length) {
-      await botSay({ k: 'noSlots' });
-      return setChoices([{ label: { k: 'otherDate' }, kind: 'ghost', onClick: askDay }]);
+    } catch (e) {
+      if (my !== epoch) return;
+      return say(e.message, 'err');
     }
-    await botSay({ k: 'freeAt', v: () => ({ master: draft.master.name }) });
+    if (my !== epoch) return;
+
+    // Окна могли разобрать, пока клиент выбирал: день без окон заново не предлагаем —
+    // askDay проверит список ещё раз и уберёт его.
+    if (!slots.length) {
+      if (!(await botSay({ k: 'noSlots' }))) return;
+      setChoices([{ label: { k: 'otherDate' }, kind: 'ghost', onClick: askDay }]);
+      return mark('slot');
+    }
+    if (!(await botSay({ k: 'freeAt', v: () => ({ master: draft.master.name }) }))) return;
     setChoices(
       [
         ...slots.map((s) => ({
@@ -599,11 +727,13 @@
       ],
       { k: 'slotHint', v: () => ({ date: draft.dateLabel, n: draft.service.duration }) },
     );
+    mark('slot');
   }
 
   async function askName() {
-    await botSay({ k: 'askName' });
+    if (!(await botSay({ k: 'askName' }))) return;
     askText('namePh', 'name');
+    mark('name');
   }
 
   form.addEventListener('submit', async (e) => {
@@ -627,45 +757,54 @@
     if (step === 'name') {
       draft.name = value;
       hideForm();
-      await botSay({ k: 'askPhone' });
+      settled = false; updateBack();
+      if (!(await botSay({ k: 'askPhone' }))) return;
       askText('phonePh', 'phone');
+      mark('phone');
       return;
     }
     if (step === 'phone') {
       if (value.replace(/\D/g, '').length < 7) return botSay({ k: 'badPhone' }, 'err');
       draft.phone = value;
       hideForm();
-      await botSay({ k: 'askComment' });
+      settled = false; updateBack();
+      if (!(await botSay({ k: 'askComment' }))) return;
       form.classList.add('on');
       phKey = 'commentPh';
       input.placeholder = t('commentPh');
       step = 'comment';
       setChoices([{ label: { k: 'skip' }, kind: 'ghost', onClick: () => { draft.comment = ''; hideForm(); askConsent(); } }]);
+      mark('comment');
       return;
     }
     if (step === 'comment') {
       draft.comment = value;
       hideForm();
+      settled = false; updateBack();
       askConsent();
     }
   });
 
   /** Напоминания уходят только с явного согласия — без него канал не используется. */
   async function askConsent() {
-    await botSay({ k: 'askConsent' });
+    if (!(await botSay({ k: 'askConsent' }))) return;
     setChoices([
       { label: { k: 'yesNotify' }, onClick: () => { draft.notifyConsent = true; confirm(); } },
       { label: { k: 'noNotify' }, kind: 'ghost', onClick: () => { draft.notifyConsent = false; confirm(); } },
     ]);
+    mark('consent');
   }
 
   async function confirm() {
+    const my = epoch;
     await relabelDate();
-    await botSay({ fn: summaryText });
+    if (my !== epoch) return;
+    if (!(await botSay({ fn: summaryText }))) return;
     setChoices([
       { label: { k: 'confirmBtn' }, kind: 'pending', pending: true, onClick: submit },
       { label: { k: 'restart' }, kind: 'ghost', onClick: start },
     ]);
+    mark('confirm');
   }
 
   /** Полный текст сводки и карточки успеха — собираются заново при смене языка. */
@@ -712,6 +851,8 @@
   }
 
   async function submit() {
+    locked = true;      // запись уходит на сервер — «Назад» на это время недоступен
+    updateBack();
     const pend = document.createElement('div');
     pend.className = 'pending';
     pend.innerHTML = '<i></i><span></span>';
@@ -738,8 +879,13 @@
       pend.remove();
       successCard({ ...res.summary, inCalendar: Boolean(res.htmlLink) });
       setChoices([{ label: { k: 'bookAgain' }, kind: 'ghost', onClick: start }]);
+      stack.length = 0;   // запись создана — откатывать нечего, дальше только «ещё раз»
+      updateBack();
     } catch (e) {
       pend.remove();
+      locked = false;
+      settled = true;
+      updateBack();
       say(e.message, 'err');
       setChoices([
         { label: { k: 'otherTime' }, onClick: askSlot },
