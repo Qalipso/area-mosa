@@ -50,10 +50,10 @@ class Canvas:
             else:
                 out.append(f'<rect x="{it[1]:.2f}" y="{it[2]:.2f}" width="{it[3]:.2f}" height="{it[4]:.2f}"/>')
         g = f'<g fill="{color or RED}" transform="translate({dx:.2f},{dy:.2f})">' + "".join(out) + "</g>"
-        if mirror:
-            g = f'<g transform="translate({W},0) scale(-1,1)">{g}</g>'
-        wh = f' width="{width}" height="{height}"' if width else ""
         vw, vh = view or (W, H)
+        if mirror:
+            g = f'<g transform="translate({vw},0) scale(-1,1)">{g}</g>'
+        wh = f' width="{width}" height="{height}"' if width else ""
         bgr = f'<rect width="{vw}" height="{vh}" fill="{bg}"/>' if bg else ""
         return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {vw} {vh}"{wh}>{bgr}{g}{extra}</svg>')
 

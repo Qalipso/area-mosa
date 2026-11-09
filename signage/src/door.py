@@ -15,9 +15,9 @@ DM_L = [face("DMSans-latin-300.ttf")]
 
 # ---- содержимое (проверить перед печатью!) ----
 HOURS_TITLE = "HORARIO"
-HOURS_DAYS = "LUN – SÁB"
-HOURS_TIME = "10:00 – 20:00"
-QR_URL = "https://wa.me/59892122029"   # номер с сайта; в CLAUDE.md указан другой (+598 94 786877)
+HOURS_DAYS = "LUN – DOM"
+HOURS_TIME = "11:00 – 20:00"
+QR_URL = "https://area-mosa.com/"
 
 
 def ring(c, cx, cy, R, stroke):
