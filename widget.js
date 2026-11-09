@@ -40,6 +40,7 @@
       whichDay: 'На какой день?', nearestDates: 'Ближайшие даты',
       noSlots: 'На этот день свободных окон нет. Выберем другой?', otherDate: '← Другая дата',
       freeAt: 'Свободное время у {master}:',
+      overrunNote: 'Эта услуга может не закончиться до закрытия салона — мастер свяжется с вами и уточнит время.',
       askName: 'Как вас зовут?', namePh: 'Ваше имя',
       askPhone: 'Телефон или WhatsApp для связи?', phonePh: '+598 ...',
       badPhone: 'Похоже, номер неполный. Проверьте, пожалуйста.',
@@ -78,6 +79,7 @@
       whichDay: '¿Qué día le viene bien?', nearestDates: 'Próximas fechas',
       noSlots: 'Ese día no queda ningún hueco. ¿Probamos otro?', otherDate: '← Otra fecha',
       freeAt: 'Horarios libres de {master}:',
+      overrunNote: 'Este servicio podría no terminar antes del cierre: el profesional se pondrá en contacto con usted para confirmar el horario.',
       askName: '¿Cómo se llama?', namePh: 'Su nombre',
       askPhone: '¿Teléfono o WhatsApp de contacto?', phonePh: '+598 ...',
       badPhone: 'El número parece incompleto. Revíselo, por favor.',
@@ -116,6 +118,7 @@
       whichDay: 'Which day works for you?', nearestDates: 'Nearest dates',
       noSlots: 'No free slots that day. Shall we try another?', otherDate: '← Another date',
       freeAt: 'Free times with {master}:',
+      overrunNote: 'This service may run past closing time — the specialist will contact you to confirm the time.',
       askName: 'What is your name?', namePh: 'Your name',
       askPhone: 'Phone or WhatsApp to reach you?', phonePh: '+598 ...',
       badPhone: 'That number looks incomplete. Please check it.',
@@ -730,7 +733,16 @@
     mark('slot');
   }
 
+  const toMinutes = (hhmm) => { const [h, m] = String(hhmm).split(':').map(Number); return h * 60 + m; };
+
+  /** Последнее окно салон отдаёт и под длинную услугу: она может уйти за закрытие. */
+  const overrunsClosing = () => {
+    const end = cfg?.salon?.workHours?.end;
+    return Boolean(end && draft.time && toMinutes(draft.time) + draft.service.duration > toMinutes(end));
+  };
+
   async function askName() {
+    if (overrunsClosing() && !(await botSay({ k: 'overrunNote' }))) return;
     if (!(await botSay({ k: 'askName' }))) return;
     askText('namePh', 'name');
     mark('name');
