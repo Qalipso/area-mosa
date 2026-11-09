@@ -643,7 +643,8 @@
     return el;
   };
 
-  /** Оставляет только дни, где у мастера реально есть свободные окна под выбранную услугу.
+  /** Запасной путь для бэкенда без фильтра в /api/days (по запросу на день — медленнее).
+      Оставляет только дни, где у мастера реально есть свободные окна под выбранную услугу.
       Если окна дня проверить не удалось (сеть, сервер) — день не прячем: лучше показать
       лишний, чем потерять рабочий. */
   async function withFreeSlots(days) {
@@ -661,10 +662,14 @@
   async function askDay() {
     const my = epoch;
     const typing = typingOn();
-    let days;
+    let days, filtered;
     try {
-      ({ days } = await api(`/api/days?masterId=${draft.master.id}&lang=${lang}`));
-      if (my === epoch) days = await withFreeSlots(days);
+      // Бэкенд сам отдаёт только дни со свободными окнами (одним запросом к календарю).
+      ({ days, filtered } = await api(
+        `/api/days?masterId=${draft.master.id}&serviceId=${draft.service.id}&lang=${lang}`,
+      ));
+      // Старый бэкенд про serviceId не знает — тогда проверяем дни по одному.
+      if (!filtered && my === epoch) days = await withFreeSlots(days);
     } catch (e) {
       typing.remove();
       if (my !== epoch) return;
