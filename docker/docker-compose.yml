@@ -53,6 +53,7 @@ services:
     volumes:
       - n8n_data:/home/node/.n8n
       - ./service-account.json:/home/node/service-account.json:ro
+      - ./telegram.json:/home/node/telegram.json:ro
     depends_on:
       - postgres
     networks:

@@ -40,6 +40,7 @@ Network: `area-mosa-net` (bridge). Inter-container: use container names (e.g. `h
 | `docker/docker-compose.yml` | All 4 services |
 | `docker/.env` | Evolution API env vars |
 | `docker/service-account.json` | Google SA credentials |
+| `docker/telegram.json` | Telegram bot token + master chat ids (git-ignored, see `telegram.example.json`) |
 | `docker/init-db.sql` | Creates `n8n` database |
 | `n8n/booking-agent-workflow.json` | Main booking workflow |
 | `n8n/README.md` | Setup instructions |

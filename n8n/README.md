@@ -33,6 +33,17 @@ AI-powered conversational booking assistant that:
 > `NODE_FUNCTION_ALLOW_BUILTIN` (set in `docker/docker-compose.yml`). After changing that env var run
 > `docker compose up -d n8n` in `docker/` — a plain `docker restart n8n` does not re-read it.
 
+#### Telegram notifications for masters (optional, in addition to WhatsApp)
+
+1. In Telegram open @BotFather, `/newbot`, copy the bot token.
+2. Each master opens the bot and presses **Start** (a bot cannot write first). Get each master's chat id
+   by sending any message to the bot and opening `https://api.telegram.org/bot<TOKEN>/getUpdates`
+   (`message.chat.id`), or via @userinfobot.
+3. `cp docker/telegram.example.json docker/telegram.json`, fill in `bot_token` and `chat_ids`
+   (one id per master — bookings are not tied to a specific master, so everyone gets every notification).
+4. **Create `docker/telegram.json` before `docker compose up`**, otherwise Docker creates a directory with that name.
+   Then `docker compose up -d n8n`. The file is git-ignored; if it is missing/empty Telegram is simply skipped.
+
 ### 2. `reminder-workflow.json` - Daily Appointment Reminders
 
 Runs daily at 9:00 AM (Montevideo time):

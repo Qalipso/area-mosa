@@ -2,3 +2,4 @@
 docker/service-account.json
 docker/.env
 .DS_Store
+docker/telegram.json
