@@ -6,7 +6,6 @@ from designs import v3, W, H
 from door import cluster
 
 COLOR = "#D4C4A0"
-MIRROR_TOP = False
 OUT = os.path.join(os.path.dirname(__file__), "..", "out", "print")
 os.makedirs(OUT, exist_ok=True)
 HERE = os.path.dirname(__file__)
@@ -21,10 +20,11 @@ def write(name, svg, w_mm, h_mm):
 
 
 def main():
-    # верх: стекло 1200 x 600 мм (120 x 60 см), композиция по центру. Зеркало — отдельным шагом (MIRROR_TOP=True)
+    # верх: стекло 1200 x 600 мм (120 x 60 см), композиция по центру
     t = v3(); dx, dy = t.centered_offset(bias=-4)
-    for cname, col in (("sand", COLOR), ("white", "#FFFFFF")):
-        write(f"top_1200x600mm_NORMAL_{cname}", t.svg(mirror=MIRROR_TOP, dx=dx, dy=dy, color=col, width="1200mm", height="600mm"), 1200, 600)
+    for mirror, tag in ((False, "NORMAL_street-view"), (True, "MIRROR_for-print")):
+        for cname, col in (("sand", COLOR), ("white", "#FFFFFF")):
+            write(f"top_1200x600mm_{tag}_{cname}", t.svg(mirror=mirror, dx=dx, dy=dy, color=col, width="1200mm", height="600mm"), 1200, 600)
     # дверь: плёнка 450 x 650 мм, композиция по центру
     from door import ART_W, ART_H
     c, _ = cluster()
